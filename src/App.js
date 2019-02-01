@@ -97,7 +97,7 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          <h1 style={styles.header}>This site's trash lmao</h1>
+          <h1 style={styles.header}>This site is trash lmao</h1>
           <form onSubmit={(event) => this.handleSubmit(event)}>
             <label>
               <input
