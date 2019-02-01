@@ -60,12 +60,6 @@ class App extends Component {
     this.getMovies(this.state.text);
   }
 
-  showMovies() {
-    this.state.movies.forEach(element => {
-      this.state.posters.push(element.Poster);
-    });
-  }
-
   render() {
     let moviePosters = [];
     if(this.state.movies.length > 0) {
