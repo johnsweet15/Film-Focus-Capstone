@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import axios from 'axios';
+import Details from './Details'
+import constants from './../constants'
 
 const APIKey = 'a6793cf9';
 const TMDBKey = 'c794333156e1c095f41f92e128c002df';
@@ -88,12 +90,14 @@ class Movies extends Component {
         return (
           <div style={{display: 'inline-block', float: 'left'}}>
             <Router>
-              <Link to={'/details/' + movieId + '/' + movieTitle} style={{textDecoration: 'none'}}>
-                <img key={poster} src={poster} style={{width: '27vh', height: '41vh', padding: 40}} alt="" />
-                <p style={{color: 'white', fontSize: '1.5vh', padding: 10}}>{movie.title}</p>
-              </Link>
+              <div>
+                <Link to={'/details/' + movieId + '/' + movieTitle} style={{textDecoration: 'none'}}>
+                  <img key={poster} src={poster} style={{width: '27vh', height: '41vh', padding: 40}} alt="" />
+                  <p style={{color: 'white', fontSize: '1.5vh', padding: 10}}>{movie.title}</p>
+                </Link>
+                <Route path={'/details/' + movieId + '/' + movieTitle} component={Details} />
+              </div>
             </Router>
-            
           </div>
         )
       });

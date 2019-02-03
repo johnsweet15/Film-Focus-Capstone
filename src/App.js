@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-// import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 // import axios from 'axios';
 import './App.css';
 import Movies from './components/Movies'
@@ -10,7 +10,9 @@ import Movies from './components/Movies'
 class App extends Component {
 
   render() {
-    return <Movies/>
+    return (
+      <Movies/>
+    );
   }
 }
 
