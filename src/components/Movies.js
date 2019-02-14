@@ -92,10 +92,12 @@ class Movies extends Component {
           poster = 'https://www.classicposters.com/images/nopicture.gif'
         }
 
+        console.log('media: ' + movie.media_type)
+
         return (
           <div style={{display: 'inline-block', float: 'left'}}>
             <Router>
-              <Link to={'/details/' + movieId + '/' + name} style={{textDecoration: 'none'}}>
+              <Link to={'/details/' + movieId + '/' + name} style={{textDecoration: 'none'}} onClick={this.props.setMovie.bind(this, movie)}>
                 <img key={poster} src={poster} style={{width: '27vh', height: '41vh', padding: 40}} alt="" />
                 <p style={{color: 'white', fontSize: '1.5vh', paddingLeft: 40, paddingRight: 40, maxWidth: '27vh'}}>{name}</p>
               </Link>
@@ -106,6 +108,7 @@ class Movies extends Component {
     }
     else {
       moviePosters = this.state.featuredMovies.map(movie => {
+        movie.media_type = 'movie';
         let poster = 'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + movie.poster_path;
         let movieId = movie.id;
         let movieTitle = movie.title;
@@ -114,7 +117,7 @@ class Movies extends Component {
           <div style={{display: 'inline-block', float: 'left'}}>
             <Router>
               <div>
-                <Link to={'/details/' + movieId + '/' + movieTitle} style={{textDecoration: 'none'}}>
+                <Link to={'/details/' + movieId + '/' + movieTitle} style={{textDecoration: 'none'}} onClick={this.props.setMovie.bind(this, movie)}>
                   <img key={movieId} src={poster} style={{width: '27vh', height: '41vh', padding: 40}} alt="" />
                   <p style={{color: 'white', fontSize: '1.5vh', padding: 10}}>{movie.title}</p>
                 </Link>
