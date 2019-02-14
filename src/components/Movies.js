@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import axios from 'axios';
-import Details from './Details'
-import constants from './../constants'
+// import Details from './Details'
+// import constants from './../constants'
 
-const APIKey = 'a6793cf9';
+// const APIKey = 'a6793cf9';
 const TMDBKey = 'c794333156e1c095f41f92e128c002df';
 
 class Movies extends Component {
@@ -15,9 +15,7 @@ class Movies extends Component {
     this.state = {
       movies: [],
       text: '',
-      posters: [],
       featuredMovies: [],
-      currentURL: '/home'
     };
   }
 
@@ -29,52 +27,77 @@ class Movies extends Component {
     axios.get('https://api.themoviedb.org/3/movie/popular?api_key=' + TMDBKey)
       .then((response) => {
         let movies = response.data.results;
-
+ 
         this.setState({
           featuredMovies: movies
         })
-
-        console.log('featured: ' + movies[0].title);
       })
   }
 
   getMovies(searchText) {
-    axios.get('https://api.themoviedb.org/3/search/movie?api_key=' + TMDBKey + '&language=en-US&query=' + searchText + '&page=1&include_adult=false')
-    // axios.get('http://www.omdbapi.com?s=' + searchText + '&apikey=' + APIKey)
+    // get page 1
+    axios.get('https://api.themoviedb.org/3/search/multi?&api_key=' + TMDBKey + '&language=en-US&query=' + searchText + '&page=1&include_adult=false')
       .then((response) => {
-        let movies = response.data.results;
+        let page1 = response.data.results;
+        
+        // get page 2
+        axios.get('https://api.themoviedb.org/3/search/multi?&api_key=' + TMDBKey + '&language=en-US&query=' + searchText + '&page=2&include_adult=false')
+          .then((response2) => {
+            let page2 = response2.data.results;
+            let movies = page1.concat(page2);
 
-        this.setState({
-          movies: movies,
-        });
+            // sort by popularity
+            movies.sort((a, b) => b.popularity - a.popularity);
+
+            this.setState({
+              // only get 20 movies from search
+              movies: movies.slice(0, 20),
+            });
+            
+          })
       })
       .catch((err) => {
         console.log(err);
-      });
+    });
   }
 
   handleSubmit(event){
+    // dont refresh
     event.preventDefault();
-    console.log(this.state.text);
+
     this.getMovies(this.state.text);
   }
 
   render() {
     let moviePosters = [];
+
     if(this.state.movies.length > 0) {
       moviePosters = this.state.movies.map(movie => {
         let poster = 'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + movie.poster_path;
         let movieId = movie.id;
-        let movieTitle = movie.title;
-        if(movie.poster_path === null) {
+        let name = '';
+
+        if(movie.media_type === "movie") {
+          name = movie.title;
+        }
+        else if(movie.media_type === "tv") {
+          name = movie.name;
+        }
+        else if(movie.media_type === 'person') {
+          name = movie.name;
+          poster = 'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + movie.profile_path;
+        }
+
+        if(movie.poster_path === null || movie.profile_path === null) {
           poster = 'https://www.classicposters.com/images/nopicture.gif'
         }
+
         return (
           <div style={{display: 'inline-block', float: 'left'}}>
             <Router>
-              <Link to={'/details/' + movieId + '/' + movieTitle} style={{textDecoration: 'none'}}>
+              <Link to={'/details/' + movieId + '/' + name} style={{textDecoration: 'none'}}>
                 <img key={poster} src={poster} style={{width: '27vh', height: '41vh', padding: 40}} alt="" />
-                <p style={{color: 'white', fontSize: '1.5vh', padding: 10}}>{movieTitle}</p>
+                <p style={{color: 'white', fontSize: '1.5vh', paddingLeft: 40, paddingRight: 40, maxWidth: '27vh'}}>{name}</p>
               </Link>
             </Router>
           </div>
@@ -92,10 +115,10 @@ class Movies extends Component {
             <Router>
               <div>
                 <Link to={'/details/' + movieId + '/' + movieTitle} style={{textDecoration: 'none'}}>
-                  <img key={poster} src={poster} style={{width: '27vh', height: '41vh', padding: 40}} alt="" />
+                  <img key={movieId} src={poster} style={{width: '27vh', height: '41vh', padding: 40}} alt="" />
                   <p style={{color: 'white', fontSize: '1.5vh', padding: 10}}>{movie.title}</p>
                 </Link>
-                <Route path={'/details/' + movieId + '/' + movieTitle} component={Details} />
+                <Route path={'/details/' + movieId + '/' + movieTitle} />
               </div>
             </Router>
           </div>
