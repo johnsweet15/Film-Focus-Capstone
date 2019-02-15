@@ -85,9 +85,17 @@ class Details extends Component {
     }
 
     let castList = this.state.cast.map(actor => {
+      let poster = 'https://image.tmdb.org/t/p/w600_and_h900_bestv2';
+      if(actor.profile_path === null) {
+        poster = 'https://www.classicposters.com/images/nopicture.gif';
+      }
+      else {
+        poster = 'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + actor.profile_path;
+      }
       return (
         <div style={{padding: 3}}>
-          <img style={{width: '10vw', alignSelf: 'center'}} src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + actor.profile_path} alt='' />
+          {/* force height to 15vw for null posters */}
+          <img style={{width: '10vw', height:'15vw', alignSelf: 'center'}} src={poster} alt='' />
           <p style={{color: 'white'}}>{actor.name}</p>
         </div>
       );
