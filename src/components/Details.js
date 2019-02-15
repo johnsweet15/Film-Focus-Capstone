@@ -58,6 +58,7 @@ class Details extends Component {
       return null;
     }
 
+    // make sure there is a cast
     if(cast.length === 0) {
       return null;
     }
@@ -96,7 +97,8 @@ class Details extends Component {
         <div style={{padding: 3}}>
           {/* force height to 15vw for null posters */}
           <img style={{width: '10vw', height:'15vw', alignSelf: 'center'}} src={poster} alt='' />
-          <p style={{color: 'white'}}>{actor.name}</p>
+          <p style={{color: 'white', fontSize: '1.5vh'}}>{actor.name}</p>
+          <p style={{color: '#d3d3d3'}}>{actor.character}</p>
         </div>
       );
     })
@@ -120,8 +122,11 @@ class Details extends Component {
 
           <div style={{width: '70%', margin: '0 auto', display: 'flex', flexDirection: 'row'}}>
 
-            <div style={{display: 'flex', flex: 0.33, padding: 40}}>
-              <img alt='' src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + movie.poster_path} />
+            <div style={{display: 'flex', flex: 0.33, paddingRight: 40}}>
+              {this.props.movie.media_type === 'person' ?
+                <img alt='' src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + movie.profile_path} /> :
+                <img style={{maxHeight: 900}} alt='' src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + movie.poster_path} />
+              }
             </div>
 
             <div style={{display: 'flex', flex: 0.67, justifyContent: 'center', padding: 40, flexDirection: 'column'}}>
@@ -132,9 +137,9 @@ class Details extends Component {
               }
               <p style={{color: 'white', fontSize: '2vh'}}>{movie.overview}</p>
               <div style={{width: '100%', padding: 5}}>
-                <h2 style={{color: 'white', fontSize: '3vh'}}>Cast</h2>
+                <p style={{color: 'white', fontSize: '3vh'}}>Cast</p>
                 <div style={{margin: 0, padding: 0, width: '45vw'}}>
-                  {cast.length > 0 &&
+                  {cast.length > 0 && this.props.movie.media_type !== 'person' &&
                     <Slider {...settings}>
                       {castList}
                     </Slider>
