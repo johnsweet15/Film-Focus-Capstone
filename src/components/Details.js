@@ -94,11 +94,11 @@ class Details extends Component {
         poster = 'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + actor.profile_path;
       }
       return (
-        <div style={{padding: 3}}>
+        <div style={{alignItems: 'center'}}>
           {/* force height to 15vw for null posters */}
-          <img style={{width: '10vw', height:'15vw', alignSelf: 'center'}} src={poster} alt='' />
+          <img style={{width: '10vw', height:'15vw'}} src={poster} alt='' />
           <p style={{color: 'white', fontSize: '1.5vh'}}>{actor.name}</p>
-          <p style={{color: '#d3d3d3'}}>{actor.character}</p>
+          <p style={{color: '#d3d3d3', paddingBottom: 10, maxWidth: '10vw'}}>{actor.character}</p>
         </div>
       );
     })
@@ -120,7 +120,7 @@ class Details extends Component {
 
         <div style={{display: 'flex', flexDirection: 'row'}}>
 
-          <div style={{width: '70%', margin: '0 auto', display: 'flex', flexDirection: 'row'}}>
+          <div style={{width: '75%', margin: '0 auto', display: 'flex', flexDirection: 'row'}}>
 
             <div style={{display: 'flex', flex: 0.33, paddingRight: 40}}>
               {this.props.movie.media_type === 'person' ?
@@ -129,7 +129,7 @@ class Details extends Component {
               }
             </div>
 
-            <div style={{display: 'flex', flex: 0.67, justifyContent: 'center', padding: 40, flexDirection: 'column'}}>
+            <div style={{display: 'flex', flex: 0.67, justifyContent: 'center', paddingLeft: 40, flexDirection: 'column'}}>
               {this.props.movie.media_type === 'tv' ? 
                 // basically check if tv show or movie since tv show uses 'name' and movie uses 'title
                 <p style={{color: 'white', fontSize: '3vh'}}>{movie.name + ' (' + releaseDate.substring(0,4) + ' - ' + finishDate + ')'}</p> :
