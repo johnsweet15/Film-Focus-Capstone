@@ -4,6 +4,8 @@ import Slider from 'react-slick';
 // import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
 const TMDBKey = 'c794333156e1c095f41f92e128c002df';
+const OMDBKey = 'a6793cf9';
+
 
 class Details extends Component {
 
@@ -15,7 +17,8 @@ class Details extends Component {
       // see onClick method on lines 100 and 120 in movies.js that sends data to app.js
       // then get that movie from app.js through props
       movie: this.props.movie,
-      cast: []
+      cast: [],
+      ratings: []
     }
 
   }
@@ -28,15 +31,16 @@ class Details extends Component {
     // need to get more details than what is provided in the search return
     // in other words, the props object taken from app.js does not have all the data we need
     // because tmdb search returns less data than a request for a specific movie
+    let result = {};
     axios.get('https://api.themoviedb.org/3/' + movie.media_type + '/' + movie.id + '?api_key=' + TMDBKey)
     .then((response) => {
-      let movie = response.data;
+      result = response.data;
 
       // add 'updated' attribute to movie object
       // needed to check if state has been updated in render()
-      movie.updated = true;
+      result.updated = true;
 
-      this.setState({movie: movie})
+      this.setState({movie: result}, this.getRatings(result));
     })
 
     // get cast
@@ -48,18 +52,32 @@ class Details extends Component {
     })
   }
 
+  getRatings(movie) {
+    // get ratings
+    axios.get('http://www.omdbapi.com/?i=' + movie.imdb_id + '&apikey=' + OMDBKey)
+    .then((response) => {
+      let ratings = response.data.Ratings;
+
+      this.setState({ratings: ratings});
+    })
+  }
+
   render() {
     let movie = this.state.movie;
     let cast = this.state.cast;
+    let ratings = this.state.ratings;
 
     // check for updated movie object
     if(movie.updated === undefined) {
       console.log('returned null');
       return null;
     }
+    // else {
+    //   this.getRatings(movie);
+    // }
 
     // make sure there is a cast
-    if(cast.length === 0) {
+    if(cast.length === 0 || ratings === undefined ) {
       return null;
     }
 
@@ -85,6 +103,7 @@ class Details extends Component {
       }
     }
 
+    // list of cast members for render
     let castList = this.state.cast.map(actor => {
       let poster = 'https://image.tmdb.org/t/p/w600_and_h900_bestv2';
       if(actor.profile_path === null) {
@@ -100,7 +119,16 @@ class Details extends Component {
           <p style={{color: 'white', fontSize: '1.5vh'}}>{actor.name}</p>
           <p style={{color: '#d3d3d3'}}>{actor.character}</p>
         </div>
-      );
+      )
+    })
+
+    // list of ratings for render
+    let ratingsList = this.state.ratings.map(rating => {
+      return (
+        <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
+          <p style={{color: 'white', justifyContent: 'center'}}>{rating.Source + ': ' + rating.Value}</p>
+        </div>
+      )
     })
 
     var settings = {
@@ -130,11 +158,18 @@ class Details extends Component {
             </div>
 
             <div style={{display: 'flex', flex: 0.67, justifyContent: 'center', padding: 40, flexDirection: 'column'}}>
-              {this.props.movie.media_type === 'tv' ? 
-                // basically check if tv show or movie since tv show uses 'name' and movie uses 'title
-                <p style={{color: 'white', fontSize: '3vh'}}>{movie.name + ' (' + releaseDate.substring(0,4) + ' - ' + finishDate + ')'}</p> :
-                <p style={{color: 'white', fontSize: '3vh'}}>{movie.title + ' (' + releaseDate.substring(0,4) + ')'}</p>
-              }
+              <div style={{display: 'flex', flexDirection: 'row'}}>
+                {this.props.movie.media_type === 'tv' ? 
+                  // basically check if tv show or movie since tv show uses 'name' and movie uses 'title
+                  <p style={{color: 'white', fontSize: '3vh'}}>{movie.name + ' (' + releaseDate.substring(0,4) + ' - ' + finishDate + ')'}</p> :
+                  <p style={{color: 'white', fontSize: '3vh'}}>{movie.title + ' (' + releaseDate.substring(0,4) + ')'}</p>
+                }
+                {ratings.length > 0 ?
+                  <div style={{padding: 20, display: 'flex', flexDirection: 'row'}}>{ratingsList}</div> :
+                  <p style={{color: 'white', padding: 20}}>No ratings yet</p>
+                }
+              </div>
+              
               <p style={{color: 'white', fontSize: '2vh'}}>{movie.overview}</p>
               <div style={{width: '100%', padding: 5}}>
                 <p style={{color: 'white', fontSize: '3vh'}}>Cast</p>
