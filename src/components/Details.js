@@ -55,7 +55,7 @@ class Details extends Component {
     })
 
     //get YouTube search results
-    axios.get('https://www.googleapis.com/youtube/v3/search?q='+ movie.title + ' review&key=' + YouTubeKey + '&maxResults=5&part=snippet')
+    axios.get('https://www.googleapis.com/youtube/v3/search?q='+ movie.title + ' movie review&key=' + YouTubeKey + '&maxResults=5&part=snippet')
     .then((response) => {
       let search = response.data.items;
 
@@ -145,11 +145,21 @@ class Details extends Component {
     // list of videos for render
     let resultList = this.state.searchResults.map(result => {
       return (
-        <div>
+        <div style={{color: 'white'}}>
+          <p>{result.snippet.channelTitle}</p>
           <Videos id={result.id.videoId} />
         </div>
       )
     })
+
+    var resultSettings = {
+      dots: true,
+      infinite: true,
+      speed: 500,
+      slidesToShow: 1,
+      slidesToScroll: 1,
+      adaptiveHeight: true
+    };
 
     var settings = {
       dots: true,
@@ -192,11 +202,19 @@ class Details extends Component {
               
               <p style={{color: 'white', fontSize: '2vh'}}>{movie.overview}</p>
 
-              {/* Youtube Video */}
-              
-                <div>
-                  {resultList[0]}
+              <div style={{display: 'flex', flexDirection: 'row'}}>
+                <div style={{width: '100%', height: '100%', padding: '5'}}>
+                  {/* check that there are search results and display them*/}
+                  {resultList.length > 0 &&
+                    <div style={{width: '80vh', height: '50vh', color: 'white'}}>
+                      <Slider {...resultSettings}>
+                        {resultList}
+                      </Slider>
+                    </div>
+                  }
                 </div>
+              </div>
+                
 
             
               <div style={{width: '100%', padding: 5}}>
