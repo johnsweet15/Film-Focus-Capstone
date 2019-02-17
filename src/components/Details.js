@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import Slider from 'react-slick';
-import Videos from "./Videos"
+import Videos from "./Videos";
+import { ToggleButton, ToggleButtonGroup, ButtonToolbar } from 'react-bootstrap'
 // import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
 const TMDBKey = 'c794333156e1c095f41f92e128c002df';
@@ -215,10 +216,12 @@ class Details extends Component {
               {/* Conditional rendering for Cast/Reviews
                 REPLACE WITH BETTER LOOKING BUTTONS EVENTUALLY */}
 
-              <p>
-                <button onClick={this.clickCast}>Cast</button>
-                <button onClick={this.clickReviews}>Reviews</button>
-              </p>
+              <ButtonToolbar>
+                  <ToggleButtonGroup type="radio" name="options" defaultValue={1}>
+                    <ToggleButton value={1} variant="secondary" onClick={this.clickCast}>Cast</ToggleButton>
+                    <ToggleButton value={2} variant="secondary" onClick={this.clickReviews}>Reviews</ToggleButton>
+                  </ToggleButtonGroup>
+                </ButtonToolbar>
 
               {this.state.showReviews && 
                 <div style={{width: '100%', padding: 5}}>
