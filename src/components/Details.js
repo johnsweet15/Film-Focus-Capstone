@@ -6,6 +6,7 @@ import Videos from "./Videos";
 
 const TMDBKey = 'c794333156e1c095f41f92e128c002df';
 const OMDBKey = 'a6793cf9';
+const YouTubeKey = 'AIzaSyAgBnpRVJaBeWu2AQmYpvzNxTaBp8_NguM';
 
 
 class Details extends Component {
@@ -19,9 +20,12 @@ class Details extends Component {
       // then get that movie from app.js through props
       movie: this.props.movie,
       cast: [],
-      ratings: []
+      ratings: [],
+      searchResults: [],
+      showReviews: false,
     }
-
+    this.clickCast = this.clickCast.bind(this);
+    this.clickReviews = this.clickReviews.bind(this);
   }
 
   componentDidMount() {
@@ -51,6 +55,14 @@ class Details extends Component {
 
       this.setState({cast: cast});
     })
+
+    //get YouTube search results
+    axios.get('https://www.googleapis.com/youtube/v3/search?q='+ movie.title + ' movie review&key=' + YouTubeKey + '&maxResults=5&part=snippet')
+    .then((response) => {
+      let search = response.data.items;
+
+      this.setState({searchResults: search});
+    })
   }
 
   getRatings(movie) {
@@ -72,6 +84,14 @@ class Details extends Component {
       })
     } 
   }
+
+  clickCast() {
+    this.setState({showReviews: false});
+  }
+  clickReviews() {
+    this.setState({showReviews: true});
+  }
+
 
   render() {
     let movie = this.state.movie;
@@ -145,6 +165,25 @@ class Details extends Component {
       )
     })
 
+    // list of videos for render
+    let resultList = this.state.searchResults.map(result => {
+      return (
+        <div style={{color: 'white'}}>
+          <p>{result.snippet.channelTitle}</p>
+          <Videos id={result.id.videoId} />
+        </div>
+      )
+    })
+
+    var resultSettings = {
+      dots: true,
+      infinite: true,
+      speed: 500,
+      slidesToShow: 1,
+      slidesToScroll: 1,
+      adaptiveHeight: true
+    };
+
     var settings = {
       dots: true,
       infinite: true,
@@ -185,22 +224,38 @@ class Details extends Component {
               </div>
               
               <p style={{color: 'white', fontSize: '2vh'}}>{movie.overview}</p>
-              
-              <div id="youtube">
 
-              {/* <Videos /> */}
-              
-              </div>
-              <div style={{width: '100%', padding: 5}}>
-                <p style={{color: 'white', fontSize: '3vh'}}>Cast</p>
-                <div style={{margin: 0, padding: 0, width: '45vw'}}>
-                  {cast.length > 0 && this.props.movie.media_type !== 'person' &&
-                    <Slider {...settings}>
-                      {castList}
-                    </Slider>
-                  }
+              <p style={{color: 'white', fontSize: '3vh'}}><button onClick={this.clickCast}>Cast</button><button onClick={this.clickReviews}>Reviews</button></p>
+
+              {this.state.showReviews && 
+                <div style={{display: 'flex', flexDirection: 'row'}}>
+                  <div style={{width: '100%', height: '100%', padding: '5'}}>
+                  
+                    {/* check that there are search results and display them*/}
+                    {resultList.length > 0 &&
+                      <div style={{width: '80vh', height: '50vh', color: 'white'}}>
+                        <Slider {...resultSettings}>
+                          {resultList}
+                        </Slider>
+                      </div>
+                    }
+                  </div>
                 </div>
-              </div>
+              }
+              {!this.state.showReviews &&
+                <div style={{width: '100%', padding: 5}}>
+                  <p style={{color: 'white', fontSize: '3vh'}}>Cast</p>
+                  <div style={{margin: 0, padding: 0, width: '45vw'}}>
+                    {cast.length > 0 && this.props.movie.media_type !== 'person' &&
+                      <Slider {...settings}>
+                        {castList}
+                      </Slider>
+                    }
+                  </div>
+                </div>
+              }
+
+
             </div>
           </div>
         </div>
