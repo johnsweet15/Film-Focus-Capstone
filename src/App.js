@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-// import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 // import axios from 'axios';
 import './App.css';
 import Movies from './components/Movies'
@@ -11,15 +11,20 @@ import Details from './components/Details'
 class App extends Component {
 
   state = {
-    movie: null
+    movie: null,
   }
+
+  // componentDidUpdate() {
+  //   window.onpopstate = (e) => {
+  //     this.setState({movie: null});
+  //   }
+  // }
 
   // get movie from movies.js and set it to app state to pass to details
   setMovie = (movie) => {
     this.setState({movie: movie}, console.log('app state movie: ' + this.state.movie));
   }
 
-  // THIS IS A TEST
   render() {
     return (
       <div>
@@ -30,7 +35,6 @@ class App extends Component {
         }
         
       </div>
-      
     );
   }
 }
