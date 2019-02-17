@@ -21,9 +21,11 @@ class Details extends Component {
       movie: this.props.movie,
       cast: [],
       ratings: [],
-      searchResults: []
+      searchResults: [],
+      showReviews: false,
     }
-
+    this.clickCast = this.clickCast.bind(this);
+    this.clickReviews = this.clickReviews.bind(this);
   }
 
   componentDidMount() {
@@ -72,6 +74,14 @@ class Details extends Component {
       this.setState({ratings: ratings});
     })
   }
+
+  clickCast() {
+    this.setState({showReviews: false});
+  }
+  clickReviews() {
+    this.setState({showReviews: true});
+  }
+
 
   render() {
     let movie = this.state.movie;
@@ -202,31 +212,37 @@ class Details extends Component {
               
               <p style={{color: 'white', fontSize: '2vh'}}>{movie.overview}</p>
 
-              <div style={{display: 'flex', flexDirection: 'row'}}>
-                <div style={{width: '100%', height: '100%', padding: '5'}}>
-                  {/* check that there are search results and display them*/}
-                  {resultList.length > 0 &&
-                    <div style={{width: '80vh', height: '50vh', color: 'white'}}>
-                      <Slider {...resultSettings}>
-                        {resultList}
-                      </Slider>
-                    </div>
-                  }
-                </div>
-              </div>
-                
+              <p style={{color: 'white', fontSize: '3vh'}}><button onClick={this.clickCast}>Cast</button><button onClick={this.clickReviews}>Reviews</button></p>
 
-            
-              <div style={{width: '100%', padding: 5}}>
-                <p style={{color: 'white', fontSize: '3vh'}}>Cast</p>
-                <div style={{margin: 0, padding: 0, width: '45vw'}}>
-                  {cast.length > 0 && this.props.movie.media_type !== 'person' &&
-                    <Slider {...settings}>
-                      {castList}
-                    </Slider>
-                  }
+              {this.state.showReviews && 
+                <div style={{display: 'flex', flexDirection: 'row'}}>
+                  <div style={{width: '100%', height: '100%', padding: '5'}}>
+                  
+                    {/* check that there are search results and display them*/}
+                    {resultList.length > 0 &&
+                      <div style={{width: '80vh', height: '50vh', color: 'white'}}>
+                        <Slider {...resultSettings}>
+                          {resultList}
+                        </Slider>
+                      </div>
+                    }
+                  </div>
                 </div>
-              </div>
+              }
+              {!this.state.showReviews &&
+                <div style={{width: '100%', padding: 5}}>
+                  <p style={{color: 'white', fontSize: '3vh'}}>Cast</p>
+                  <div style={{margin: 0, padding: 0, width: '45vw'}}>
+                    {cast.length > 0 && this.props.movie.media_type !== 'person' &&
+                      <Slider {...settings}>
+                        {castList}
+                      </Slider>
+                    }
+                  </div>
+                </div>
+              }
+
+
             </div>
           </div>
         </div>
