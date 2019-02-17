@@ -2,6 +2,12 @@ import React from 'react';
 import YouTube from 'react-youtube';
 
 class Videos extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            id: this.props.id,
+        }
+    }
 
     render() {
         const opts = {
@@ -14,7 +20,7 @@ class Videos extends React.Component {
 
         return (
             <YouTube
-            videoId="DTHTjgSuJ4M"
+            videoId={this.state.id}
             opts={opts}
             onReady={this.onReady}
             />

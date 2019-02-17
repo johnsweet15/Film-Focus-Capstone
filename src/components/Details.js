@@ -6,6 +6,7 @@ import Videos from "./Videos"
 
 const TMDBKey = 'c794333156e1c095f41f92e128c002df';
 const OMDBKey = 'a6793cf9';
+const YouTubeKey = 'AIzaSyAgBnpRVJaBeWu2AQmYpvzNxTaBp8_NguM';
 
 
 class Details extends Component {
@@ -19,7 +20,8 @@ class Details extends Component {
       // then get that movie from app.js through props
       movie: this.props.movie,
       cast: [],
-      ratings: []
+      ratings: [],
+      searchResults: []
     }
 
   }
@@ -50,6 +52,14 @@ class Details extends Component {
       let cast = response.data.cast;
 
       this.setState({cast: cast});
+    })
+
+    //get YouTube search results
+    axios.get('https://www.googleapis.com/youtube/v3/search?q='+ movie.title + ' review&key=' + YouTubeKey + '&maxResults=5&part=snippet')
+    .then((response) => {
+      let search = response.data.items;
+
+      this.setState({searchResults: search});
     })
   }
 
@@ -132,6 +142,15 @@ class Details extends Component {
       )
     })
 
+    // list of videos for render
+    let resultList = this.state.searchResults.map(result => {
+      return (
+        <div>
+          <Videos id={result.id.videoId} />
+        </div>
+      )
+    })
+
     var settings = {
       dots: true,
       infinite: true,
@@ -172,12 +191,14 @@ class Details extends Component {
               </div>
               
               <p style={{color: 'white', fontSize: '2vh'}}>{movie.overview}</p>
-              
-              <div id="youtube">
 
-              <Videos />
+              {/* Youtube Video */}
               
-              </div>
+                <div>
+                  {resultList[0]}
+                </div>
+
+            
               <div style={{width: '100%', padding: 5}}>
                 <p style={{color: 'white', fontSize: '3vh'}}>Cast</p>
                 <div style={{margin: 0, padding: 0, width: '45vw'}}>
