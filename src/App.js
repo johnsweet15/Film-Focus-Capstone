@@ -19,6 +19,7 @@ class App extends Component {
     this.setState({movie: movie}, console.log('app state movie: ' + this.state.movie));
   }
 
+  // THIS IS A TEST
   render() {
     return (
       <div>
