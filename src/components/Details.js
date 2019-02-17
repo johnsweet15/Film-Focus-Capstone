@@ -136,6 +136,12 @@ class Details extends Component {
                 <p style={{color: 'white', fontSize: '3vh'}}>{movie.title + ' (' + releaseDate.substring(0,4) + ')'}</p>
               }
               <p style={{color: 'white', fontSize: '2vh'}}>{movie.overview}</p>
+              
+              <div id="youtube">
+              
+              {/* Youtube video goes here */}
+              
+              </div>
               <div style={{width: '100%', padding: 5}}>
                 <p style={{color: 'white', fontSize: '3vh'}}>Cast</p>
                 <div style={{margin: 0, padding: 0, width: '45vw'}}>
