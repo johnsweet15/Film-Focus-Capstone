@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import Slider from 'react-slick';
-import Videos from "./Videos"
+import Videos from "./Videos";
 // import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
 const TMDBKey = 'c794333156e1c095f41f92e128c002df';
@@ -55,12 +55,22 @@ class Details extends Component {
 
   getRatings(movie) {
     // get ratings
-    axios.get('http://www.omdbapi.com/?i=' + movie.imdb_id + '&apikey=' + OMDBKey)
-    .then((response) => {
-      let ratings = response.data.Ratings;
+    if(movie.imdb_id === undefined) {
+      axios.get('http://www.omdbapi.com/?t=' + movie.name + '&apikey=' + OMDBKey)
+      .then((response) => {
+        let ratings = response.data.Ratings;
 
-      this.setState({ratings: ratings});
-    })
+        this.setState({ratings: ratings});
+      })
+    }
+    else {
+      axios.get('http://www.omdbapi.com/?i=' + movie.imdb_id + '&apikey=' + OMDBKey)
+      .then((response) => {
+        let ratings = response.data.Ratings;
+  
+        this.setState({ratings: ratings});
+      })
+    } 
   }
 
   render() {
@@ -122,9 +132,15 @@ class Details extends Component {
 
     // list of ratings for render
     let ratingsList = this.state.ratings.map(rating => {
+      let icon = '';
+      if(rating.Source === 'Internet Movie Database') {
+        rating.Source = 'IMDB';
+        icon = require('../icons/imdbStar.png');
+      }
       return (
-        <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
-          <p style={{color: 'white', justifyContent: 'center'}}>{rating.Source + ': ' + rating.Value}</p>
+        <div style={{display: 'flex', justifyContent: 'center', paddingLeft: 20, alignContent: 'center', flexDirection: 'column'}}>
+          <img style={{width:'1.5vw', height: '1.5vw', display: 'block', margin: '0 auto'}} src={icon} />
+          <p style={{color: 'white', display: 'flex', justifyContent: 'center', fontSize: '130%'}}>{rating.Value}</p>
         </div>
       )
     })
@@ -163,7 +179,7 @@ class Details extends Component {
                   <p style={{color: 'white', fontSize: '3vh'}}>{movie.title + ' (' + releaseDate.substring(0,4) + ')'}</p>
                 }
                 {ratings.length > 0 ?
-                  <div style={{padding: 20, display: 'flex', flexDirection: 'row'}}>{ratingsList}</div> :
+                  <div style={{display: 'flex', flexDirection: 'row'}}>{ratingsList}</div> :
                   <p style={{color: 'white', padding: 20}}>No ratings yet</p>
                 }
               </div>
@@ -172,7 +188,7 @@ class Details extends Component {
               
               <div id="youtube">
 
-              <Videos />
+              {/* <Videos /> */}
               
               </div>
               <div style={{width: '100%', padding: 5}}>
@@ -188,6 +204,12 @@ class Details extends Component {
             </div>
           </div>
         </div>
+        <div style={{width: '70%', margin: '0 auto', display: 'flex', flexDirection: 'column'}}>
+            <p style={{color: 'white', fontSize: '3vh'}}>Reviews</p>
+            <div>
+              <Videos />
+            </div>
+          </div>
       </div>
       
     );

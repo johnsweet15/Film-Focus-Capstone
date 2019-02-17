@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import { Route, Link } from 'react-router-dom';
 import axios from 'axios';
 // import Details from './Details'
 // import constants from './../constants'
@@ -96,12 +96,10 @@ class Movies extends Component {
 
         return (
           <div style={{display: 'inline-block', float: 'left'}}>
-            <Router>
-              <Link to={'/details/' + movieId + '/' + name} style={{textDecoration: 'none'}} onClick={this.props.setMovie.bind(this, movie)}>
-                <img key={poster} src={poster} style={{width: '27vh', height: '41vh', padding: 40}} alt="" />
-                <p style={{color: 'white', fontSize: '1.5vh', paddingLeft: 40, paddingRight: 40, maxWidth: '27vh'}}>{name}</p>
-              </Link>
-            </Router>
+            <Link to={'/details/' + movieId + '/' + name} style={{textDecoration: 'none'}} onClick={this.props.setMovie.bind(this, movie)}>
+              <img key={poster} src={poster} style={{width: '27vh', height: '41vh', padding: 40}} alt="" />
+              <p style={{color: 'white', fontSize: '1.5vh', paddingLeft: 40, paddingRight: 40, maxWidth: '27vh'}}>{name}</p>
+            </Link>
           </div>
           )
       });
@@ -115,15 +113,13 @@ class Movies extends Component {
         console.log(movie);
         return (
           <div style={{display: 'inline-block', float: 'left'}}>
-            <Router>
-              <div>
-                <Link to={'/details/' + movieId + '/' + movieTitle} style={{textDecoration: 'none'}} onClick={this.props.setMovie.bind(this, movie)}>
-                  <img key={movieId} src={poster} style={{width: '27vh', height: '41vh', padding: 40}} alt="" />
-                  <p style={{color: 'white', fontSize: '1.5vh', padding: 10}}>{movie.title}</p>
-                </Link>
-                <Route path={'/details/' + movieId + '/' + movieTitle} />
-              </div>
-            </Router>
+            <div>
+              <Link to={'/details/' + movieId + '/' + movieTitle} style={{textDecoration: 'none'}} onClick={this.props.setMovie.bind(this, movie)}>
+                <img key={movieId} src={poster} style={{width: '27vh', height: '41vh', padding: 40}} alt="" />
+                <p style={{color: 'white', fontSize: '1.5vh', padding: 10}}>{movie.title}</p>
+              </Link>
+              {/* <Route path={'/details/' + movieId + '/' + movieTitle} /> */}
+            </div>
           </div>
         )
       });
