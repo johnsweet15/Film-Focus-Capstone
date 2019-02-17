@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import Slider from 'react-slick';
+import Videos from "./Videos"
 // import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
 const TMDBKey = 'c794333156e1c095f41f92e128c002df';
@@ -170,8 +171,8 @@ class Details extends Component {
               <p style={{color: 'white', fontSize: '2vh'}}>{movie.overview}</p>
               
               <div id="youtube">
-              
-              {/* Youtube video goes here */}
+
+              <Videos />
               
               </div>
               <div style={{width: '100%', padding: 5}}>
