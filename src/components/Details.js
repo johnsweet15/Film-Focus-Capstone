@@ -72,9 +72,6 @@ class Details extends Component {
       console.log('returned null');
       return null;
     }
-    // else {
-    //   this.getRatings(movie);
-    // }
 
     // make sure there is a cast
     if(cast.length === 0 || ratings === undefined ) {
