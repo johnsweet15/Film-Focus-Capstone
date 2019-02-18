@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import axios from 'axios';
+import { Navbar, Nav, Form, Button, FormControl } from 'react-bootstrap'
+
 // import Details from './Details'
 // import constants from './../constants'
 
@@ -15,8 +17,7 @@ class Movies extends Component {
     this.state = {
       movies: [],
       text: '',
-      featuredMovies: [],
-      search: this.props.search
+      featuredMovies: []
     };
   }
 
@@ -37,7 +38,6 @@ class Movies extends Component {
 
   getMovies(searchText) {
     // get page 1
-    searchText = this.state.search;
     axios.get('https://api.themoviedb.org/3/search/multi?&api_key=' + TMDBKey + '&language=en-US&query=' + searchText + '&page=1&include_adult=false')
       .then((response) => {
         let page1 = response.data.results;
@@ -67,6 +67,7 @@ class Movies extends Component {
     // dont refresh
     event.preventDefault();
 
+    console.log(this.state.text);
     this.getMovies(this.state.text);
   }
 
@@ -133,9 +134,21 @@ class Movies extends Component {
     
     return (
       <div className="App">
+        <Navbar bg="dark" variant="dark">
+          <Navbar.Brand href="#home">Film Focus</Navbar.Brand>
+          <Nav className="mr-auto">
+            <Nav.Link href="#home">Home</Nav.Link>
+            <Nav.Link href="#features">About</Nav.Link>
+            <Nav.Link href="#pricing">Discussions</Nav.Link>
+          </Nav>
+          <Form inline onSubmit={(event) => (this.handleSubmit(event))}>
+            <FormControl type="text" placeholder="Search" className="mr-sm-2" onChange={(text) => this.setState({text: text.target.value})} />
+            <Button variant="outline-info">Search</Button>
+          </Form>
+        </Navbar>
         <header className="App-header">
           <h1 style={styles.header}>This site is trash lmao</h1>
-          <form onSubmit={(event) => this.handleSubmit(event)}>
+          {/* <form onSubmit={(event) => this.handleSubmit(event)}>
             <label>
               <input
                 id='movieInput'
@@ -144,7 +157,7 @@ class Movies extends Component {
                 onChange={(text) => this.setState({text: text.target.value})}
                 style={styles.form} />
             </label>
-          </form>
+          </form> */}
           <br></br>
           <br></br>
           {this.state.movies.length > 0 &&
@@ -174,7 +187,8 @@ const styles = {
     
   },
   header: {
-    color: '#4286f4'
+    color: '#4286f4',
+    margin: 30
   }
 }
 

@@ -18,8 +18,8 @@ class Navigation extends React.Component {
           <Nav.Link href="#features">Features</Nav.Link>
           <Nav.Link href="#pricing">Pricing</Nav.Link>
         </Nav>
-        <Form inline onClick={() => this.props.setSearch.bind(this, this.state.search)}>
-          <FormControl type="text" placeholder="Search" className="mr-sm-2" onChange={(search) => this.setState({search: search.target.value})} />
+        <Form inline>
+          {/* <FormControl type="text" placeholder="Search" className="mr-sm-2" onChange={(search) => this.setState({search: search.target.value})} /> */}
           <Button variant="outline-info">Search</Button>
         </Form>
       </Navbar>

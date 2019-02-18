@@ -34,7 +34,7 @@ class App extends Component {
   render() {
     return (
       <div>
-        <Navigation setSearch={this.state.search}/>
+        {/* <Navigation setSearch={this.state.search}/> */}
         { 
           // if no movie is selected, then null -> shows featured or search list
           // else, then not null -> shows details for movie selected (gets movie info from app.js state which gets from setMovie which gets from movies.js lines 100 or 120)

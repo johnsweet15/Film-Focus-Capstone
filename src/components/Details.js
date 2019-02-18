@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import Slider from 'react-slick';
 import Videos from "./Videos";
-import { ToggleButton, ToggleButtonGroup, ButtonToolbar } from 'react-bootstrap'
+import { ToggleButton, ToggleButtonGroup, ButtonToolbar, Navbar, Nav, Form, Button, FormControl } from 'react-bootstrap'
 import {OMDBKey, TMDBKey, YouTubeKey} from '../config.js'
+
 
 var IMDBIcon = require('../icons/imdbStar.png');
 var RTIcon = require('../icons/rt2.png');
