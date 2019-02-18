@@ -14,11 +14,11 @@ class App extends Component {
     movie: null,
   }
 
-  // componentDidUpdate() {
-  //   window.onpopstate = (e) => {
-  //     this.setState({movie: null});
-  //   }
-  // }
+  componentDidUpdate() {
+    window.onpopstate = (e) => {
+      this.setState({movie: null});
+    }
+  }
 
   // get movie from movies.js and set it to app state to pass to details
   setMovie = (movie) => {
