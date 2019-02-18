@@ -3,14 +3,12 @@ import axios from 'axios';
 import Slider from 'react-slick';
 import Videos from "./Videos";
 import { ToggleButton, ToggleButtonGroup, ButtonToolbar } from 'react-bootstrap'
+import {OMDBKey, TMDBKey, YouTubeKey} from '../config.js'
 
 var IMDBIcon = require('../icons/imdbStar.png');
-var RTIcon = require('../icons/rt2.png')
+var RTIcon = require('../icons/rt2.png');
 // import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
-const TMDBKey = 'c794333156e1c095f41f92e128c002df';
-const OMDBKey = 'a6793cf9';
-const YouTubeKey = 'AIzaSyAgBnpRVJaBeWu2AQmYpvzNxTaBp8_NguM';
 
 
 class Details extends Component {
