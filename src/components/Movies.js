@@ -101,8 +101,8 @@ class Movies extends Component {
           <div style={{display: 'inline-block', float: 'left'}}>
             <Router>
               <Link to={'/details/' + movieId + '/' + name} style={{textDecoration: 'none'}} onClick={this.props.setMovie.bind(this, movie)}>
-                <img key={poster} src={poster} style={{width: '27vh', height: '41vh', padding: 40}} alt="" />
-                <p style={{color: 'white', fontSize: '1.5vh', paddingLeft: 40, paddingRight: 40, maxWidth: '27vh'}}>{name}</p>
+                <img key={poster} src={poster} style={{height: 600, padding: 40}} alt="" />
+                <p style={{color: 'white', fontSize: '1.5vh', padding: 10}}>{name}</p>
               </Link>
             </Router>
           </div>
@@ -121,7 +121,7 @@ class Movies extends Component {
             <Router>
               <div>
                 <Link to={'/details/' + movieId + '/' + movieTitle} style={{textDecoration: 'none'}} onClick={this.props.setMovie.bind(this, movie)}>
-                  <img key={movieId} src={poster} style={{width: '27vh', height: '41vh', padding: 40}} alt="" />
+                  <img key={movieId} src={poster} style={{height: 600, padding: 40}} alt="" />
                   <p style={{color: 'white', fontSize: '1.5vh', padding: 10}}>{movie.title}</p>
                 </Link>
                 <Route path={'/details/' + movieId + '/' + movieTitle} />
@@ -143,7 +143,7 @@ class Movies extends Component {
           </Nav>
           <Form inline onSubmit={(event) => (this.handleSubmit(event))}>
             <FormControl type="text" placeholder="Search" className="mr-sm-2" onChange={(text) => this.setState({text: text.target.value})} />
-            <Button variant="outline-info">Search</Button>
+            <Button variant="outline-info" onClick={(event) => (this.handleSubmit(event))}>Search</Button>
           </Form>
         </Navbar>
         <header className="App-header">
