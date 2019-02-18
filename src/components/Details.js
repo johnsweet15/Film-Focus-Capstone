@@ -2,9 +2,6 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import Slider from 'react-slick';
 import Videos from "./Videos";
-
-var IMDBIcon = require('../icons/imdbStar.png');
-var RTIcon = require('../icons/rt2.png')
 // import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
 const TMDBKey = 'c794333156e1c095f41f92e128c002df';
