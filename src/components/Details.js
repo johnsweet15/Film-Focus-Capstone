@@ -113,9 +113,6 @@ class Details extends Component {
       return null;
     }
 
-    console.log('cast: ' + cast.length);
-
-    console.log('details movie: ' + this.state.movie.in_production);
     let releaseDate = '';
     let finishDate = '';
 
@@ -268,20 +265,19 @@ class Details extends Component {
               
               <p style={{color: 'white', fontSize: '2vh'}}>{movie.overview}</p>
 
-              {/* Conditional rendering for Cast/Reviews
-                REPLACE WITH BETTER LOOKING BUTTONS EVENTUALLY */}
+              {/* Conditional rendering for Cast/Reviews */}
 
               <ButtonToolbar>
-                  <ToggleButtonGroup type="radio" name="options" defaultValue={1}>
-                    <ToggleButton value={1} variant="secondary" onClick={this.clickCast}>Cast</ToggleButton>
-                    <ToggleButton value={2} variant="secondary" onClick={this.clickReviews}>Reviews</ToggleButton>
-                  </ToggleButtonGroup>
-                </ButtonToolbar>
+                <ToggleButtonGroup type="radio" name="options" defaultValue={1}>
+                  <ToggleButton value={1} variant="secondary" onClick={this.clickCast}>Cast</ToggleButton>
+                  <ToggleButton value={2} variant="secondary" onClick={this.clickReviews}>Reviews</ToggleButton>
+                </ToggleButtonGroup>
+              </ButtonToolbar>
 
               {this.state.showReviews && 
                 <div style={{width: '100%', padding: 5}}>
                 <p style={{color: 'white', fontSize: '3vh'}}>Reviews</p>
-                <div style={{margin: 0, padding: 0, width: '45vw'}}>
+                <div style={{margin: 0, padding: 0, width: '45vw', height: '60vh'}}>
                   {resultList.length > 0 &&
                     <Slider {...resultSettings}>
                       {resultList}
@@ -293,7 +289,7 @@ class Details extends Component {
               {!this.state.showReviews &&
                 <div style={{width: '100%', padding: 5}}>
                   <p style={{color: 'white', fontSize: '3vh'}}>Cast</p>
-                  <div style={{margin: 0, padding: 0, width: '45vw'}}>
+                  <div style={{margin: 0, padding: 0, width: '45vw', height: '60vh'}}>
                     {cast.length > 0 && this.props.movie.media_type !== 'person' &&
                       <Slider {...castSettings}>
                         {castList}
@@ -306,10 +302,10 @@ class Details extends Component {
           </div>
         </div>
         <div style={{width: '70%', margin: '0 auto', display: 'flex', flexDirection: 'column'}}>
-            <p style={{color: 'white', fontSize: '3vh'}}>Reviews</p>
-            <div>
+            {/* <p style={{color: 'white', fontSize: '3vh'}}>Reviews</p> */}
+            {/* <div>
               <Videos />
-            </div>
+            </div> */}
           </div>
       </div>
       
