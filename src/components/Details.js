@@ -60,7 +60,14 @@ class Details extends Component {
     })
 
     //get YouTube search results
-    axios.get('https://www.googleapis.com/youtube/v3/search?q='+ movie.title + ' movie review&key=' + YouTubeKey + '&maxResults=5&part=snippet')
+    let title = '';
+    if(this.props.movie.media_type === 'movie') {
+      title = this.state.movie.title;
+    }
+    else {
+      title = this.state.movie.name
+    }
+    axios.get('https://www.googleapis.com/youtube/v3/search?q='+ title + ' ' + this.props.movie.media_type + 'review&key=' + YouTubeKey + '&maxResults=5&part=snippet')
     .then((response) => {
       let search = response.data.items;
 
@@ -217,7 +224,7 @@ class Details extends Component {
           <div style={{display: 'flex', justifyContent: 'center', paddingLeft: 20, alignContent: 'center', flexDirection: 'column'}}>
             {rating.Source === 'IMDB' &&
               <div>
-                <a href={'https://www.imdb.com/title/' + movie.imdb_id} target="_blank" style={{textDecoration: 'none'}}>
+                <a href={'https://www.imdb.com/title/' + movie.imdb_id} target="_blank" rel="noopener noreferrer" style={{textDecoration: 'none'}}>
                   <img alt='' style={{width:'1.5vw', height: '1.5vw', display: 'block', margin: '0 auto'}} src={require('../icons/imdbStar.png')} />
                   <p style={{color: 'white', display: 'flex', justifyContent: 'center', fontSize: '110%'}}>{'IMDb: ' + rating.Value}</p>
                 </a>
@@ -225,14 +232,14 @@ class Details extends Component {
             }
             {rating.Source === 'Rotten Tomatoes' &&
               <div>
-                <a href={'https://www.rottentomatoes.com/m/' + title.replace(':', '').split(' ').join('_')} target="_blank" style={{textDecoration: 'none'}}>
+                <a href={'https://www.rottentomatoes.com/m/' + title.replace(':', '').split(' ').join('_')} target="_blank" rel="noopener noreferrer" style={{textDecoration: 'none'}}>
                   <img alt='' style={{width:'1.5vw', height: '1.5vw', display: 'block', margin: '0 auto'}} src={rtIcon} />
                   <p style={{color: 'white', display: 'flex', justifyContent: 'center', fontSize: '110%'}}>{'RT: ' + rating.Value}</p>
                 </a>
               </div>
             }
             {rating.Source === 'Metacritic' &&
-              <a href={'https://www.metacritic.com/search/all/' + title + '/results'} target="_blank" style={{textDecoration: 'none'}}>
+              <a href={'https://www.metacritic.com/search/all/' + title + '/results'} target="_blank" rel="noopener noreferrer" style={{textDecoration: 'none'}}>
                 <div style={{display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems:'center'}}>
                   <div style={{margin: 0, display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: color, color: 'white', width:'1.5vw', height: '1.5vw', flexDirection: 'column'}}>
                     <p style={{padding: 0, margin: 0, display: 'flex', justifyContent: 'center'}}>{rating.Value.substring(0, rating.Value.indexOf('/'))}</p>
@@ -249,6 +256,9 @@ class Details extends Component {
     }
 
     else {
+      // sort by popularity
+      this.state.cast.sort((a, b) => b.popularity - a.popularity);
+
       creditsList = this.state.cast.map((credit) => {
         let poster = 'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + credit.poster_path;
         return (
