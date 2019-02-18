@@ -16,6 +16,7 @@ class Movies extends Component {
       movies: [],
       text: '',
       featuredMovies: [],
+      search: this.props.search
     };
   }
 
@@ -36,6 +37,7 @@ class Movies extends Component {
 
   getMovies(searchText) {
     // get page 1
+    searchText = this.state.search;
     axios.get('https://api.themoviedb.org/3/search/multi?&api_key=' + TMDBKey + '&language=en-US&query=' + searchText + '&page=1&include_adult=false')
       .then((response) => {
         let page1 = response.data.results;
