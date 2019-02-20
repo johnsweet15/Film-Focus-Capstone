@@ -133,7 +133,11 @@ class Details extends Component {
     this.setState({showReviews: false});
   }
   clickReviews() {
-    this.getReviews(this.props.movie);
+    //if the search results are empty, call youtube api
+    {this.state.searchResults.length === 0 &&
+      this.getReviews(this.props.movie);
+      console.log('getting reviews for the first time');
+    }
     this.setState({showReviews: true});
   }
 
@@ -375,8 +379,8 @@ class Details extends Component {
 
                 {this.state.showReviews && 
                   <div style={{width: '100%', padding: 5}}>
-                  <p style={{color: 'white', fontSize: '3vh'}}>Reviews</p>
-                  <div style={{margin: 0, padding: 0, width: '45vw', height: '60vh'}}>
+                  
+                  <div style={{margin: 0, padding: 10, width: '45vw', height: '55vh'}}>
                     {resultList.length > 0 &&
                       <Slider {...resultSettings}>
                         {resultList}
@@ -387,8 +391,8 @@ class Details extends Component {
                 }
                 {!this.state.showReviews &&
                   <div style={{width: '100%', padding: 5}}>
-                    <p style={{color: 'white', fontSize: '3vh'}}>Cast</p>
-                    <div style={{margin: 0, padding: 0, width: '45vw', height: '60vh'}}>
+                    
+                    <div style={{margin: 0, padding: 10, width: '45vw', height: '60vh'}}>
                       {cast.length > 0 && this.props.movie.media_type !== 'person' &&
                         <Slider {...castSettings}>
                           {castList}
