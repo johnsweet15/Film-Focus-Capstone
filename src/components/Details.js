@@ -60,19 +60,19 @@ class Details extends Component {
     })
 
     //get YouTube search results
-    let title = '';
-    if(this.props.movie.media_type === 'movie') {
-      title = this.state.movie.title;
-    }
-    else {
-      title = this.state.movie.name
-    }
-    axios.get('https://www.googleapis.com/youtube/v3/search?q='+ title + ' ' + this.props.movie.media_type + 'review&key=' + YouTubeKey + '&maxResults=5&part=snippet')
-    .then((response) => {
-      let search = response.data.items;
+    // let title = '';
+    // if(this.props.movie.media_type === 'movie') {
+    //   title = this.state.movie.title;
+    // }
+    // else {
+    //   title = this.state.movie.name
+    // }
+    // axios.get('https://www.googleapis.com/youtube/v3/search?q='+ title + ' ' + this.props.movie.media_type + 'review&key=' + YouTubeKey + '&maxResults=5&part=snippet')
+    // .then((response) => {
+    //   let search = response.data.items;
 
-      this.setState({searchResults: search});
-    })
+    //   this.setState({searchResults: search});
+    // })
 
     // get trailer id
     axios.get('https://api.themoviedb.org/3/' + movie.media_type + '/' + movie.id + '/videos?api_key=' + TMDBKey)
@@ -103,8 +103,23 @@ class Details extends Component {
     } 
   }
 
+  //get YouTube search results
+  getReviews(movie) {
+    let title = '';
+    if(movie.media_type === 'movie') {
+      title = movie.title;
+    }
+    else {
+      title = movie.name
+    }
+    axios.get('https://www.googleapis.com/youtube/v3/search?q='+ title + ' ' + movie.media_type + 'review&key=' + YouTubeKey + '&maxResults=5&part=snippet')
+    .then((response) => {
+      let search = response.data.items;
 
-  
+      this.setState({searchResults: search});
+    })
+  }
+
   // getDetailsByID(id) {
   //   axios.get('https://api.themoviedb.org/3/person/' + id + '?api_key=' + TMDBKey)
   //   .then((response) => {
@@ -118,6 +133,7 @@ class Details extends Component {
     this.setState({showReviews: false});
   }
   clickReviews() {
+    this.getReviews(this.props.movie);
     this.setState({showReviews: true});
   }
 
