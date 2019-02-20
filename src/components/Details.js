@@ -103,6 +103,8 @@ class Details extends Component {
     } 
   }
 
+
+  
   // getDetailsByID(id) {
   //   axios.get('https://api.themoviedb.org/3/person/' + id + '?api_key=' + TMDBKey)
   //   .then((response) => {
@@ -313,8 +315,8 @@ class Details extends Component {
 
             <div style={{display: 'flex', flex: 0.33, paddingRight: 40}}>
               {this.props.movie.media_type === 'person' ?
-                <img style={{maxHeight: 900}} alt='' src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + movie.profile_path} /> :
-                <img style={{maxHeight: 900}} alt='' src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + movie.poster_path} />
+                <img style={{maxHeight: 700}} alt='' src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + movie.profile_path} /> :
+                <img style={{maxHeight: 700}} alt='' src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + movie.poster_path} />
               }
             </div>
 
