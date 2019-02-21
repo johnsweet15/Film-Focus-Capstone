@@ -85,6 +85,7 @@ class Details extends Component {
 
   getRatings(movie) {
     // get ratings
+    // CURRENTLY BREAKS IF THE MOVIE DOESN'T HAVE RT OR METACRITIC RATINGS
     if(movie.imdb_id === undefined) {
       axios.get('http://www.omdbapi.com/?t=' + movie.name + '&apikey=' + OMDBKey)
       .then((response) => {
