@@ -311,7 +311,8 @@ class Details extends Component {
       speed: 500,
       slidesToShow: 1,
       slidesToScroll: 1,
-      adaptiveHeight: true
+      adaptiveHeight: true,
+      centerMode: true,
     };
 
     var castSettings = {
