@@ -99,14 +99,12 @@ class Movies extends Component {
         console.log('media: ' + movie.media_type)
 
         return (
-          <div className="flexParent">
             <Router>
               <Link to={'/details/' + movieId + '/' + name} style={{textDecoration: 'none'}} onClick={this.props.setMovie.bind(this, movie)}>
                 <img key={poster} src={poster} className="flexChild" alt="" />
                 <p className="flexChild">{name}</p>
               </Link>
             </Router>
-          </div>
           )
       });
     }
@@ -118,7 +116,6 @@ class Movies extends Component {
         let movieTitle = movie.title;
         console.log(movie);
         return (
-          <div className="flexParent">
             <Router>
               <div>
                 <Link to={'/details/' + movieId + '/' + movieTitle} style={{textDecoration: 'none'}} onClick={this.props.setMovie.bind(this, movie)}>
@@ -128,7 +125,6 @@ class Movies extends Component {
                 <Route path={'/details/' + movieId + '/' + movieTitle} />
               </div>
             </Router>
-          </div>
         )
       });
     }
@@ -159,12 +155,12 @@ class Movies extends Component {
             </label>
           </form> */}
           {this.state.movies.length > 0 &&
-            <div style={{padding: 10, display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center'}}>
+            <div className="flexParent">
               {moviePosters}
             </div>
           }
           {this.state.movies.length === 0 && this.state.featuredMovies.length > 0 &&
-            <div style={{padding: 10, display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center'}}>
+            <div className="flexParent">
               {moviePosters}
             </div>
           }
