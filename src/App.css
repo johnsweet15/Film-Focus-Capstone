@@ -33,3 +33,33 @@ body {
     transform: rotate(360deg);
   }
 }
+
+.form {
+  font-size: calc(2px + 1.5vmin);
+  background-color: #393f4c;
+  border-style: none;
+  border-radius: 5px;
+  padding: 10px;
+  color: #4286f4;
+  
+}
+.header {
+  color: #4286f4;
+  margin: 30px;
+}
+
+.flexParent {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  font-size: 1.2em;
+  justify-content: space-around;
+}
+.flexChild {
+  width: 300px;
+  height: 400px;
+  padding: 40px;
+  margin-top: 10px;
+  text-align: center;
+  line-height: 150px;
+}

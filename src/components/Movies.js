@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import axios from 'axios';
+import styles from '../App.css';
 import { Navbar, Nav, Form, Button, FormControl } from 'react-bootstrap'
 
 // import Details from './Details'
@@ -98,10 +99,10 @@ class Movies extends Component {
         console.log('media: ' + movie.media_type)
 
         return (
-          <div style={{display: 'inline-block', float: 'left'}}>
+          <div className="flexParent">
             <Router>
               <Link to={'/details/' + movieId + '/' + name} style={{textDecoration: 'none'}} onClick={this.props.setMovie.bind(this, movie)}>
-                <img key={poster} src={poster} style={{height: 600, padding: 40}} alt="" />
+                <img key={poster} src={poster} className="flexChild" alt="" />
                 <p style={{color: 'white', fontSize: '1.5vh', padding: 10}}>{name}</p>
               </Link>
             </Router>
@@ -117,11 +118,11 @@ class Movies extends Component {
         let movieTitle = movie.title;
         console.log(movie);
         return (
-          <div style={{display: 'inline-block', float: 'left'}}>
+          <div className="flexParent">
             <Router>
               <div>
                 <Link to={'/details/' + movieId + '/' + movieTitle} style={{textDecoration: 'none'}} onClick={this.props.setMovie.bind(this, movie)}>
-                  <img key={movieId} src={poster} style={{height: 600, padding: 40}} alt="" />
+                  <img key={movieId} src={poster} className="flexChild" alt="poster" />
                   <p style={{color: 'white', fontSize: '1.5vh', padding: 10}}>{movie.title}</p>
                 </Link>
                 <Route path={'/details/' + movieId + '/' + movieTitle} />
@@ -147,7 +148,7 @@ class Movies extends Component {
           </Form>
         </Navbar>
         <header className="App-header">
-          <h1 style={styles.header}>This site is trash lmao</h1>
+          <h1 className="header">This site is trash lmao</h1>
           {/* <form onSubmit={(event) => this.handleSubmit(event)}>
             <label>
               <input
@@ -176,20 +177,21 @@ class Movies extends Component {
   }
 }
 
-const styles = {
-  form: {
-    fontSize: 'calc(2px + 1.5vmin)',
-    backgroundColor: '#393f4c',
-    borderStyle: 'none',
-    borderRadius: 5,
-    padding: 10,
-    color: '#4286f4',
+// Moved to external stylesheet
+// const styles = {
+//   form: {
+//     fontSize: 'calc(2px + 1.5vmin)',
+//     backgroundColor: '#393f4c',
+//     borderStyle: 'none',
+//     borderRadius: 5,
+//     padding: 10,
+//     color: '#4286f4',
     
-  },
-  header: {
-    color: '#4286f4',
-    margin: 30
-  }
-}
+//   },
+//   header: {
+//     color: '#4286f4',
+//     margin: 30
+//   }
+// }
 
 export default Movies;
