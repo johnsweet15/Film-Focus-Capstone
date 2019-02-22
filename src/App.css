@@ -45,21 +45,17 @@ body {
 }
 .header {
   color: #4286f4;
-  margin: 30px;
+  margin: 30px 30px 0px 30px;
 }
 
 .flexParent {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  font-size: 1.2em;
   justify-content: space-around;
 }
 .flexChild {
   width: 300px;
   height: 400px;
   padding: 40px;
-  margin-top: 10px;
-  text-align: center;
-  line-height: 150px;
 }
