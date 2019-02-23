@@ -102,7 +102,7 @@ class Movies extends Component {
             <Router>
               <Link to={'/details/' + movieId + '/' + name} style={{textDecoration: 'none'}} onClick={this.props.setMovie.bind(this, movie)}>
                 <img key={poster} src={poster} className="flexChild" alt="" />
-                <p className="flexChild">{name}</p>
+                <p style={{color: 'white', fontSize: '1.5vh', padding: 10, maxWidth: '300px', textDecoration: 'none'}}>{name}</p>
               </Link>
             </Router>
           )
@@ -120,7 +120,7 @@ class Movies extends Component {
               <div>
                 <Link to={'/details/' + movieId + '/' + movieTitle} style={{textDecoration: 'none'}} onClick={this.props.setMovie.bind(this, movie)}>
                   <img key={movieId} src={poster} className="flexChild" alt="poster" />
-                  <p style={{color: 'white', fontSize: '1.5vh', padding: 10, maxWidth: '300px'}}>{movie.title}</p>
+                  <p style={{color: 'white', fontSize: '1.5vh', padding: 10, maxWidth: '300px', textDecoration: 'none'}}>{movie.title}</p>
                 </Link>
                 <Route path={'/details/' + movieId + '/' + movieTitle} />
               </div>
