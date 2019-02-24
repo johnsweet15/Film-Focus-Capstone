@@ -102,7 +102,7 @@ class Movies extends Component {
             <Router>
               <Link to={'/details/' + movieId + '/' + name} style={{textDecoration: 'none'}} onClick={this.props.setMovie.bind(this, movie)}>
                 <img key={poster} src={poster} className="flexChild" alt="" />
-                <p style={{color: 'white', fontSize: '1.5vh', padding: 10}}>{name}</p>
+                <p style={{color: 'white', fontSize: '1.5vh', padding: 10, maxWidth: '300px', textDecoration: 'none'}}>{name}</p>
               </Link>
             </Router>
           )
@@ -120,7 +120,7 @@ class Movies extends Component {
               <div>
                 <Link to={'/details/' + movieId + '/' + movieTitle} style={{textDecoration: 'none'}} onClick={this.props.setMovie.bind(this, movie)}>
                   <img key={movieId} src={poster} className="flexChild" alt="poster" />
-                  <p style={{color: 'white', fontSize: '1.5vh', padding: 10}}>{movie.title}</p>
+                  <p style={{color: 'white', fontSize: '1.5vh', padding: 10, maxWidth: '300px', textDecoration: 'none'}}>{movie.title}</p>
                 </Link>
                 <Route path={'/details/' + movieId + '/' + movieTitle} />
               </div>
@@ -143,8 +143,7 @@ class Movies extends Component {
             <Button variant="outline-info" onClick={(event) => (this.handleSubmit(event))}>Search</Button>
           </Form>
         </Navbar>
-        <header className="App-header">
-          <h1 className="header">This site is trash lmao</h1>
+        <h1 className="header">This site is trash lmao</h1>
           {/* <form onSubmit={(event) => this.handleSubmit(event)}>
             <label>
               <input
@@ -155,8 +154,6 @@ class Movies extends Component {
                 style={styles.form} />
             </label>
           </form> */}
-          <br></br>
-          <br></br>
           {this.state.movies.length > 0 &&
             <div className="flexParent">
               {moviePosters}
@@ -167,7 +164,6 @@ class Movies extends Component {
               {moviePosters}
             </div>
           }
-        </header>
       </div>
     );
   }
