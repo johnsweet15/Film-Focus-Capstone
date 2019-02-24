@@ -52,10 +52,21 @@ body {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: space-around;
+  justify-content: center;
+
 }
 .flexChild {
   width: 300px;
   height: 400px;
   padding: 40px;
+}
+
+.flexParagraph {
+  color: white;
+  font-size: 1.5vh; 
+
+  display: flex;
+  justify-content: center;
+  flex-shrink: 0;
+  flex-wrap: wrap;
 }
