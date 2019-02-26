@@ -382,6 +382,7 @@ class Details extends Component {
                 </div>
                 
 
+
                 {this.props.movie.media_type === 'movie' &&
                   <div style={{display: 'flex', flexDirection: 'row'}}>
                     <p style={{color: '#d3d3d3', paddingRight: 20}}>{months[parseInt(movie.release_date.substring(5,7)) - 1] + ' ' + movie.release_date.substring(8) + ', ' + movie.release_date.substring(0,4)}</p>
