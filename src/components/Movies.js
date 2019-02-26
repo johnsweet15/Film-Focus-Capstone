@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import { Route, Link } from 'react-router-dom';
 import axios from 'axios';
-import { Navbar, Nav, Form, Button, FormControl } from 'react-bootstrap'
+// import styles from '../App.css';
+import { Navbar, Nav, Form, Button, FormControl } from 'react-bootstrap';
+// import { LinkContainer } from 'react-router-bootstrap';
 
 // import Details from './Details'
 // import constants from './../constants'
@@ -98,14 +100,10 @@ class Movies extends Component {
         console.log('media: ' + movie.media_type)
 
         return (
-          <div style={{display: 'inline-block', float: 'left'}}>
-            <Router>
-              <Link to={'/details/' + movieId + '/' + name} style={{textDecoration: 'none'}} onClick={this.props.setMovie.bind(this, movie)}>
-                <img key={poster} src={poster} style={{height: 600, padding: 40}} alt="" />
-                <p style={{color: 'white', fontSize: '1.5vh', padding: 10}}>{name}</p>
-              </Link>
-            </Router>
-          </div>
+          <Link to={'/details/' + movieId + '/' + name.replace('%','percent')} style={{textDecoration: 'none'}} onClick={this.props.setMovie.bind(this, movie)}>
+            <img key={poster} src={poster} className="flexChild" alt="" />
+            <p style={{color: 'white', fontSize: '1.5vh', padding: 10, maxWidth: '300px', textDecoration: 'none'}}>{name}</p>
+          </Link>
           )
       });
     }
@@ -117,16 +115,12 @@ class Movies extends Component {
         let movieTitle = movie.title;
         console.log(movie);
         return (
-          <div style={{display: 'inline-block', float: 'left'}}>
-            <Router>
-              <div>
-                <Link to={'/details/' + movieId + '/' + movieTitle} style={{textDecoration: 'none'}} onClick={this.props.setMovie.bind(this, movie)}>
-                  <img key={movieId} src={poster} style={{height: 600, padding: 40}} alt="" />
-                  <p style={{color: 'white', fontSize: '1.5vh', padding: 10}}>{movie.title}</p>
-                </Link>
-                <Route path={'/details/' + movieId + '/' + movieTitle} />
-              </div>
-            </Router>
+          <div>
+            <Link to={'/details/' + movieId + '/' + movieTitle} style={{textDecoration: 'none'}} onClick={this.props.setMovie.bind(this, movie)}>
+              <img key={movieId} src={poster} className="flexChild" alt="poster" />
+              <p style={{color: 'white', fontSize: '1.5vh', padding: 10, maxWidth: '300px', textDecoration: 'none'}}>{movie.title}</p>
+            </Link>
+            <Route path={'/details/' + movieId + '/' + movieTitle} />
           </div>
         )
       });
@@ -143,11 +137,12 @@ class Movies extends Component {
           </Nav>
           <Form inline onSubmit={(event) => (this.handleSubmit(event))}>
             <FormControl type="text" placeholder="Search" className="mr-sm-2" onChange={(text) => this.setState({text: text.target.value})} />
-            <Button variant="outline-info" onClick={(event) => (this.handleSubmit(event))}>Search</Button>
+            <Button variant="outline-info" onClick={(event) => (this.handleSubmit(event))}>
+              <Link to={'/search=' + this.state.text.replace('%','percent')}>Search</Link>
+            </Button>
           </Form>
         </Navbar>
-        <header className="App-header">
-          <h1 style={styles.header}>This site is trash lmao</h1>
+        <h1 className="header">Film Focus</h1>
           {/* <form onSubmit={(event) => this.handleSubmit(event)}>
             <label>
               <input
@@ -158,38 +153,36 @@ class Movies extends Component {
                 style={styles.form} />
             </label>
           </form> */}
-          <br></br>
-          <br></br>
           {this.state.movies.length > 0 &&
-            <div style={{padding: 10, display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center'}}>
+            <div className="flexParent">
               {moviePosters}
             </div>
           }
           {this.state.movies.length === 0 && this.state.featuredMovies.length > 0 &&
-            <div style={{padding: 10, display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center'}}>
+            <div className="flexParent">
               {moviePosters}
             </div>
           }
-        </header>
       </div>
     );
   }
 }
 
-const styles = {
-  form: {
-    fontSize: 'calc(2px + 1.5vmin)',
-    backgroundColor: '#393f4c',
-    borderStyle: 'none',
-    borderRadius: 5,
-    padding: 10,
-    color: '#4286f4',
+// Moved to external stylesheet
+// const styles = {
+//   form: {
+//     fontSize: 'calc(2px + 1.5vmin)',
+//     backgroundColor: '#393f4c',
+//     borderStyle: 'none',
+//     borderRadius: 5,
+//     padding: 10,
+//     color: '#4286f4',
     
-  },
-  header: {
-    color: '#4286f4',
-    margin: 30
-  }
-}
+//   },
+//   header: {
+//     color: '#4286f4',
+//     margin: 30
+//   }
+// }
 
 export default Movies;

@@ -1,30 +1,54 @@
 import React, { Component } from 'react';
-// import { Route } from 'react-router-dom';
-// import axios from 'axios';
+import { Redirect, Route } from 'react-router-dom';
+import axios from 'axios';
 import './App.css';
-// import Navigation from './components/Navigation'
 import Movies from './components/Movies'
 import Details from './components/Details'
+import { TMDBKey } from './config';
 
 // const APIKey = 'a6793cf9';
-// const TMDBKey = 'c794333156e1c095f41f92e128c002df';
 
 class App extends Component {
 
-  state = {
-    movie: null,
-    search: ''
-  }
-
-  componentDidUpdate() {
-    window.onpopstate = (e) => {
-      this.setState({movie: null});
+  constructor(props) {
+    super(props);
+    this.state = {
+      movie: null,
+      search: '',
     }
   }
 
+  componentDidUpdate(prevState) {
+    window.onpopstate = () => {
+      this.setState({movie: null})
+    }
+  }
+
+
   // get movie from movies.js and set it to app state to pass to details
   setMovie = (movie) => {
-    this.setState({movie: movie}, console.log('app state movie: ' + this.state.movie));
+    this.setState({movie: movie});
+    console.log('app state movie: ' + this.state.movie)
+  }
+
+  changeToMovie = (id) => {
+    axios.get('https://api.themoviedb.org/3/credit/' + id + '?api_key=' + TMDBKey)
+    .then((response) => {
+      let newMovie = response.data.media;
+      newMovie.media_type = response.data.media_type;
+      this.setState({movie: newMovie});
+      console.log('changetomovie: ' + newMovie)
+    })
+  }
+
+  changeToActor = (id) => {
+    axios.get('https://api.themoviedb.org/3/person/' + id + '?api_key=' + TMDBKey)
+    .then((response) => {
+      let newActor = response.data;
+      newActor.media_type = 'person';
+      this.setState({movie: newActor});
+      console.log('changetoactor: ' + newActor)
+    })
   }
 
   setSearch = (search) => {
@@ -34,16 +58,28 @@ class App extends Component {
   render() {
     return (
       <div>
+        <Redirect to="/home" />
         {/* <Navigation setSearch={this.state.search}/> */}
         { 
           // if no movie is selected, then null -> shows featured or search list
           // else, then not null -> shows details for movie selected (gets movie info from app.js state which gets from setMovie which gets from movies.js lines 100 or 120)
-          this.state.movie === null ? <Movies setMovie={this.setMovie} search={this.state.search} /> : <Details movie={this.state.movie} />
+          // this.state.movie === null ? 
+          // <Movies setMovie={this.setMovie} search={this.state.search} /> : 
+          // <Details movie={this.state.movie} changeToMovie={this.changeToMovie} changeToActor={this.changeToActor}/>
+          <Route path='/' render={(props) => this.state.movie === null ?
+            <Movies {...props} setMovie={this.setMovie} search={this.state.search} /> :
+            <Details {...props} movie={this.state.movie} changeToMovie={this.changeToMovie} changeToActor={this.changeToActor} />
+        } />
+          // this.state.movie === null ?
+          // <Route path='/movies' render={(props) => <Movies {...props} setMovie={this.setMovie} search={this.state.search} />} /> :
+          // <Route path='/details' render={(props) => <Details {...props} movie={this.state.movie} changeToMovie={this.changeToMovie} changeToActor={this.changeToActor} />} />
         }
         
       </div>
     );
   }
 }
+
+
 
 export default App;
