@@ -380,6 +380,7 @@ class Details extends Component {
                     <p style={{color: 'white', padding: 20}}>No ratings yet</p>
                   }
                 </div>
+                
 
 
                 {this.props.movie.media_type === 'movie' &&
