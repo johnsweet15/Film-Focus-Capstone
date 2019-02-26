@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import axios from 'axios';
-import styles from '../App.css';
-import { Navbar, Nav, Form, Button, FormControl, NavItem } from 'react-bootstrap';
-import { LinkContainer } from 'react-router-bootstrap';
+// import styles from '../App.css';
+import { Navbar, Nav, Form, Button, FormControl } from 'react-bootstrap';
+// import { LinkContainer } from 'react-router-bootstrap';
 
 // import Details from './Details'
 // import constants from './../constants'
@@ -100,7 +100,7 @@ class Movies extends Component {
         console.log('media: ' + movie.media_type)
 
         return (
-          <Link to={'/details/' + movieId + '/' + name} style={{textDecoration: 'none'}} onClick={this.props.setMovie.bind(this, movie)}>
+          <Link to={'/details/' + movieId + '/' + name.replace('%','percent')} style={{textDecoration: 'none'}} onClick={this.props.setMovie.bind(this, movie)}>
             <img key={poster} src={poster} className="flexChild" alt="" />
             <p style={{color: 'white', fontSize: '1.5vh', padding: 10, maxWidth: '300px', textDecoration: 'none'}}>{name}</p>
           </Link>
@@ -138,7 +138,7 @@ class Movies extends Component {
           <Form inline onSubmit={(event) => (this.handleSubmit(event))}>
             <FormControl type="text" placeholder="Search" className="mr-sm-2" onChange={(text) => this.setState({text: text.target.value})} />
             <Button variant="outline-info" onClick={(event) => (this.handleSubmit(event))}>
-              <Link to={'/search=' + this.state.text}>Search</Link>
+              <Link to={'/search=' + this.state.text.replace('%','percent')}>Search</Link>
             </Button>
           </Form>
         </Navbar>

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Route } from 'react-router-dom';
 import axios from 'axios';
 import './App.css';
 import Movies from './components/Movies'
@@ -10,16 +10,20 @@ import { TMDBKey } from './config';
 
 class App extends Component {
 
-  state = {
-    movie: null,
-    search: ''
-  }
-
-  componentDidUpdate() {
-    window.onpopstate = (e) => {
-      this.setState({movie: null});
+  constructor(props) {
+    super(props);
+    this.state = {
+      movie: null,
+      search: '',
     }
   }
+
+  componentDidUpdate(prevState) {
+    window.onpopstate = () => {
+      this.setState({movie: null})
+    }
+  }
+
 
   // get movie from movies.js and set it to app state to pass to details
   setMovie = (movie) => {
@@ -59,14 +63,23 @@ class App extends Component {
         { 
           // if no movie is selected, then null -> shows featured or search list
           // else, then not null -> shows details for movie selected (gets movie info from app.js state which gets from setMovie which gets from movies.js lines 100 or 120)
-          this.state.movie === null ? 
-          <Movies setMovie={this.setMovie} search={this.state.search} /> : 
-          <Details movie={this.state.movie} changeToMovie={this.changeToMovie} changeToActor={this.changeToActor}/>
+          // this.state.movie === null ? 
+          // <Movies setMovie={this.setMovie} search={this.state.search} /> : 
+          // <Details movie={this.state.movie} changeToMovie={this.changeToMovie} changeToActor={this.changeToActor}/>
+          <Route path='/' render={(props) => this.state.movie === null ?
+            <Movies {...props} setMovie={this.setMovie} search={this.state.search} /> :
+            <Details {...props} movie={this.state.movie} changeToMovie={this.changeToMovie} changeToActor={this.changeToActor} />
+        } />
+          // this.state.movie === null ?
+          // <Route path='/movies' render={(props) => <Movies {...props} setMovie={this.setMovie} search={this.state.search} />} /> :
+          // <Route path='/details' render={(props) => <Details {...props} movie={this.state.movie} changeToMovie={this.changeToMovie} changeToActor={this.changeToActor} />} />
         }
         
       </div>
     );
   }
 }
+
+
 
 export default App;

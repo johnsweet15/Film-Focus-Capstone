@@ -5,6 +5,7 @@ import Videos from "./Videos";
 import { ToggleButton, ToggleButtonGroup, ButtonToolbar} from 'react-bootstrap'
 import {OMDBKey, TMDBKey, YouTubeKey} from '../config.js'
 import { Link } from 'react-router-dom';
+
 // import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
 const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -251,14 +252,14 @@ class Details extends Component {
         }
         
         let title = '';
-        let id = '';
+        // let id = '';
         if(this.props.movie.media_type === 'movie') {
           title = movie.title;
-          id = movie.imdb_id;
+          // id = movie.imdb_id;
         }
         else {
           title = movie.name;
-          id = movie.id;
+          // id = movie.id;
         }
         
         return (
@@ -302,13 +303,18 @@ class Details extends Component {
 
       creditsList = this.state.cast.map((credit) => {
         let poster = 'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + credit.poster_path;
+        var creditTitle = '';
+        if(credit.title !== undefined) {
+          creditTitle = credit.title.replace('%', ' Percent')
+        }
+        console.log(creditTitle)
         return (
-          <Link to={'/details/' + credit.id + '/' + credit.title} onClick={this.props.changeToMovie.bind(this, credit.credit_id)}>
-            <div style={{padding: 3}}>
+          <Link to={'/details/' + credit.id + '/' + creditTitle} onClick={this.props.changeToMovie.bind(this, credit.credit_id)}>
+            <div style={{padding: 3, paddingBottom: 50}}>
               {/* force height to 15vw for null posters */}
               <img style={{width: '10vw', height:'15vw', alignSelf: 'center', maxWidth: '10vw'}} src={poster} alt='' />
               <p style={{color: 'white', fontSize: '1.5vh', maxWidth: '10vw'}}>{credit.title}</p>
-              {/* <p style={{color: '#d3d3d3'}}>{actor.character}</p> */}
+              <p style={{color: '#d3d3d3'}}>{credit.character}</p>
             </div>
           </Link>
           
@@ -353,9 +359,9 @@ class Details extends Component {
           <h1 style={styles.header}>Details</h1>
         </div>
 
-        <div style={{display: 'flex', flexDirection: 'row'}}>
+        <div style={{display: 'flex', flexDirection: 'row', width: '70%'}}>
 
-          <div style={{width: '70%', margin: '0 auto', display: 'flex', flexDirection: 'row'}}>
+          <div style={{width: '70%', margin: 'auto', display: 'flex', flexDirection: 'row'}}>
 
             <div style={{display: 'flex', flex: 0.33, padding: 40}}>
               {this.props.movie.media_type === 'person' ?
@@ -389,8 +395,11 @@ class Details extends Component {
                   </div>
                 }
                 
+                {movie.overview.length > 300 ?
+                  <p style={{color: 'white', fontSize: '2vh'}}>{movie.overview.substring(0, 300) + '...'}</p> :
+                  <p style={{color: 'white', fontSize: '2vh'}}>{movie.overview}</p>
+                }
                 
-                <p style={{color: 'white', fontSize: '2vh'}}>{movie.overview}</p>
 
                 {/* Conditional rendering for Cast/Reviews */}
 
@@ -432,7 +441,11 @@ class Details extends Component {
                   <p style={{color: 'white', fontSize: '3vh'}}>{actor.name}</p>
                 </div>
 
-                <p style={{color: 'white', fontSize: '2vh'}}>{actor.biography}</p>
+                {/* <p style={{color: 'white', fontSize: '2vh'}}>{actor.biography}</p> */}
+                {actor.biography !== undefined && actor.biography.length > 300 ?
+                  <p style={{color: 'white', fontSize: '2vh'}}>{actor.biography.substring(0, 300) + '...'}</p> :
+                  <p style={{color: 'white', fontSize: '2vh'}}>{actor.biography}</p>
+                }
 
                 <div style={{width: '100%', padding: 5}}>
                   <p style={{color: 'white', fontSize: '3vh'}}>Known For</p>
