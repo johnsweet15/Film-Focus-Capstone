@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import { Route, Link } from 'react-router-dom';
 import axios from 'axios';
 // import styles from '../App.css';
 import { Navbar, Nav, Form, Button, FormControl } from 'react-bootstrap';

@@ -144,7 +144,7 @@ class Details extends Component {
   }
   clickReviews() {
     //if the search results are empty, call youtube api
-    {this.state.searchResults.length === 0 &&
+    if(this.state.searchResults.length === 0) {
       this.getReviews(this.props.movie);
       console.log('getting reviews for the first time');
     }
@@ -252,6 +252,7 @@ class Details extends Component {
         }
         
         let title = '';
+        // let year = ''
         // let id = '';
         if(this.props.movie.media_type === 'movie') {
           title = movie.title;
