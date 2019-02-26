@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import axios from 'axios';
 import styles from '../App.css';
-import { Navbar, Nav, Form, Button, FormControl } from 'react-bootstrap'
+import { Navbar, Nav, Form, Button, FormControl, NavItem } from 'react-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap';
 
 // import Details from './Details'
 // import constants from './../constants'
@@ -99,12 +100,10 @@ class Movies extends Component {
         console.log('media: ' + movie.media_type)
 
         return (
-            <Router>
-              <Link to={'/details/' + movieId + '/' + name} style={{textDecoration: 'none'}} onClick={this.props.setMovie.bind(this, movie)}>
-                <img key={poster} src={poster} className="flexChild" alt="" />
-                <p style={{color: 'white', fontSize: '1.5vh', padding: 10, maxWidth: '300px', textDecoration: 'none'}}>{name}</p>
-              </Link>
-            </Router>
+          <Link to={'/details/' + movieId + '/' + name} style={{textDecoration: 'none'}} onClick={this.props.setMovie.bind(this, movie)}>
+            <img key={poster} src={poster} className="flexChild" alt="" />
+            <p style={{color: 'white', fontSize: '1.5vh', padding: 10, maxWidth: '300px', textDecoration: 'none'}}>{name}</p>
+          </Link>
           )
       });
     }
@@ -116,15 +115,13 @@ class Movies extends Component {
         let movieTitle = movie.title;
         console.log(movie);
         return (
-            <Router>
-              <div>
-                <Link to={'/details/' + movieId + '/' + movieTitle} style={{textDecoration: 'none'}} onClick={this.props.setMovie.bind(this, movie)}>
-                  <img key={movieId} src={poster} className="flexChild" alt="poster" />
-                  <p style={{color: 'white', fontSize: '1.5vh', padding: 10, maxWidth: '300px', textDecoration: 'none'}}>{movie.title}</p>
-                </Link>
-                <Route path={'/details/' + movieId + '/' + movieTitle} />
-              </div>
-            </Router>
+          <div>
+            <Link to={'/details/' + movieId + '/' + movieTitle} style={{textDecoration: 'none'}} onClick={this.props.setMovie.bind(this, movie)}>
+              <img key={movieId} src={poster} className="flexChild" alt="poster" />
+              <p style={{color: 'white', fontSize: '1.5vh', padding: 10, maxWidth: '300px', textDecoration: 'none'}}>{movie.title}</p>
+            </Link>
+            <Route path={'/details/' + movieId + '/' + movieTitle} />
+          </div>
         )
       });
     }
@@ -140,10 +137,12 @@ class Movies extends Component {
           </Nav>
           <Form inline onSubmit={(event) => (this.handleSubmit(event))}>
             <FormControl type="text" placeholder="Search" className="mr-sm-2" onChange={(text) => this.setState({text: text.target.value})} />
-            <Button variant="outline-info" onClick={(event) => (this.handleSubmit(event))}>Search</Button>
+            <Button variant="outline-info" onClick={(event) => (this.handleSubmit(event))}>
+              <Link to={'/search=' + this.state.text}>Search</Link>
+            </Button>
           </Form>
         </Navbar>
-        <h1 className="header">This site is trash lmao</h1>
+        <h1 className="header">Film Focus</h1>
           {/* <form onSubmit={(event) => this.handleSubmit(event)}>
             <label>
               <input

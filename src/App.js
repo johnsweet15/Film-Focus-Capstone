@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-// import { Route } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import axios from 'axios';
 import './App.css';
-// import Navigation from './components/Navigation'
 import Movies from './components/Movies'
 import Details from './components/Details'
 import { TMDBKey } from './config';
@@ -55,6 +54,7 @@ class App extends Component {
   render() {
     return (
       <div>
+        <Redirect to="/home" />
         {/* <Navigation setSearch={this.state.search}/> */}
         { 
           // if no movie is selected, then null -> shows featured or search list

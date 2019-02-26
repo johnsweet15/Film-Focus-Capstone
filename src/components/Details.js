@@ -211,7 +211,7 @@ class Details extends Component {
           poster = 'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + actor.profile_path;
         }
         return (
-          <Link style={{textDecoration: 'none'}} to={'/'} onClick={this.props.changeToActor.bind(this, actor.id)} >
+          <Link style={{textDecoration: 'none'}} to={'/details/' + actor.id + '/' + actor.name} onClick={this.props.changeToActor.bind(this, actor.id)} >
             <div style={{padding: 3}}>
               {/* force height to 15vw for null posters */}
               <img style={{width: '10vw', height:'15vw', alignSelf: 'center'}} src={poster} alt='' />
@@ -303,7 +303,7 @@ class Details extends Component {
       creditsList = this.state.cast.map((credit) => {
         let poster = 'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + credit.poster_path;
         return (
-          <Link to={'/'} onClick={this.props.changeToMovie.bind(this, credit.credit_id)}>
+          <Link to={'/details/' + credit.id + '/' + credit.title} onClick={this.props.changeToMovie.bind(this, credit.credit_id)}>
             <div style={{padding: 3}}>
               {/* force height to 15vw for null posters */}
               <img style={{width: '10vw', height:'15vw', alignSelf: 'center', maxWidth: '10vw'}} src={poster} alt='' />
@@ -334,7 +334,7 @@ class Details extends Component {
       slidesToShow: 1,
       slidesToScroll: 1,
       adaptiveHeight: true,
-      // centerMode: true,
+      centerMode: true,
     };
 
     var castSettings = {
