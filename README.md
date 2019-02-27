@@ -4,7 +4,7 @@ Film Focus is a movie database designed to be fully functional without a clunky 
 
 ## Getting Started
 
-Clone the repo, run npm-install to install all dependencies.
+Clone the repo, run npm-install to install all dependencies.  The site is currently live at https://filmfocus.herokuapp.com
 
 ### Prerequisites
 
