@@ -142,7 +142,8 @@ class Movies extends Component {
             </Button>
           </Form>
         </Navbar>
-        <h1 className="header">Film Focus</h1>
+        <h1 className="header">Featured Movies</h1>
+        <br></br>
           {/* <form onSubmit={(event) => this.handleSubmit(event)}>
             <label>
               <input
