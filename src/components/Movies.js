@@ -126,10 +126,13 @@ class Movies extends Component {
           <div id="posterContent">
             <Link to={'/details/' + movieId + '/' + movieTitle} style={{textDecoration: 'none'}} onClick={this.props.setMovie.bind(this, movie)}>
               <img key={movieId} src={poster} className="flexChild" alt="poster" />
-              { movie.title.length > 20 && 
-                <p className="posterTitle">{movie.title.substring(0,14)}...</p> }
+              
+              {/* if the movie title is less than/greater that 14, break the text */}
+              { movie.title.length > 14 && 
+                <p className="posterTitle">{movie.title.substring(0,14)}...</p> 
+              }
 
-              { movie.title.length <=20 &&
+              { movie.title.length <=14 &&
                 <p className="posterTitle">{movie.title}</p>
               }
               
