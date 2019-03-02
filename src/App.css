@@ -41,25 +41,25 @@ body {
   border-radius: 5px;
   padding: 10px;
   color: #4286f4;
-  
 }
 .header {
   color: #4286f4;
   margin: 30px 30px 0px 30px;
   font-size: 4vh;
 }
-
+/* Contains all the posters and their tiles */
 .flexParent {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-
   justify-content: flex-start;
 }
+/* Posters */
 .flexChild {
-  width: 300px;
-  height: 400px;
-  padding: 40px;
+  width: 130px;
+  height: 195px;
+  /* Change back to 10 if stuff breaks */
+  padding: 0px;
 }
 
 .flexParagraph {
@@ -72,6 +72,22 @@ body {
   flex-wrap: wrap;
 }
 
-.pageTitle {
-  color: #4286F4;
+
+#wrapper {
+  padding-left: 20%;
+  padding-right: 10%;
+}
+/* The text under the posters */
+.posterTitle {
+  color: white;
+  font-size: 1.5vh;
+  padding: 10px;
+  max-width: 300px;
+  text-decoration: none;
+}
+/* image and text under it */
+#posterContent {
+  margin: 20px;
+  min-width: 130px;
+  width: 130px;
 }
