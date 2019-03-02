@@ -34,6 +34,22 @@ body {
   }
 }
 
+.sidebar {
+  flex-direction: column;
+  width: 150px;
+  height: 100%;
+  float: left;
+  position: absolute;
+  background-color: #343A40;
+  color: grey;
+  
+}
+.sidebar ul {
+  list-style-type: none;
+  float: left;
+  text-align: left;
+}
+
 .form {
   font-size: calc(2px + 1.5vmin);
   background-color: #393f4c;
@@ -77,7 +93,8 @@ body {
   text-decoration: none;
   white-space: nowrap;
 }
-/* wraps the image and text under it */
+/* wraps the image and text under it
+    Change this to change padding between movies, their width etc */
 #posterContent {
   margin-right: 20px;
   min-width: 130px;
