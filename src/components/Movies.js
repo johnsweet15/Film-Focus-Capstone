@@ -55,7 +55,7 @@ class Movies extends Component {
 
             this.setState({
               // only get 20 movies from search
-              movies: movies.slice(0, 20),
+              movies: movies,
             });
             
           })
@@ -100,10 +100,18 @@ class Movies extends Component {
         console.log('media: ' + movie.media_type)
 
         return (
-          <Link to={'/details/' + movieId + '/' + name.replace('%','percent')} style={{textDecoration: 'none'}} onClick={this.props.setMovie.bind(this, movie)}>
-            <img key={poster} src={poster} className="flexChild" alt="" />
-            <p style={{color: 'white', fontSize: '1.5vh', padding: 10, maxWidth: '300px', textDecoration: 'none'}}>{name}</p>
-          </Link>
+          <div id="posterContent">
+            <Link to={'/details/' + movieId + '/' + name.replace('%','percent')} style={{textDecoration: 'none'}} onClick={this.props.setMovie.bind(this, movie)}>
+              <img key={poster} src={poster} className="flexChild" alt="" />
+                { name.length > 14 && 
+                    <p className="posterTitle">{name.substring(0,14)}...</p> 
+                }
+    
+                { name.length <=14 &&
+                  <p className="posterTitle">{name}</p>
+                }
+            </Link>
+          </div>
           )
       });
     }
@@ -115,10 +123,19 @@ class Movies extends Component {
         let movieTitle = movie.title;
         console.log(movie);
         return (
-          <div>
+          <div id="posterContent">
             <Link to={'/details/' + movieId + '/' + movieTitle} style={{textDecoration: 'none'}} onClick={this.props.setMovie.bind(this, movie)}>
               <img key={movieId} src={poster} className="flexChild" alt="poster" />
-              <p style={{color: 'white', fontSize: '1.5vh', padding: 10, maxWidth: '300px', textDecoration: 'none'}}>{movie.title}</p>
+
+              {/* if the movie title is less than/greater that 14, break the text */}
+              { movie.title.length > 14 && 
+                <p className="posterTitle">{movie.title.substring(0,14)}...</p> 
+              }
+
+              { movie.title.length <=14 &&
+                <p className="posterTitle">{movie.title}</p>
+              }
+              
             </Link>
             <Route path={'/details/' + movieId + '/' + movieTitle} />
           </div>
@@ -142,27 +159,40 @@ class Movies extends Component {
             </Button>
           </Form>
         </Navbar>
-        <h1 className="header">Film Focus</h1>
-          {/* <form onSubmit={(event) => this.handleSubmit(event)}>
-            <label>
-              <input
-                id='movieInput'
-                type='text'
-                placeholder='Search for a movie'
-                onChange={(text) => this.setState({text: text.target.value})}
-                style={styles.form} />
-            </label>
-          </form> */}
-          {this.state.movies.length > 0 &&
-            <div className="flexParent">
-              {moviePosters}
-            </div>
-          }
-          {this.state.movies.length === 0 && this.state.featuredMovies.length > 0 &&
-            <div className="flexParent">
-              {moviePosters}
-            </div>
-          }
+
+        <div className="sidebar">
+        <h1>Filter</h1>
+          <ul>
+            <li>Release Date</li>
+            <li>Budget</li>
+            <li>Other stuff</li>
+          </ul>
+        </div>
+        
+          <h1 className="header">Featured Movies</h1>
+          <br></br>
+          <div id="wrapper">
+            {/* <form onSubmit={(event) => this.handleSubmit(event)}>
+              <label>
+                <input
+                  id='movieInput'
+                  type='text'
+                  placeholder='Search for a movie'
+                  onChange={(text) => this.setState({text: text.target.value})}
+                  style={styles.form} />
+              </label>
+            </form> */}
+            {this.state.movies.length > 0 &&
+              <div className="flexParent">
+                {moviePosters}
+              </div>
+            }
+            {this.state.movies.length === 0 && this.state.featuredMovies.length > 0 &&
+              <div className="flexParent">
+                {moviePosters}
+              </div>
+            }
+        </div>
       </div>
     );
   }

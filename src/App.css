@@ -34,6 +34,22 @@ body {
   }
 }
 
+.sidebar {
+  flex-direction: column;
+  width: 150px;
+  height: 100%;
+  float: left;
+  position: absolute;
+  background-color: #343A40;
+  color: grey;
+  
+}
+.sidebar ul {
+  list-style-type: none;
+  float: left;
+  text-align: left;
+}
+
 .form {
   font-size: calc(2px + 1.5vmin);
   background-color: #393f4c;
@@ -41,40 +57,54 @@ body {
   border-radius: 5px;
   padding: 10px;
   color: #4286f4;
-  
 }
 .header {
   color: #4286f4;
   margin: 30px 30px 0px 30px;
   font-size: 4vh;
 }
-
+/* This determines the layout of the posters and their titles.
+  currently set to arrange them to wrap */
 .flexParent {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-
   justify-content: flex-start;
 }
+/* This controls the size of the posters */
 .flexChild {
-  width: 300px;
-  height: 400px;
-  padding: 40px;
+  width: 130px;
+  height: 195px;
+  /* Change back to 10 if stuff breaks */
+  padding: 0px;
 }
 
-.flexParagraph {
+/* Whole page content, adjust this to change where it's all centered */
+#wrapper {
+  padding-left: 20%;
+  padding-right: 10%;
+}
+/* The text under the posters */
+.posterTitle {
   color: white;
-  font-size: 1.5vh; 
-
-  display: flex;
-  justify-content: center;
-  flex-shrink: 0;
-  flex-wrap: wrap;
+  font-size: 1.5vh;
+  padding: 10px;
+  max-width: 300px;
+  text-decoration: none;
+  white-space: nowrap;
 }
 
-@media (max-width: 900px) {
+/* @media (max-width: 900px) {
   .poster {
     width: 200px;
     height: 300px;
   }
+} */
+
+/* wraps the image and text under it
+    Change this to change padding between movies, their width etc */
+#posterContent {
+  margin-right: 20px;
+  min-width: 130px;
+  width: 130px;
 }
