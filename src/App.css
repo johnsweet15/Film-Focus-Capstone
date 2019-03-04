@@ -71,3 +71,10 @@ body {
   flex-shrink: 0;
   flex-wrap: wrap;
 }
+
+@media (max-width: 900px) {
+  .poster {
+    width: 200px;
+    height: 300px;
+  }
+}
