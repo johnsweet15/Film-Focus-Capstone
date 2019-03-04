@@ -60,13 +60,25 @@ class Details extends Component {
     })
 
     // get cast
-    axios.get('https://api.themoviedb.org/3/' + movie.media_type + '/' + movie.id + '/credits?api_key=' + TMDBKey)
+    if(movie.media_type === 'person') {
+      axios.get('https://api.themoviedb.org/3/' + movie.media_type + '/' + movie.id + '/combined_credits?api_key=' + TMDBKey)
+      .then((response) => {
+        let cast = response.data.cast;
+        cast.id = movie.id;
+  
+        this.setState({cast: cast});
+      })
+    }
+    else {
+      axios.get('https://api.themoviedb.org/3/' + movie.media_type + '/' + movie.id + '/credits?api_key=' + TMDBKey)
     .then((response) => {
       let cast = response.data.cast;
       cast.id = movie.id;
 
       this.setState({cast: cast});
     })
+    }
+    
 
     //get YouTube search results
     // let title = '';
@@ -302,20 +314,40 @@ class Details extends Component {
       // sort by popularity
       this.state.cast.sort((a, b) => b.popularity - a.popularity);
 
+      // for tv shows sort by number of episodes
+      this.state.cast.sort((a, b) => b.episode_count - a.episode_count);
+
+      var episodes = 'episodes';
+
       creditsList = this.state.cast.map((credit) => {
         let poster = 'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + credit.poster_path;
         var creditTitle = '';
-        if(credit.title !== undefined) {
-          creditTitle = credit.title.replace('%', ' Percent')
+        if(credit.media_type === 'movie') {
+          if(credit.title !== undefined) {
+            creditTitle = credit.title.replace('%', ' Percent')
+          }
         }
+        else {
+          if(credit.name !== undefined) {
+            creditTitle = credit.name.replace('%', ' Percent')
+          }
+        }
+
+        if(credit.episode_count === 1) {
+          episodes = 'episode'
+        }
+        
         console.log(creditTitle)
         return (
           <Link to={'/details/' + credit.id + '/' + creditTitle} onClick={this.props.changeToMovie.bind(this, credit.credit_id)}>
             <div style={{padding: 3, paddingBottom: 50}}>
               {/* force height to 15vw for null posters */}
               <img style={{width: '10vw', height:'15vw', alignSelf: 'center', maxWidth: '10vw'}} src={poster} alt='' />
-              <p style={{color: 'white', fontSize: '1.5vh', maxWidth: '10vw'}}>{credit.title}</p>
-              <p style={{color: '#d3d3d3'}}>{credit.character}</p>
+              { credit.media_type === 'tv' ?
+                <p style={{color: 'white', fontSize: '1.6vh', maxWidth: '10vw'}}>{creditTitle + ' (' + credit.episode_count + ' ' + episodes + ')'}</p>:
+                <p style={{color: 'white', fontSize: '1.6vh', maxWidth: '10vw'}}>{creditTitle}</p>
+              }
+              <p style={{color: '#d3d3d3', fontSize: '1.3vh'}}>{credit.character}</p>
             </div>
           </Link>
           
@@ -342,6 +374,7 @@ class Details extends Component {
       slidesToScroll: 1,
       adaptiveHeight: true,
       centerMode: true,
+      initialSlide: 0
     };
 
     var castSettings = {
