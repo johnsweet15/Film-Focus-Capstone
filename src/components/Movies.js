@@ -101,7 +101,7 @@ class Movies extends Component {
 
         return (
           <div id="posterContent">
-            <Link to={'/details/' + movieId + '/' + name.replace('%','percent')} style={{textDecoration: 'none'}} onClick={this.props.setMovie.bind(this, movie)}>
+            <Link to={'/details/' + movie.media_type + '/' + movieId + '/' + name.replace('%','percent')} style={{textDecoration: 'none'}} onClick={this.props.setMovie.bind(this, movie)}>
               <img key={poster} src={poster} className="flexChild" alt="" />
                 { name.length > 14 && 
                     <p className="posterTitle">{name.substring(0,14)}...</p> 
@@ -124,7 +124,7 @@ class Movies extends Component {
         console.log(movie);
         return (
           <div id="posterContent">
-            <Link to={'/details/' + movieId + '/' + movieTitle} style={{textDecoration: 'none'}} onClick={this.props.setMovie.bind(this, movie)}>
+            <Link to={'/details/' + movie.media_type + '/'  + movieId + '/' + movieTitle} style={{textDecoration: 'none'}} onClick={this.props.setMovie.bind(this, movie)}>
               <img key={movieId} src={poster} className="flexChild" alt="poster" />
 
               {/* if the movie title is less than/greater that 14, break the text */}
@@ -155,7 +155,7 @@ class Movies extends Component {
           <Form inline onSubmit={(event) => (this.handleSubmit(event))}>
             <FormControl type="text" placeholder="Search" className="mr-sm-2" onChange={(text) => this.setState({text: text.target.value})} />
             <Button variant="outline-info" onClick={(event) => (this.handleSubmit(event))}>
-              <Link to={'/search=' + this.state.text.replace('%','percent')}>Search</Link>
+              <Link to={'/search=' + this.state.text.replace('%','percent')} style={{textDecoration: 'none'}}>Search</Link>
             </Button>
           </Form>
         </Navbar>
