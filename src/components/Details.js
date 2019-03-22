@@ -478,8 +478,8 @@ class Details extends Component {
 
             <div style={{display: 'flex', flex: 0.33, padding: 40}}>
               {this.state.mediaType === 'person' ?
-                <img style={{maxHeight: 700}} alt='' src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + movie.profile_path} /> :
-                <img style={{maxHeight: 700}} alt='' src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + movie.poster_path} />
+                <img style={{maxHeight: 500}} alt='' src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + movie.profile_path} /> :
+                <img style={{maxHeight: 500}} alt='' src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + movie.poster_path} />
               }
             </div>
 
@@ -528,7 +528,7 @@ class Details extends Component {
                 {this.state.showReviews && 
                   <div style={{width: '100%', padding: 5}}>
                   
-                  <div style={{margin: 0, padding: 10, width: '45vw', height: '55vh'}}>
+                  <div style={{margin: 0, padding: 10, width: '45vw', height: '30vh'}}>
                     {resultList.length > 0 &&
                       <Slider {...resultSettings}>
                         {resultList}
@@ -540,7 +540,7 @@ class Details extends Component {
                 {!this.state.showReviews &&
                   <div style={{width: '100%', padding: 5}}>
                     
-                    <div style={{margin: 0, padding: 10, width: '45vw', height: '60vh'}}>
+                    <div style={{margin: 0, padding: 10, width: '45vw', height: '30vh'}}>
                       {cast.length > 0 && this.state.mediaType !== 'person' &&
                         <Slider {...castSettings}>
                           {castList}
