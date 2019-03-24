@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Route, Link } from 'react-router-dom';
 import axios from 'axios';
+// import Navigation from '../components/Navigation'
 // import styles from '../App.css';
 import { Navbar, Nav, Form, Button, FormControl } from 'react-bootstrap';
 // import { LinkContainer } from 'react-router-bootstrap';
@@ -19,12 +20,31 @@ class Movies extends Component {
     this.state = {
       movies: [],
       text: '',
-      featuredMovies: []
+      featuredMovies: [],
+      search: this.props.search
     };
   }
 
   componentDidMount() {
     this.getFeaturedMovies();
+  }
+
+  componentDidUpdate(prevProps) {
+    var path = this.props.location.pathname.split('/')
+    // console.log('props: ' + this.props.location.pathname)
+    // console.log('prevProps: ' + prevProps.location.pathname)
+    if(this.props.location !== prevProps.location) {
+      console.log('updating')
+      if(path[1].substring(0, 6) === 'search') {
+        this.getMovies(decodeURIComponent(path[1].substring(7, path[1].length)))
+      }
+      else {
+        this.getFeaturedMovies()
+      }
+    }
+    else {
+      console.log('not updating')
+    }
   }
 
   getFeaturedMovies() {
@@ -33,7 +53,8 @@ class Movies extends Component {
         let movies = response.data.results;
  
         this.setState({
-          featuredMovies: movies
+          featuredMovies: movies,
+          movies: []
         })
       })
   }
@@ -101,8 +122,8 @@ class Movies extends Component {
 
         return (
           <div id="posterContent">
-            <Link to={'/details/' + movieId + '/' + name.replace('%','percent')} style={{textDecoration: 'none'}} onClick={this.props.setMovie.bind(this, movie)}>
-              <img key={poster} src={poster} className="flexChild" alt="" />
+            <Link to={'/details/' + movie.media_type + '/' + movieId + '/' + name.replace('%','percent')} style={{textDecoration: 'none'}} onClick={this.props.setMovie.bind(this, movie)}>
+              <img key={poster} src={poster} className="flexChild" alt="poster" />
                 { name.length > 14 && 
                     <p className="posterTitle">{name.substring(0,14)}...</p> 
                 }
@@ -124,7 +145,7 @@ class Movies extends Component {
         console.log(movie);
         return (
           <div id="posterContent">
-            <Link to={'/details/' + movieId + '/' + movieTitle} style={{textDecoration: 'none'}} onClick={this.props.setMovie.bind(this, movie)}>
+            <Link to={'/details/' + movie.media_type + '/'  + movieId + '/' + movieTitle} style={{textDecoration: 'none'}} onClick={this.props.setMovie.bind(this, movie)}>
               <img key={movieId} src={poster} className="flexChild" alt="poster" />
 
               {/* if the movie title is less than/greater that 14, break the text */}
@@ -145,7 +166,8 @@ class Movies extends Component {
     
     return (
       <div className="App">
-        <Navbar bg="dark" variant="dark">
+        {/* <Navigation /> */}
+        {/* <Navbar bg="dark" variant="dark">
           <Navbar.Brand href="#home">Film Focus</Navbar.Brand>
           <Nav className="mr-auto">
             <Nav.Link href="#home">Home</Nav.Link>
@@ -155,19 +177,12 @@ class Movies extends Component {
           <Form inline onSubmit={(event) => (this.handleSubmit(event))}>
             <FormControl type="text" placeholder="Search" className="mr-sm-2" onChange={(text) => this.setState({text: text.target.value})} />
             <Button variant="outline-info" onClick={(event) => (this.handleSubmit(event))}>
-              <Link to={'/search=' + this.state.text.replace('%','percent')}>Search</Link>
+              <Link to={'/search=' + this.state.text.replace('%','percent')} style={{textDecoration: 'none'}}>Search</Link>
             </Button>
           </Form>
-        </Navbar>
+        </Navbar> */}
 
-        <div className="sidebar">
-        <h1>Filter</h1>
-          <ul>
-            <li>Release Date</li>
-            <li>Budget</li>
-            <li>Other stuff</li>
-          </ul>
-        </div>
+        
         
           <h1 className="header">Featured Movies</h1>
           <br></br>

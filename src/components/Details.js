@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import Slider from 'react-slick';
 import Videos from "./Videos";
-import { ToggleButton, ToggleButtonGroup, ButtonToolbar} from 'react-bootstrap'
+import { ToggleButton, ToggleButtonGroup, ButtonToolbar, FormCheck} from 'react-bootstrap'
 import {OMDBKey, TMDBKey, YouTubeKey} from '../config.js'
 import { Link } from 'react-router-dom';
 
@@ -26,29 +26,48 @@ class Details extends Component {
       showReviews: false,
       actor: {},
       trailer: '',
-      mediaType: this.props.movie.media_type
+      mediaType: this.props.movie.media_type,
+      search: this.props.search
     }
     this.clickCast = this.clickCast.bind(this);
     this.clickReviews = this.clickReviews.bind(this);
   }
 
   componentDidMount() {
-    this.getDetails(this.state.movie);
+    // this.getDetails(this.state.movie);
+    var url = this.props.location.pathname.split('/');
+    console.log('log: ' + url[3] + ',' + url[2])
+    this.getDetailsById(url[3], url[2]);
+    console.log(this.props.location)
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.movie !== prevProps.movie) {
-      this.getDetails(this.props.movie);
+    // if (this.props.movie !== prevProps.movie) {
+    //   this.getDetails(this.props.movie);
+    // }
+    if(this.props.location !== prevProps.location) {
+      var url = this.props.location.pathname.split('/');
+      console.log('log: ' + url[3] + ',' + url[2])
+      if(url[1] === 'home') {
+        this.props.setMovie.bind(this, null)
+        console.log('home')
+      }
+      else if(url[1] === 'details') {
+        this.getDetailsById(url[3], url[2]);
+      }
+      else if(url[1].substring(0, 6) === 'search') {
+        this.props.setSearch.bind(this, decodeURIComponent(url[1].substring(7, url[1].length)))
+        console.log('do something')
+      }
+      // this.state.movie.updated = undefined;
+      // this.forceUpdate();
     }
   }
 
-  getDetails(movie) {
-    console.log('get details called');
-    // need to get more details than what is provided in the search return
-    // in other words, the props object taken from app.js does not have all the data we need
-    // because tmdb search returns less data than a request for a specific movie
+  getDetailsById(id, mediaType) {
+    this.setState({mediaType: mediaType})
     let result = {};
-    axios.get('https://api.themoviedb.org/3/' + movie.media_type + '/' + movie.id + '?api_key=' + TMDBKey)
+    axios.get('https://api.themoviedb.org/3/' + mediaType + '/' + id + '?api_key=' + TMDBKey)
     .then((response) => {
       result = response.data;
 
@@ -60,20 +79,20 @@ class Details extends Component {
     })
 
     // get cast
-    if(movie.media_type === 'person') {
-      axios.get('https://api.themoviedb.org/3/' + movie.media_type + '/' + movie.id + '/combined_credits?api_key=' + TMDBKey)
+    if(mediaType === 'person') {
+      axios.get('https://api.themoviedb.org/3/' + mediaType + '/' + id + '/combined_credits?api_key=' + TMDBKey)
       .then((response) => {
         let cast = response.data.cast;
-        cast.id = movie.id;
+        cast.id = id;
   
         this.setState({cast: cast});
       })
     }
     else {
-      axios.get('https://api.themoviedb.org/3/' + movie.media_type + '/' + movie.id + '/credits?api_key=' + TMDBKey)
+      axios.get('https://api.themoviedb.org/3/' + mediaType + '/' + id + '/credits?api_key=' + TMDBKey)
     .then((response) => {
       let cast = response.data.cast;
-      cast.id = movie.id;
+      cast.id = id;
 
       this.setState({cast: cast});
     })
@@ -96,13 +115,75 @@ class Details extends Component {
     // })
 
     // get trailer id
-    axios.get('https://api.themoviedb.org/3/' + movie.media_type + '/' + movie.id + '/videos?api_key=' + TMDBKey)
-    .then((response) => {
-      let trailer = response.data.results[0].key;
+    // axios.get('https://api.themoviedb.org/3/' + mediaType + '/' + id + '/videos?api_key=' + TMDBKey)
+    // .then((response) => {
+    //   let trailer = response.data.results[0].key;
 
-      this.setState({trailer: trailer})
-    })
+    //   this.setState({trailer: trailer})
+    // })
   }
+
+  // getDetails(movie) {
+  //   console.log('get details called');
+  //   // need to get more details than what is provided in the search return
+  //   // in other words, the props object taken from app.js does not have all the data we need
+  //   // because tmdb search returns less data than a request for a specific movie
+  //   let result = {};
+  //   axios.get('https://api.themoviedb.org/3/' + movie.media_type + '/' + movie.id + '?api_key=' + TMDBKey)
+  //   .then((response) => {
+  //     result = response.data;
+
+  //     // add 'updated' attribute to movie object
+  //     // needed to check if state has been updated in render()
+  //     result.updated = true;
+
+  //     this.setState({movie: result}, this.getRatings(result));
+  //   })
+
+  //   // get cast
+  //   if(movie.media_type === 'person') {
+  //     axios.get('https://api.themoviedb.org/3/' + movie.media_type + '/' + movie.id + '/combined_credits?api_key=' + TMDBKey)
+  //     .then((response) => {
+  //       let cast = response.data.cast;
+  //       cast.id = movie.id;
+  
+  //       this.setState({cast: cast});
+  //     })
+  //   }
+  //   else {
+  //     axios.get('https://api.themoviedb.org/3/' + movie.media_type + '/' + movie.id + '/credits?api_key=' + TMDBKey)
+  //   .then((response) => {
+  //     let cast = response.data.cast;
+  //     cast.id = movie.id;
+
+  //     this.setState({cast: cast});
+  //   })
+  //   }
+    
+
+  //   //get YouTube search results
+  //   // let title = '';
+  //   // if(this.props.movie.media_type === 'movie') {
+  //   //   title = this.state.movie.title;
+  //   // }
+  //   // else {
+  //   //   title = this.state.movie.name
+  //   // }
+  //   // axios.get('https://www.googleapis.com/youtube/v3/search?q='+ title + ' ' + this.props.movie.media_type + 'review&key=' + YouTubeKey + '&maxResults=5&part=snippet')
+  //   // .then((response) => {
+  //   //   let search = response.data.items;
+
+  //   //   this.setState({searchResults: search});
+  //   // })
+
+  //   // get trailer id
+  //   axios.get('https://api.themoviedb.org/3/' + movie.media_type + '/' + movie.id + '/videos?api_key=' + TMDBKey)
+  //   .then((response) => {
+  //     let trailer = response.data.results[0].key;
+
+  //     this.setState({trailer: trailer})
+  //   })
+  // }
 
   getRatings(movie) {
     // get ratings
@@ -180,6 +261,8 @@ class Details extends Component {
     let ratings = this.state.ratings;
     let actor = this.state.movie;
 
+    console.log(this.state.mediaType)
+
     // check for updated movie object
     if(movie.updated === undefined) {
       console.log('returned null');
@@ -187,17 +270,17 @@ class Details extends Component {
     }
 
     // make sure there is a cast
-    if((cast.length === 0 || ratings === undefined) && this.props.movie.media_type !== 'person' ) {
+    if((cast.length === 0 || ratings === undefined) && this.state.mediaType !== 'person' ) {
       return null;
     }
 
     let releaseDate = '';
     let finishDate = '';
 
-    if(this.props.movie.media_type === 'movie') {
+    if(this.state.mediaType === 'movie') {
       releaseDate = movie.release_date;
     }
-    else if(this.props.movie.media_type === 'tv') {
+    else if(this.state.mediaType === 'tv') {
       // just get year
       releaseDate = movie.first_air_date.substring(0,4);
 
@@ -213,7 +296,7 @@ class Details extends Component {
     let castList = [];
     let ratingsList = [];
     let creditsList = [];
-    if(this.props.movie.media_type !== 'person') {
+    if(this.state.mediaType !== 'person') {
       // list of cast members for render
       castList = this.state.cast.map(actor => {
         let poster = 'https://image.tmdb.org/t/p/w600_and_h900_bestv2';
@@ -224,7 +307,7 @@ class Details extends Component {
           poster = 'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + actor.profile_path;
         }
         return (
-          <Link style={{textDecoration: 'none'}} to={'/details/' + actor.id + '/' + actor.name} onClick={this.props.changeToActor.bind(this, actor.id)} >
+          <Link style={{textDecoration: 'none'}} to={'/details/person/' + actor.id + '/' + actor.name} onClick={this.props.changeToActor.bind(this, actor.id)} >
             <div style={{padding: 3}}>
               {/* force height to 15vw for null posters */}
               <img style={{width: '10vw', height:'15vw', alignSelf: 'center'}} src={poster} alt='' />
@@ -266,7 +349,7 @@ class Details extends Component {
         let title = '';
         // let year = ''
         // let id = '';
-        if(this.props.movie.media_type === 'movie') {
+        if(this.state.mediaType === 'movie') {
           title = movie.title;
           // id = movie.imdb_id;
         }
@@ -317,9 +400,10 @@ class Details extends Component {
       // for tv shows sort by number of episodes
       this.state.cast.sort((a, b) => b.episode_count - a.episode_count);
 
-      var episodes = 'episodes';
 
       creditsList = this.state.cast.map((credit) => {
+        var episodes = 'episodes';
+
         let poster = 'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + credit.poster_path;
         var creditTitle = '';
         if(credit.media_type === 'movie') {
@@ -339,7 +423,7 @@ class Details extends Component {
         
         console.log(creditTitle)
         return (
-          <Link to={'/details/' + credit.id + '/' + creditTitle} onClick={this.props.changeToMovie.bind(this, credit.credit_id)}>
+          <Link to={'/details/' + credit.media_type + '/' + credit.id + '/' + creditTitle} onClick={this.props.changeToMovie.bind(this, credit.credit_id)}>
             <div style={{padding: 3, paddingBottom: 50}}>
               {/* force height to 15vw for null posters */}
               <img style={{width: '10vw', height:'15vw', alignSelf: 'center', maxWidth: '10vw'}} src={poster} alt='' />
@@ -398,24 +482,24 @@ class Details extends Component {
           <div style={{width: '70%', margin: 'auto', display: 'flex', flexDirection: 'row'}}>
 
             <div style={{display: 'flex', flex: 0.33, padding: 40}}>
-              {this.props.movie.media_type === 'person' ?
-                <img style={{maxHeight: 700}} alt='' src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + movie.profile_path} /> :
-                <img style={{maxHeight: 700}} alt='' src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + movie.poster_path} />
+              {this.state.mediaType === 'person' ?
+                <img style={{maxHeight: 500}} alt='' src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + movie.profile_path} /> :
+                <img style={{maxHeight: 500}} alt='' src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + movie.poster_path} />
               }
             </div>
 
             {/* DO THIS FOR MOVIES OR TV SHOWS */}
-            {this.props.movie.media_type !== 'person' ?
+            {this.state.mediaType !== 'person' ?
               <div style={{display: 'flex', flex: 0.67, justifyContent: 'center', padding: 40, flexDirection: 'column'}}>
                 <div style={{display: 'flex', flexDirection: 'row'}}>
-                  {this.props.movie.media_type === 'tv' &&
+                  {this.state.mediaType === 'tv' &&
                     // basically check if tv show or movie since tv show uses 'name' and movie uses 'title'
                     <p style={{color: 'white', fontSize: '3vh'}}>{movie.name + ' (' + releaseDate.substring(0,4) + ' - ' + finishDate + ')'}</p>
                   }
-                  {this.props.movie.media_type === 'movie' &&
+                  {this.state.mediaType === 'movie' &&
                     <p style={{color: 'white', fontSize: '3vh'}}>{movie.title + ' (' + releaseDate.substring(0,4) + ')'}</p>
                   }
-                  {ratings.length > 0 && this.props.movie.media_type !== 'person' ?
+                  {ratings.length > 0 && this.state.mediaType !== 'person' ?
                     <div style={{display: 'flex', flexDirection: 'row'}}>{ratingsList}</div> :
                     <p style={{color: 'white', padding: 20}}>No ratings yet</p>
                   }
@@ -423,7 +507,7 @@ class Details extends Component {
                 
 
 
-                {this.props.movie.media_type === 'movie' &&
+                {this.state.mediaType === 'movie' &&
                   <div style={{display: 'flex', flexDirection: 'row'}}>
                     <p style={{color: '#d3d3d3', paddingRight: 20}}>{months[parseInt(movie.release_date.substring(5,7)) - 1] + ' ' + movie.release_date.substring(8) + ', ' + movie.release_date.substring(0,4)}</p>
                     <p style={{color: '#d3d3d3', paddingRight: 20}}>{movie.runtime + ' minutes'}</p>
@@ -449,7 +533,7 @@ class Details extends Component {
                 {this.state.showReviews && 
                   <div style={{width: '100%', padding: 5}}>
                   
-                  <div style={{margin: 0, padding: 10, width: '45vw', height: '55vh'}}>
+                  <div style={{margin: 0, padding: 10, width: '45vw', height: '30vh'}}>
                     {resultList.length > 0 &&
                       <Slider {...resultSettings}>
                         {resultList}
@@ -461,8 +545,8 @@ class Details extends Component {
                 {!this.state.showReviews &&
                   <div style={{width: '100%', padding: 5}}>
                     
-                    <div style={{margin: 0, padding: 10, width: '45vw', height: '60vh'}}>
-                      {cast.length > 0 && this.props.movie.media_type !== 'person' &&
+                    <div style={{margin: 0, padding: 10, width: '45vw', height: '30vh'}}>
+                      {cast.length > 0 && this.state.mediaType !== 'person' &&
                         <Slider {...castSettings}>
                           {castList}
                         </Slider>
