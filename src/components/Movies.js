@@ -102,7 +102,7 @@ class Movies extends Component {
         return (
           <div id="posterContent">
             <Link to={'/details/' + movie.media_type + '/' + movieId + '/' + name.replace('%','percent')} style={{textDecoration: 'none'}} onClick={this.props.setMovie.bind(this, movie)}>
-              <img key={poster} src={poster} className="flexChild" alt="" />
+              <img key={poster} src={poster} className="flexChild" alt="poster" />
                 { name.length > 14 && 
                     <p className="posterTitle">{name.substring(0,14)}...</p> 
                 }
@@ -160,14 +160,7 @@ class Movies extends Component {
           </Form>
         </Navbar>
 
-        <div className="sidebar">
-        <h1>Filter</h1>
-          <ul>
-            <li>Release Date</li>
-            <li>Budget</li>
-            <li>Other stuff</li>
-          </ul>
-        </div>
+        
         
           <h1 className="header">Featured Movies</h1>
           <br></br>

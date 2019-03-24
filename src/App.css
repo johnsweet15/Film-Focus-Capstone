@@ -25,21 +25,6 @@ body {
   color: #61dafb;
 }
 
-.sidebar {
-  flex-direction: column;
-  width: 150px;
-  height: 100%;
-  float: left;
-  position: absolute;
-  background-color: #343a40;
-  color: grey;
-}
-.sidebar ul {
-  list-style-type: none;
-  float: left;
-  text-align: left;
-}
-
 .form {
   font-size: calc(2px + 1.5vmin);
   background-color: #393f4c;
