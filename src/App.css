@@ -25,31 +25,6 @@ body {
   color: #61dafb;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.sidebar {
-  flex-direction: column;
-  width: 150px;
-  height: 100%;
-  float: left;
-  position: absolute;
-  background-color: #343A40;
-  color: grey;
-  
-}
-.sidebar ul {
-  list-style-type: none;
-  float: left;
-  text-align: left;
-}
-
 .form {
   font-size: calc(2px + 1.5vmin);
   background-color: #393f4c;
@@ -79,11 +54,6 @@ body {
   padding: 0px;
 }
 
-/* Whole page content, adjust this to change where it's all centered */
-#wrapper {
-  padding-left: 20%;
-  padding-right: 10%;
-}
 /* The text under the posters */
 .posterTitle {
   color: white;
@@ -99,4 +69,22 @@ body {
   margin-right: 20px;
   min-width: 130px;
   width: 130px;
+}
+/* Whole page content, adjust this to change where it's all centered */
+#wrapper {
+  padding-left: 20%;
+  padding-right: 10%;
+}
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@media only screen and (max-width: 800px) {
+  .sidebar {
+    display: none;
+  }
 }
