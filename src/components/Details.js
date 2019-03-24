@@ -26,7 +26,8 @@ class Details extends Component {
       showReviews: false,
       actor: {},
       trailer: '',
-      mediaType: this.props.movie.media_type
+      mediaType: this.props.movie.media_type,
+      search: this.props.search
     }
     this.clickCast = this.clickCast.bind(this);
     this.clickReviews = this.clickReviews.bind(this);
@@ -53,6 +54,10 @@ class Details extends Component {
       }
       else if(url[1] === 'details') {
         this.getDetailsById(url[3], url[2]);
+      }
+      else if(url[1].substring(0, 6) === 'search') {
+        this.props.setSearch.bind(this, decodeURIComponent(url[1].substring(7, url[1].length)))
+        console.log('do something')
       }
       // this.state.movie.updated = undefined;
       // this.forceUpdate();

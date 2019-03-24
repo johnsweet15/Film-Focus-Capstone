@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Route, Link } from 'react-router-dom';
 import axios from 'axios';
+// import Navigation from '../components/Navigation'
 // import styles from '../App.css';
 import { Navbar, Nav, Form, Button, FormControl } from 'react-bootstrap';
 // import { LinkContainer } from 'react-router-bootstrap';
@@ -19,12 +20,31 @@ class Movies extends Component {
     this.state = {
       movies: [],
       text: '',
-      featuredMovies: []
+      featuredMovies: [],
+      search: this.props.search
     };
   }
 
   componentDidMount() {
     this.getFeaturedMovies();
+  }
+
+  componentDidUpdate(prevProps) {
+    var path = this.props.location.pathname.split('/')
+    // console.log('props: ' + this.props.location.pathname)
+    // console.log('prevProps: ' + prevProps.location.pathname)
+    if(this.props.location !== prevProps.location) {
+      console.log('updating')
+      if(path[1].substring(0, 6) === 'search') {
+        this.getMovies(decodeURIComponent(path[1].substring(7, path[1].length)))
+      }
+      else {
+        this.getFeaturedMovies()
+      }
+    }
+    else {
+      console.log('not updating')
+    }
   }
 
   getFeaturedMovies() {
@@ -33,7 +53,8 @@ class Movies extends Component {
         let movies = response.data.results;
  
         this.setState({
-          featuredMovies: movies
+          featuredMovies: movies,
+          movies: []
         })
       })
   }
@@ -145,7 +166,8 @@ class Movies extends Component {
     
     return (
       <div className="App">
-        <Navbar bg="dark" variant="dark">
+        {/* <Navigation /> */}
+        {/* <Navbar bg="dark" variant="dark">
           <Navbar.Brand href="#home">Film Focus</Navbar.Brand>
           <Nav className="mr-auto">
             <Nav.Link href="#home">Home</Nav.Link>
@@ -158,7 +180,7 @@ class Movies extends Component {
               <Link to={'/search=' + this.state.text.replace('%','percent')} style={{textDecoration: 'none'}}>Search</Link>
             </Button>
           </Form>
-        </Navbar>
+        </Navbar> */}
 
         <div className="sidebar">
         <h1>Filter</h1>
