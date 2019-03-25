@@ -4,12 +4,6 @@ import axios from 'axios';
 // import Navigation from '../components/Navigation'
 // import styles from '../App.css';
 import { Navbar, Nav, Form, Button, FormControl } from 'react-bootstrap';
-// import { LinkContainer } from 'react-router-bootstrap';
-
-// import Details from './Details'
-// import constants from './../constants'
-
-// const APIKey = 'a6793cf9';
 const TMDBKey = 'c794333156e1c095f41f92e128c002df';
 
 class Movies extends Component {
@@ -121,16 +115,21 @@ class Movies extends Component {
         console.log('media: ' + movie.media_type)
 
         return (
-          <div id="posterContent">
+          // Search results
+          <div className="searchResult">
             <Link to={'/details/' + movie.media_type + '/' + movieId + '/' + name.replace('%','percent')} style={{textDecoration: 'none'}} onClick={this.props.setMovie.bind(this, movie)}>
-              <img key={poster} src={poster} className="flexChild" alt="poster" />
-                { name.length > 14 && 
-                    <p className="posterTitle">{name.substring(0,14)}...</p> 
+              <img key={poster} src={poster} className="imageResult" alt="poster" />
+
+
+                { name.length > 50 && 
+                    <p className="searchResultTitle">{name.substring(0,50)}...</p> 
                 }
     
-                { name.length <=14 &&
-                  <p className="posterTitle">{name}</p>
+                { name.length <=50 &&
+                  <p className="searchResultTitle">{name}</p>
                 }
+                <p className="searchResultDate">{movie.release_date}</p> <br /> <br />
+                <p className="searchResultOverview">{movie.overview}</p>
             </Link>
           </div>
           )
@@ -144,6 +143,7 @@ class Movies extends Component {
         let movieTitle = movie.title;
         console.log(movie);
         return (
+          // Featured movies
           <div id="posterContent">
             <Link to={'/details/' + movie.media_type + '/'  + movieId + '/' + movieTitle} style={{textDecoration: 'none'}} onClick={this.props.setMovie.bind(this, movie)}>
               <img key={movieId} src={poster} className="flexChild" alt="poster" />
@@ -213,21 +213,5 @@ class Movies extends Component {
   }
 }
 
-// Moved to external stylesheet
-// const styles = {
-//   form: {
-//     fontSize: 'calc(2px + 1.5vmin)',
-//     backgroundColor: '#393f4c',
-//     borderStyle: 'none',
-//     borderRadius: 5,
-//     padding: 10,
-//     color: '#4286f4',
-    
-//   },
-//   header: {
-//     color: '#4286f4',
-//     margin: 30
-//   }
-// }
 
 export default Movies;

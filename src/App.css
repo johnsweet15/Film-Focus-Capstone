@@ -1,9 +1,11 @@
 body {
   background-color: #282c34;
+  
 }
 
 .App {
   text-align: center;
+  margin-top: 75px;
 }
 
 .App-logo {
@@ -24,6 +26,7 @@ body {
 .App-link {
   color: #61dafb;
 }
+
 
 .form {
   font-size: calc(2px + 1.5vmin);
@@ -46,15 +49,65 @@ body {
   flex-wrap: wrap;
   justify-content: flex-start;
 }
-/* This controls the size of the posters */
+/* This controls the size of the posters in featured list */
 .flexChild {
   width: 130px;
   height: 195px;
   /* Change back to 10 if stuff breaks */
   padding: 0px;
 }
+/* wraps the image and text under it
+  Change this to change padding between movies, their width etc 
+  FOR SEARCH RESULTS */
+.searchResult {
+  margin-right: 20px;
+  margin-bottom: 10px;
+  padding-bottom: 5px;
 
-/* The text under the posters */
+  min-width: 130px;
+  width: 50vw;
+  border-bottom: 2px solid white;
+}
+/* This controls the poster style for search results */
+.imageResult {
+  width: 130px;
+  height: 195px;
+  padding: 0px;
+  margin-right: 7px;
+  float: left;
+}
+/* Styling for the media title in the search results */
+.searchResultTitle {
+  text-align: left;
+  text-decoration: none;
+  font-size: 1.2em;
+
+
+  margin-right: 5px;
+  float: left;
+  color: white;
+}
+/* Styling for the media release date in search results */
+.searchResultDate {
+  text-align: left;
+  text-decoration: underline;
+  font-size: 0.9em;
+
+  margin-right: 5px;
+  float: left;
+  color: white;
+}
+/* Styling for the media title in the search results */
+.searchResultOverview {
+  text-align: left;
+  text-decoration: none;
+
+
+  margin-right: 5px;
+  color: white;
+}
+
+/* The text under the posters in featured list */
 .posterTitle {
   color: white;
   font-size: 1.5vh;
@@ -63,6 +116,7 @@ body {
   text-decoration: none;
   white-space: nowrap;
 }
+<<<<<<< HEAD
 
 /* @media (max-width: 900px) {
   .poster {
@@ -72,6 +126,9 @@ body {
 } */
 
 /* wraps the image and text under it
+=======
+/* wraps the image and text under it for featured list
+>>>>>>> ebf73a188086ec27fc41f799060876ce443507fe
     Change this to change padding between movies, their width etc */
 #posterContent {
   margin-right: 20px;
