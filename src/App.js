@@ -4,6 +4,7 @@ import axios from 'axios';
 import './App.css';
 import Movies from './components/Movies'
 import Details from './components/Details'
+import Navigation from './components/Navigation'
 import { TMDBKey } from './config';
 
 // const APIKey = 'a6793cf9';
@@ -15,7 +16,8 @@ class App extends Component {
     this.state = {
       movie: null,
       search: '',
-      showMovies: true
+      showMovies: true,
+      showSearch: false
     }
   }
 
@@ -36,14 +38,27 @@ class App extends Component {
   // }
 
   componentDidUpdate(prevProps) {
-    // window.onpopstate = () => {
-    //   this.setState({movie: null})
-    // }
-    if(this.props.location.pathname.split('/')[1] === 'home' && prevProps.location !== this.props.location) {
-      this.setState({showMovies: true})
+    var path = this.props.location.pathname.split('/')
+    console.log('path ' + path[1].substring(0,6))
+    if(path[1] === 'home' && prevProps.location !== this.props.location) {
+      this.setState({
+        showMovies: true,
+        showSearch: false
+      })
+      // console.log('search: ' + this.state.search)
     }
-    else if(prevProps.location !== this.props.location) {
-      this.setState({showMovies: false})
+    else if(path[1].substring(0, 6) === 'search' && prevProps.location !== this.props.location) {
+      // this.setState({
+      //   showMovies: false,
+      //   showSearch: true
+      // })
+      this.setSearch(decodeURIComponent(path[1].substring(7, path[1].length)))
+    }
+    else if(path[1] === 'details' && prevProps.location !== this.props.location) {
+      this.setState({
+        showMovies: false,
+        showSearch: false
+      })
     }
   }
 
@@ -52,7 +67,8 @@ class App extends Component {
   setMovie = (movie) => {
     this.setState({
       movie: movie,
-      showMovies: false
+      showMovies: false,
+      showSearch: false
     });
     
     console.log('app state movie: ' + this.state.movie)
@@ -65,7 +81,8 @@ class App extends Component {
       newMovie.media_type = response.data.media_type;
       this.setState({
         movie: newMovie,
-        showMovies: false
+        showMovies: false,
+        showSearch: false
       });
       console.log('changetomovie: ' + newMovie)
     })
@@ -78,27 +95,41 @@ class App extends Component {
       newActor.media_type = 'person';
       this.setState({
         movie: newActor,
-        showMovies: false
+        showMovies: false,
+        showSearch: false
       });
       console.log('changetoactor: ' + newActor)
     })
   }
 
   setSearch = (search) => {
-    this.setState({search: search}, console.log('app state movie: ' + this.state.search));
+    this.setState({
+      search: search,
+      showMovies: false,
+      showSearch: true
+    })
+    console.log('app state search: ' + this.state.search)
   }
 
   render() {
     return (
       <div>
         <Redirect to="/home" />
+        {/* <Navigation setSearch={this.setSearch}/> */}
         {/* <Navigation setSearch={this.state.search}/> */}
         { 
           // if no movie is selected, then null -> shows featured or search list
           // else, then not null -> shows details for movie selected (gets movie info from app.js state which gets from setMovie which gets from movies.js lines 100 or 120)
-          <Route path='/' render={(props) => this.state.showMovies === true ?
-            <Movies {...props} setMovie={this.setMovie} search={this.state.search} /> :
-            <Details {...props} movie={this.state.movie} changeToMovie={this.changeToMovie} changeToActor={this.changeToActor} setMovie={this.setMovie} />
+          <Route path='/' render={(props) => this.state.showMovies === true || this.state.showSearch === true ?
+            <div>
+              <Navigation {...props} setSearch={this.setSearch} />
+              <Movies {...props} setMovie={this.setMovie} search={this.state.search} showSearch={this.state.showSearch} />
+            </div>
+             :
+            <div>
+              <Navigation {...props} setSearch={this.setSearch} />
+              <Details {...props} movie={this.state.movie} changeToMovie={this.changeToMovie} changeToActor={this.changeToActor} setMovie={this.setMovie} search={this.state.search} showSearch={this.state.showSearch} setSearch={this.setSearch} />
+            </div>
           } />
         }
         
