@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
 import { Route, Link } from 'react-router-dom';
 import axios from 'axios';
-// import Navigation from '../components/Navigation'
-// import styles from '../App.css';
-import { Navbar, Nav, Form, Button, FormControl } from 'react-bootstrap';
 const TMDBKey = 'c794333156e1c095f41f92e128c002df';
 
 class Movies extends Component {

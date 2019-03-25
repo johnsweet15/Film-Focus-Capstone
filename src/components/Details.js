@@ -2,11 +2,9 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import Slider from 'react-slick';
 import Videos from "./Videos";
-import { ToggleButton, ToggleButtonGroup, ButtonToolbar, FormCheck} from 'react-bootstrap'
+import { ToggleButton, ToggleButtonGroup, ButtonToolbar } from 'react-bootstrap'
 import {OMDBKey, TMDBKey, YouTubeKey} from '../config.js'
 import { Link } from 'react-router-dom';
-
-// import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
 const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
@@ -395,7 +393,7 @@ class Details extends Component {
 
     else {
       // sort by popularity
-      this.state.cast.sort((a, b) => b.popularity - a.popularity);
+      this.state.cast.sort((a, b) =>  b.popularity - a.popularity);
 
       // for tv shows sort by number of episodes
       this.state.cast.sort((a, b) => b.episode_count - a.episode_count);

@@ -1,8 +1,5 @@
 import React from 'react';
 import { Navbar, Nav, Form, Button, FormControl } from 'react-bootstrap'
-import { Link, NavLink } from 'react-router-dom'
-import { LinkContainer } from 'react-router-bootstrap'
-// import Movies from './Movies';
 
 class Navigation extends React.Component {
 
