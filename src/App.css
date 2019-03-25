@@ -116,7 +116,6 @@ body {
   text-decoration: none;
   white-space: nowrap;
 }
-<<<<<<< HEAD
 
 /* @media (max-width: 900px) {
   .poster {
@@ -126,9 +125,6 @@ body {
 } */
 
 /* wraps the image and text under it
-=======
-/* wraps the image and text under it for featured list
->>>>>>> ebf73a188086ec27fc41f799060876ce443507fe
     Change this to change padding between movies, their width etc */
 #posterContent {
   margin-right: 20px;
