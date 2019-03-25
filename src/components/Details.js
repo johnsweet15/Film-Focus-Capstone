@@ -363,7 +363,7 @@ class Details extends Component {
             {rating.Source === 'IMDB' &&
               <div>
                 <a href={'https://www.imdb.com/title/' + movie.imdb_id} target="_blank" rel="noopener noreferrer" style={{textDecoration: 'none'}}>
-                  <img alt='' style={{width:'1.5vw', height: '1.5vw', display: 'block', margin: '0 auto'}} src={require('../icons/imdbStar.png')} />
+                  <img alt='' style={{width:'1.5em', height: '1.5em', display: 'block', margin: '0 auto'}} src={require('../icons/imdbStar.png')} />
                   <p style={{color: 'white', display: 'flex', justifyContent: 'center', fontSize: '110%'}}>{'IMDb: ' + rating.Value}</p>
                 </a>
               </div>
@@ -371,7 +371,7 @@ class Details extends Component {
             {rating.Source === 'Rotten Tomatoes' &&
               <div>
                 <a href={'https://www.rottentomatoes.com/m/' + title.replace(':', '').split(' ').join('_')} target="_blank" rel="noopener noreferrer" style={{textDecoration: 'none'}}>
-                  <img alt='' style={{width:'1.5vw', height: '1.5vw', display: 'block', margin: '0 auto'}} src={rtIcon} />
+                  <img alt='' style={{width:'1.5em', height: '1.5em', display: 'block', margin: '0 auto'}} src={rtIcon} />
                   <p style={{color: 'white', display: 'flex', justifyContent: 'center', fontSize: '110%'}}>{'RT: ' + rating.Value}</p>
                 </a>
               </div>
@@ -379,7 +379,7 @@ class Details extends Component {
             {rating.Source === 'Metacritic' &&
               <a href={'https://www.metacritic.com/search/all/' + title + '/results'} target="_blank" rel="noopener noreferrer" style={{textDecoration: 'none'}}>
                 <div style={{display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems:'center'}}>
-                  <div style={{margin: 0, display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: color, color: 'white', width:'1.5vw', height: '1.5vw', flexDirection: 'column'}}>
+                  <div style={{margin: 0, display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: color, color: 'white', width:'1.5em', height: '1.5em', flexDirection: 'column'}}>
                     <p style={{padding: 0, margin: 0, display: 'flex', justifyContent: 'center'}}>{rating.Value.substring(0, rating.Value.indexOf('/'))}</p>
                   </div>
                   <p style={{color: 'white', display: 'flex', justifyContent: 'center', fontSize: '110%'}}>{rating.Source}</p>
@@ -481,7 +481,7 @@ class Details extends Component {
 
           <div style={{width: '70%', margin: 'auto', display: 'flex', flexDirection: 'row'}}>
 
-            <div style={{display: 'flex', flex: 0.33, padding: 40}}>
+            <div id='poster' style={{display: 'flex', flex: 0.33, padding: 40}}>
               {this.state.mediaType === 'person' ?
                 <img style={{maxHeight: 500}} alt='' src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + movie.profile_path} /> :
                 <img style={{maxHeight: 500}} alt='' src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + movie.poster_path} />

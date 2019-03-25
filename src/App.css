@@ -96,3 +96,9 @@ body {
     display: none;
   }
 }
+
+@media (max-width: 600px) {
+  #poster {
+    flex: 1
+  }
+}

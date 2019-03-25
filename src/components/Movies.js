@@ -26,13 +26,17 @@ class Movies extends Component {
   }
 
   componentDidMount() {
-    this.getFeaturedMovies();
+    var path = this.props.location.pathname.split('/')
+    if(path[1].substring(0, 6) === 'search') {
+      this.getMovies(decodeURIComponent(path[1].substring(7, path[1].length)))
+    }
+    else {
+      this.getFeaturedMovies()
+    }
   }
 
   componentDidUpdate(prevProps) {
     var path = this.props.location.pathname.split('/')
-    // console.log('props: ' + this.props.location.pathname)
-    // console.log('prevProps: ' + prevProps.location.pathname)
     if(this.props.location !== prevProps.location) {
       console.log('updating')
       if(path[1].substring(0, 6) === 'search') {
