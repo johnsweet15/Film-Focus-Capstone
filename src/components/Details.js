@@ -6,7 +6,16 @@ import { ToggleButton, ToggleButtonGroup, ButtonToolbar, FormCheck} from 'react-
 import {OMDBKey, TMDBKey, YouTubeKey} from '../config.js'
 import { Link } from 'react-router-dom';
 
+import io from 'socket.io-client';
+ 
+let backendHost = 'http://localhost:3001';
+const socket = io(backendHost);
+
 // import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+
+
+
+
 
 const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
@@ -27,7 +36,9 @@ class Details extends Component {
       actor: {},
       trailer: '',
       mediaType: this.props.movie.media_type,
-      search: this.props.search
+      search: this.props.search,
+      socket: socket,
+      movie_id: ''
     }
     this.clickCast = this.clickCast.bind(this);
     this.clickReviews = this.clickReviews.bind(this);
@@ -39,6 +50,8 @@ class Details extends Component {
     console.log('log: ' + url[3] + ',' + url[2])
     this.getDetailsById(url[3], url[2]);
     console.log(this.props.location)
+
+    this.getReviews(this.props.movie, url[3]);
   }
 
   componentDidUpdate(prevProps) {
@@ -65,6 +78,8 @@ class Details extends Component {
   }
 
   getDetailsById(id, mediaType) {
+    this.setState({movie_id: id});
+
     this.setState({mediaType: mediaType})
     let result = {};
     axios.get('https://api.themoviedb.org/3/' + mediaType + '/' + id + '?api_key=' + TMDBKey)
@@ -207,20 +222,32 @@ class Details extends Component {
   }
 
   //get YouTube search results
-  getReviews(movie) {
-    let title = '';
-    if(movie.media_type === 'movie') {
-      title = movie.title;
-    }
-    else {
-      title = movie.name
-    }
-    axios.get('https://www.googleapis.com/youtube/v3/search?q='+ title + ' ' + movie.media_type + ' review&key=' + YouTubeKey + '&maxResults=5&part=snippet')
-    .then((response) => {
-      let search = response.data.items;
+  getReviews(movie, id) {
 
-      this.setState({searchResults: search});
-    })
+    // SOCKET STUFF HERE, UNCOMMENT TO USE
+
+    // let foundVideos = this.state.socket.emit('requestVideos', id);
+    // if (foundVideos.length > 0) {
+    //   this.setState({searchResults: foundVideos});
+      
+    // }
+    
+
+      let title = '';
+      if(movie.media_type === 'movie') {
+        title = movie.title;
+      }
+      else {
+        title = movie.name
+      }
+      axios.get('https://www.googleapis.com/youtube/v3/search?q='+ title + ' ' + movie.media_type + ' review&key=' + YouTubeKey + '&maxResults=5&part=snippet')
+      .then((response) => {
+        let search = response.data.items;
+
+        this.setState({searchResults: search});
+      })
+  
+    
   }
 
   // getDetailsByID(id) {
@@ -238,7 +265,7 @@ class Details extends Component {
   clickReviews() {
     //if the search results are empty, call youtube api
     if(this.state.searchResults.length === 0) {
-      this.getReviews(this.props.movie);
+      //this.getReviews(this.props.movie);
       console.log('getting reviews for the first time');
     }
     this.setState({showReviews: true});
@@ -439,6 +466,7 @@ class Details extends Component {
       })
     }
     
+   
 
     // list of videos for render
     let resultList = this.state.searchResults.map(result => {
@@ -449,6 +477,16 @@ class Details extends Component {
         </div>
       )
     })
+
+     
+    // send list of video ids to the server
+    // MORE SOCKET STUFF, UNCOMMENT TO USE
+    
+    // var r = [this.state.searchResults.map(result => {return result.id.videoId})];
+    // this.state.socket.emit('saveToDb', { id: this.state.movie_id, video_id_array: r });
+
+
+    
 
     var resultSettings = {
       dots: true,
@@ -472,7 +510,7 @@ class Details extends Component {
     };
 
     return (
-      <div style={{minHeight: '100vh', backgroundColor: '#282c34', maxWidth:'100vw'}}>
+      <div style={{minHeight: '90vh', backgroundColor: '#282c34', maxWidth:'100vw'}}>
         <div style={{textAlign: 'center', color: '#4286f4'}}>
           <h1 style={styles.header}>Details</h1>
         </div>
