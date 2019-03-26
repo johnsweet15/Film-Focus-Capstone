@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import Slider from 'react-slick';
 import Videos from "./Videos";
-import { ToggleButton, ToggleButtonGroup, ButtonToolbar, FormCheck} from 'react-bootstrap'
+import { ToggleButton, ToggleButtonGroup, ButtonToolbar } from 'react-bootstrap'
 import {OMDBKey, TMDBKey, YouTubeKey} from '../config.js'
 import { Link } from 'react-router-dom';
 
@@ -339,7 +339,7 @@ class Details extends Component {
               {/* force height to 15vw for null posters */}
               <img style={{width: '10vw', height:'15vw', alignSelf: 'center'}} src={poster} alt='' />
               <p style={{color: 'white', fontSize: '1.5vh', maxWidth: '10vw'}}>{actor.name}</p>
-              <p style={{color: '#d3d3d3', maxWidth: '10vw'}}>{actor.character}</p>
+              <p style={{color: '#d3d3d3', fontSize: '1.2vh', maxWidth: '10vw'}}>{actor.character}</p>
             </div>
           </Link>
           
@@ -386,11 +386,11 @@ class Details extends Component {
         }
         
         return (
-          <div style={{display: 'flex', justifyContent: 'center', paddingLeft: 20, alignContent: 'center', flexDirection: 'column'}}>
+          <div className='ratings' style={{display: 'flex', justifyContent: 'center', paddingLeft: 20, alignContent: 'center', flexDirection: 'column'}}>
             {rating.Source === 'IMDB' &&
               <div>
                 <a href={'https://www.imdb.com/title/' + movie.imdb_id} target="_blank" rel="noopener noreferrer" style={{textDecoration: 'none'}}>
-                  <img alt='' style={{width:'1.5vw', height: '1.5vw', display: 'block', margin: '0 auto'}} src={require('../icons/imdbStar.png')} />
+                  <img id='ratingsIcon' alt='' style={{display: 'block', margin: '0 auto'}} src={require('../icons/imdbStar.png')} />
                   <p style={{color: 'white', display: 'flex', justifyContent: 'center', fontSize: '110%'}}>{'IMDb: ' + rating.Value}</p>
                 </a>
               </div>
@@ -398,7 +398,7 @@ class Details extends Component {
             {rating.Source === 'Rotten Tomatoes' &&
               <div>
                 <a href={'https://www.rottentomatoes.com/m/' + title.replace(':', '').split(' ').join('_')} target="_blank" rel="noopener noreferrer" style={{textDecoration: 'none'}}>
-                  <img alt='' style={{width:'1.5vw', height: '1.5vw', display: 'block', margin: '0 auto'}} src={rtIcon} />
+                  <img id='ratingsIcon' alt='' style={{display: 'block', margin: '0 auto'}} src={rtIcon} />
                   <p style={{color: 'white', display: 'flex', justifyContent: 'center', fontSize: '110%'}}>{'RT: ' + rating.Value}</p>
                 </a>
               </div>
@@ -406,7 +406,7 @@ class Details extends Component {
             {rating.Source === 'Metacritic' &&
               <a href={'https://www.metacritic.com/search/all/' + title + '/results'} target="_blank" rel="noopener noreferrer" style={{textDecoration: 'none'}}>
                 <div style={{display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems:'center'}}>
-                  <div style={{margin: 0, display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: color, color: 'white', width:'1.5vw', height: '1.5vw', flexDirection: 'column'}}>
+                  <div id='ratingsIcon' style={{margin: 0, display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: color, color: 'white', flexDirection: 'column'}}>
                     <p style={{padding: 0, margin: 0, display: 'flex', justifyContent: 'center'}}>{rating.Value.substring(0, rating.Value.indexOf('/'))}</p>
                   </div>
                   <p style={{color: 'white', display: 'flex', justifyContent: 'center', fontSize: '110%'}}>{rating.Source}</p>
@@ -422,7 +422,7 @@ class Details extends Component {
 
     else {
       // sort by popularity
-      this.state.cast.sort((a, b) => b.popularity - a.popularity);
+      this.state.cast.sort((a, b) =>  b.popularity - a.popularity);
 
       // for tv shows sort by number of episodes
       this.state.cast.sort((a, b) => b.episode_count - a.episode_count);
@@ -515,27 +515,29 @@ class Details extends Component {
           <h1 style={styles.header}>Details</h1>
         </div>
 
-        <div style={{display: 'flex', flexDirection: 'row', width: '70%'}}>
+        <div id='mainContainer' style={{display: 'flex', flexDirection: 'row'}}>
 
-          <div style={{width: '70%', margin: 'auto', display: 'flex', flexDirection: 'row'}}>
+          <div id='detailsContainer' style={{margin: 'auto', display: 'flex'}}>
 
-            <div style={{display: 'flex', flex: 0.33, padding: 40}}>
+            <div id='detailsPoster' style={{display: 'flex', flex: 0.33}}>
               {this.state.mediaType === 'person' ?
-                <img style={{maxHeight: 500}} alt='' src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + movie.profile_path} /> :
-                <img style={{maxHeight: 500}} alt='' src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + movie.poster_path} />
+                <img alt='' src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + movie.profile_path} /> :
+                <img alt='' src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + movie.poster_path} />
               }
             </div>
 
             {/* DO THIS FOR MOVIES OR TV SHOWS */}
             {this.state.mediaType !== 'person' ?
               <div style={{display: 'flex', flex: 0.67, justifyContent: 'center', padding: 40, flexDirection: 'column'}}>
-                <div style={{display: 'flex', flexDirection: 'row'}}>
+                <div id='ratingsContainer' style={{display: 'flex'}}>
                   {this.state.mediaType === 'tv' &&
                     // basically check if tv show or movie since tv show uses 'name' and movie uses 'title'
                     <p style={{color: 'white', fontSize: '3vh'}}>{movie.name + ' (' + releaseDate.substring(0,4) + ' - ' + finishDate + ')'}</p>
                   }
                   {this.state.mediaType === 'movie' &&
-                    <p style={{color: 'white', fontSize: '3vh'}}>{movie.title + ' (' + releaseDate.substring(0,4) + ')'}</p>
+                    <div>
+                      <p style={{color: 'white', fontSize: '3vh'}}>{movie.title + ' (' + releaseDate.substring(0,4) + ')'}</p>
+                    </div>
                   }
                   {ratings.length > 0 && this.state.mediaType !== 'person' ?
                     <div style={{display: 'flex', flexDirection: 'row'}}>{ratingsList}</div> :
@@ -554,8 +556,8 @@ class Details extends Component {
                 }
                 
                 {movie.overview.length > 300 ?
-                  <p style={{color: 'white', fontSize: '2vh'}}>{movie.overview.substring(0, 300) + '...'}</p> :
-                  <p style={{color: 'white', fontSize: '2vh'}}>{movie.overview}</p>
+                  <p id='description' style={{color: 'white'}}>{movie.overview.substring(0, 300) + '...'}</p> :
+                  <p id='description' style={{color: 'white'}}>{movie.overview}</p>
                 }
                 
 
@@ -571,7 +573,7 @@ class Details extends Component {
                 {this.state.showReviews && 
                   <div style={{width: '100%', padding: 5}}>
                   
-                  <div style={{margin: 0, padding: 10, width: '45vw', height: '30vh'}}>
+                  <div id='slider' style={{margin: 0, padding: 10}}>
                     {resultList.length > 0 &&
                       <Slider {...resultSettings}>
                         {resultList}
@@ -583,7 +585,7 @@ class Details extends Component {
                 {!this.state.showReviews &&
                   <div style={{width: '100%', padding: 5}}>
                     
-                    <div style={{margin: 0, padding: 10, width: '45vw', height: '30vh'}}>
+                    <div id='slider' style={{margin: 0, padding: 10}}>
                       {cast.length > 0 && this.state.mediaType !== 'person' &&
                         <Slider {...castSettings}>
                           {castList}
@@ -601,13 +603,13 @@ class Details extends Component {
 
                 {/* <p style={{color: 'white', fontSize: '2vh'}}>{actor.biography}</p> */}
                 {actor.biography !== undefined && actor.biography.length > 300 ?
-                  <p style={{color: 'white', fontSize: '2vh'}}>{actor.biography.substring(0, 300) + '...'}</p> :
-                  <p style={{color: 'white', fontSize: '2vh'}}>{actor.biography}</p>
+                  <p id='description' style={{color: 'white'}}>{actor.biography.substring(0, 300) + '...'}</p> :
+                  <p id='description' style={{color: 'white'}}>{actor.biography}</p>
                 }
 
                 <div style={{width: '100%', padding: 5}}>
                   <p style={{color: 'white', fontSize: '3vh'}}>Known For</p>
-                  <div style={{margin: 0, padding: 0, width: '45vw', height: '60vh'}}>
+                  <div id='slider' style={{margin: 0, padding: 0}}>
                       <Slider {...castSettings} id='slider'>
                         {creditsList}
                       </Slider>

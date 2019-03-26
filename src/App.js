@@ -21,22 +21,6 @@ class App extends Component {
     }
   }
 
-  // componentDidMount() {
-  //   var path = this.props.location.pathname.split('/')
-  //   if(path[1] === 'home') {
-  //     this.setState({showMovies: true})
-  //   }
-  //   else {
-  //     this.setState({showMovies: false})
-  //     if(path[2] === 'movie') {
-  //       this.changeToMovie.bind(this, path[3])
-  //     }
-  //     else if(path[2] === 'person') {
-  //       this.changeToActor.bind(this, path[3])
-  //     }
-  //   }
-  // }
-
   componentDidUpdate(prevProps) {
     var path = this.props.location.pathname.split('/')
     console.log('path ' + path[1].substring(0,6))
@@ -48,10 +32,6 @@ class App extends Component {
       // console.log('search: ' + this.state.search)
     }
     else if(path[1].substring(0, 6) === 'search' && prevProps.location !== this.props.location) {
-      // this.setState({
-      //   showMovies: false,
-      //   showSearch: true
-      // })
       this.setSearch(decodeURIComponent(path[1].substring(7, path[1].length)))
     }
     else if(path[1] === 'details' && prevProps.location !== this.props.location) {
@@ -115,8 +95,6 @@ class App extends Component {
     return (
       <div>
         <Redirect to="/home" />
-        {/* <Navigation setSearch={this.setSearch}/> */}
-        {/* <Navigation setSearch={this.state.search}/> */}
         { 
           // if no movie is selected, then null -> shows featured or search list
           // else, then not null -> shows details for movie selected (gets movie info from app.js state which gets from setMovie which gets from movies.js lines 100 or 120)

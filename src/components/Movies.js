@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
 import { Route, Link } from 'react-router-dom';
 import axios from 'axios';
-// import Navigation from '../components/Navigation'
-// import styles from '../App.css';
-import { Navbar, Nav, Form, Button, FormControl } from 'react-bootstrap';
 const TMDBKey = 'c794333156e1c095f41f92e128c002df';
 
 class Movies extends Component {
@@ -15,7 +12,8 @@ class Movies extends Component {
       movies: [],
       text: '',
       featuredMovies: [],
-      search: this.props.search
+      search: this.props.search,
+      title: 'Featured Movies'
     };
   }
 
@@ -37,9 +35,11 @@ class Movies extends Component {
       console.log('updating')
       if(path[1].substring(0, 6) === 'search') {
         this.getMovies(decodeURIComponent(path[1].substring(7, path[1].length)))
+        this.setState({title: 'Search'})
       }
       else {
         this.getFeaturedMovies()
+        this.setState({title: 'Featured Movies'})
       }
     }
     else {
@@ -60,6 +60,7 @@ class Movies extends Component {
   }
 
   getMovies(searchText) {
+    this.setState({title: 'Search'})
     // get page 1
     axios.get('https://api.themoviedb.org/3/search/multi?&api_key=' + TMDBKey + '&language=en-US&query=' + searchText + '&page=1&include_adult=false')
       .then((response) => {
@@ -172,47 +173,19 @@ class Movies extends Component {
     
     return (
       <div className="App">
-        {/* <Navigation /> */}
-        {/* <Navbar bg="dark" variant="dark">
-          <Navbar.Brand href="#home">Film Focus</Navbar.Brand>
-          <Nav className="mr-auto">
-            <Nav.Link href="#home">Home</Nav.Link>
-            <Nav.Link href="#features">About</Nav.Link>
-            <Nav.Link href="#pricing">Discussions</Nav.Link>
-          </Nav>
-          <Form inline onSubmit={(event) => (this.handleSubmit(event))}>
-            <FormControl type="text" placeholder="Search" className="mr-sm-2" onChange={(text) => this.setState({text: text.target.value})} />
-            <Button variant="outline-info" onClick={(event) => (this.handleSubmit(event))}>
-              <Link to={'/search=' + this.state.text.replace('%','percent')} style={{textDecoration: 'none'}}>Search</Link>
-            </Button>
-          </Form>
-        </Navbar> */}
-
-        
-        
-          <h1 className="header">Featured Movies</h1>
-          <br></br>
-          <div id="wrapper">
-            {/* <form onSubmit={(event) => this.handleSubmit(event)}>
-              <label>
-                <input
-                  id='movieInput'
-                  type='text'
-                  placeholder='Search for a movie'
-                  onChange={(text) => this.setState({text: text.target.value})}
-                  style={styles.form} />
-              </label>
-            </form> */}
-            {this.state.movies.length > 0 &&
-              <div className="flexParent">
-                {moviePosters}
-              </div>
-            }
-            {this.state.movies.length === 0 && this.state.featuredMovies.length > 0 &&
-              <div className="flexParent">
-                {moviePosters}
-              </div>
-            }
+        <h1 className="header">{this.state.title}</h1>
+        <br></br>
+        <div id="wrapper">
+          {this.state.movies.length > 0 &&
+            <div className="flexParent">
+              {moviePosters}
+            </div>
+          }
+          {this.state.movies.length === 0 && this.state.featuredMovies.length > 0 &&
+            <div className="flexParent">
+              {moviePosters}
+            </div>
+          }
         </div>
       </div>
     );
