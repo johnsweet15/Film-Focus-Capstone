@@ -13,10 +13,6 @@ const socket = io(backendHost);
 
 // import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
-
-
-
-
 const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
 class Details extends Component {
@@ -112,93 +108,7 @@ class Details extends Component {
       this.setState({cast: cast});
     })
     }
-    
-
-    //get YouTube search results
-    // let title = '';
-    // if(this.props.movie.media_type === 'movie') {
-    //   title = this.state.movie.title;
-    // }
-    // else {
-    //   title = this.state.movie.name
-    // }
-    // axios.get('https://www.googleapis.com/youtube/v3/search?q='+ title + ' ' + this.props.movie.media_type + 'review&key=' + YouTubeKey + '&maxResults=5&part=snippet')
-    // .then((response) => {
-    //   let search = response.data.items;
-
-    //   this.setState({searchResults: search});
-    // })
-
-    // get trailer id
-    // axios.get('https://api.themoviedb.org/3/' + mediaType + '/' + id + '/videos?api_key=' + TMDBKey)
-    // .then((response) => {
-    //   let trailer = response.data.results[0].key;
-
-    //   this.setState({trailer: trailer})
-    // })
   }
-
-  // getDetails(movie) {
-  //   console.log('get details called');
-  //   // need to get more details than what is provided in the search return
-  //   // in other words, the props object taken from app.js does not have all the data we need
-  //   // because tmdb search returns less data than a request for a specific movie
-  //   let result = {};
-  //   axios.get('https://api.themoviedb.org/3/' + movie.media_type + '/' + movie.id + '?api_key=' + TMDBKey)
-  //   .then((response) => {
-  //     result = response.data;
-
-  //     // add 'updated' attribute to movie object
-  //     // needed to check if state has been updated in render()
-  //     result.updated = true;
-
-  //     this.setState({movie: result}, this.getRatings(result));
-  //   })
-
-  //   // get cast
-  //   if(movie.media_type === 'person') {
-  //     axios.get('https://api.themoviedb.org/3/' + movie.media_type + '/' + movie.id + '/combined_credits?api_key=' + TMDBKey)
-  //     .then((response) => {
-  //       let cast = response.data.cast;
-  //       cast.id = movie.id;
-  
-  //       this.setState({cast: cast});
-  //     })
-  //   }
-  //   else {
-  //     axios.get('https://api.themoviedb.org/3/' + movie.media_type + '/' + movie.id + '/credits?api_key=' + TMDBKey)
-  //   .then((response) => {
-  //     let cast = response.data.cast;
-  //     cast.id = movie.id;
-
-  //     this.setState({cast: cast});
-  //   })
-  //   }
-    
-
-  //   //get YouTube search results
-  //   // let title = '';
-  //   // if(this.props.movie.media_type === 'movie') {
-  //   //   title = this.state.movie.title;
-  //   // }
-  //   // else {
-  //   //   title = this.state.movie.name
-  //   // }
-  //   // axios.get('https://www.googleapis.com/youtube/v3/search?q='+ title + ' ' + this.props.movie.media_type + 'review&key=' + YouTubeKey + '&maxResults=5&part=snippet')
-  //   // .then((response) => {
-  //   //   let search = response.data.items;
-
-  //   //   this.setState({searchResults: search});
-  //   // })
-
-  //   // get trailer id
-  //   axios.get('https://api.themoviedb.org/3/' + movie.media_type + '/' + movie.id + '/videos?api_key=' + TMDBKey)
-  //   .then((response) => {
-  //     let trailer = response.data.results[0].key;
-
-  //     this.setState({trailer: trailer})
-  //   })
-  // }
 
   getRatings(movie) {
     // get ratings
@@ -250,15 +160,6 @@ class Details extends Component {
     
   }
 
-  // getDetailsByID(id) {
-  //   axios.get('https://api.themoviedb.org/3/person/' + id + '?api_key=' + TMDBKey)
-  //   .then((response) => {
-  //     let result = response.data;
-  //     console.log(result.name);
-  //     this.setState({actor: result});
-  //   })
-  // }
-
   clickCast() {
     this.setState({showReviews: false});
   }
@@ -270,17 +171,6 @@ class Details extends Component {
     }
     this.setState({showReviews: true});
   }
-
-  // changeToMovie(creditId) {
-  //   // get media type -> movie or tv
-  //   axios.get('https://api.themoviedb.org/3/credit/' + creditId + '?api_key=' + TMDBKey)
-  //   .then((response) => {
-  //     let mediaType = response.data.media_type;
-
-  //     this.setState({mediaType: mediaType})
-  //   })
-  // }
-
 
   render() {
     let movie = this.state.movie;
