@@ -21,15 +21,14 @@ class Navigation extends React.Component {
   render() {
     return (
       <Navbar bg="dark" variant="dark">
-        <Navbar.Brand href="/home">Navbar</Navbar.Brand>
+        <Navbar.Brand href="/home">Film Focus</Navbar.Brand>
         <Nav className="mr-auto">
           <Nav.Link href="/home">Home</Nav.Link>
-          <Nav.Link href="/features">Features</Nav.Link>
-          <Nav.Link href="/pricing">Pricing</Nav.Link>
+          <Nav.Link href="/features">About</Nav.Link>
         </Nav>
-        <Form inline onSubmit={(event) => this.handleSubmit(event)}>
-          <FormControl type="text" placeholder="Search" className="mr-sm-2" onChange={(search) => this.setState({search: search.target.value})} />
-          <Button variant="outline-info" onClick={(event) => this.handleSubmit(event)}>Search</Button>
+        <Form inline onSubmit={(event) => this.handleSubmit(event)} style={{display: 'flex', flexDirection: 'row', paddingLeft: 20}}>
+          <FormControl type="text" placeholder="Search" className="mr-sm-2" onChange={(search) => this.setState({search: search.target.value})} style={{flex: '0.7'}} />
+          <Button id='searchButton' variant="outline-info" onClick={(event) => this.handleSubmit(event)} style={{flex: '0.3'}} >Search</Button>
         </Form>
       </Navbar>
     )
