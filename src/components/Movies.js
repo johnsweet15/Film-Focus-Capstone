@@ -184,21 +184,21 @@ class Movies extends Component {
             />
             <Carousel.Caption className='carouselText'>
               <h3>How to Train Your Dragon</h3>
-              <p>February 22, 2019</p>
+              <p>(February 22, 2019)</p>
             </Carousel.Caption>
           </Carousel.Item>
           <Carousel.Item>
           <img src={'https://image.tmdb.org/t/p/original/qAzYK4YPSWDc7aa4R43LcwRIAyb.jpg'} className="carouselImage" alt="First Slide" />
             <Carousel.Caption className='carouselText'>
               <h3>Captain Marvel</h3>
-              <p>March 8, 2019</p>
+              <p>(March 8, 2019)</p>
             </Carousel.Caption>
           </Carousel.Item>
           <Carousel.Item>
           <img src={'https://image.tmdb.org/t/p/original/qwgGtdlLMKYvT2tV8hLY22syRHN.jpg'} className="carouselImage" alt="First Slide" />
             <Carousel.Caption className='carouselText'>
               <h3>Shazam</h3>
-              <p>April 5, 2019</p>
+              <p>(April 5, 2019)</p>
             </Carousel.Caption>
           </Carousel.Item>
         </Carousel>
