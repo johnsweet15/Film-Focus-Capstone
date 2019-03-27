@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Route, Link } from 'react-router-dom';
 import axios from 'axios';
+import Carousel from 'react-bootstrap/Carousel';
 const TMDBKey = 'c794333156e1c095f41f92e128c002df';
 
 class Movies extends Component {
@@ -151,21 +152,20 @@ class Movies extends Component {
         console.log(movie);
         return (
           // Featured movies
-          <div id="posterContent">
-            <Link to={'/details/' + movie.media_type + '/'  + movieId + '/' + movieTitle} style={{textDecoration: 'none'}} onClick={this.props.setMovie.bind(this, movie)}>
-              <img key={movieId} src={poster} className="flexChild" alt="poster" />
+          <div className="featuredMovieContainer">
+            <Link to={'/details/' + movie.media_type + '/' + movieId + '/' + movieTitle} style={{textDecoration: 'none'}} onClick={this.props.setMovie.bind(this, movie)}>
+              <img key={poster} src={poster} alt="poster" />
 
-              {/* if the movie title is less than/greater that 14, break the text */}
-              { movie.title.length > 14 && 
-                <p className="posterTitle">{movie.title.substring(0,14)}...</p> 
-              }
-
-              { movie.title.length <=14 &&
-                <p className="posterTitle">{movie.title}</p>
-              }
-              
+                { movie.title.length > 50 && 
+                    <p className="searchResultTitle">{movie.title.substring(0,50)}...</p> 
+                }
+    
+                { movie.title.length <=50 &&
+                  <p className="featuredMovieTitle">{movie.title}</p>
+                }
+                <p className="featuredMovieReleaseDate">({movie.release_date})</p> <br /> <br />
+                <p className="featuredMovieOverview">{movie.overview}</p>
             </Link>
-            <Route path={'/details/' + movieId + '/' + movieTitle} />
           </div>
         )
       });
@@ -174,6 +174,35 @@ class Movies extends Component {
     return (
       <div className="App">
         <h1 className="header">{this.state.title}</h1>
+
+        <Carousel className='carouselFeatured'>
+          <Carousel.Item>
+          <img 
+            src='https://image.tmdb.org/t/p/original/lqROGEZ7NvUX08dAzUSJQcy8m74.jpg'
+            className="carouselImage" 
+            alt="First Slide"
+            />
+            <Carousel.Caption className='carouselText'>
+              <h3>How to Train Your Dragon</h3>
+              <p>February 22, 2019</p>
+            </Carousel.Caption>
+          </Carousel.Item>
+          <Carousel.Item>
+          <img src={'https://image.tmdb.org/t/p/original/qAzYK4YPSWDc7aa4R43LcwRIAyb.jpg'} className="carouselImage" alt="First Slide" />
+            <Carousel.Caption className='carouselText'>
+              <h3>Captain Marvel</h3>
+              <p>March 8, 2019</p>
+            </Carousel.Caption>
+          </Carousel.Item>
+          <Carousel.Item>
+          <img src={'https://image.tmdb.org/t/p/original/qwgGtdlLMKYvT2tV8hLY22syRHN.jpg'} className="carouselImage" alt="First Slide" />
+            <Carousel.Caption className='carouselText'>
+              <h3>Shazam</h3>
+              <p>April 5, 2019</p>
+            </Carousel.Caption>
+          </Carousel.Item>
+        </Carousel>
+
         <br></br>
         <div id="wrapper">
           {this.state.movies.length > 0 &&

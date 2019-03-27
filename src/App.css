@@ -1,32 +1,97 @@
 body {
-  background-color: #282c34;
-  
+  /* background-color: #282c34; */
+  background-color: #343A40;
 }
 
 .App {
   text-align: center;
-  margin-top: 75px;
-}
+  /* margin-top: 75px; */
+  width: 65%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 7vh;
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
+  /* background-color: #282c34; */
+  
 }
-
-.App-header {
+/* Whole page content, adjust this to change where it's all centered */
+#wrapper {
+  min-height: 98vh;
   background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  /* align-items: center; */
-  /* justify-content: center; */
-  font-size: calc(10px + 2vmin);
+  padding: 15px;
+  box-shadow: 0px 5px 5px 10px;
+
+  border-radius: 5px;
+}
+.carouselImage {
+  width: 1000px;
+  height: auto;
+}
+.carouselFeatured {
+  margin: 20px 0px;
+  box-shadow: 0px 0px 5px 2px;
+  background-color: #282c34;
+}
+.carouselText {
+  color: #4286f4;
+  background-color: #282c34;
+  border-radius: 500px;
+  border: 2px solid #4286f4;
+  width: 300px;
+
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+.featuredMovieContainer {
+  margin-bottom: 8px;
+  width: 100%;
+  border-bottom: 2px solid #4286f4;
+}
+.featuredMovieContainer img {
+  width: 200px;
+  height: 310px;
+
+  margin: 0 10px 10px 0;
+  float: left;
+}
+.featuredMovieTitle {
+  text-align: left;
+  color: white;
+
+  font-size: 1.3em;
+  text-decoration: underline;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+
+  float: left;
+  margin-right: 7px;
+}
+.featuredMovieReleaseDate {
+  text-align: left;
+  color: #4286f4;
+  float: left;
+  font-size: 0.8em;
+}
+.featuredMovieOverview {
+text-align: left;
+color: white;
 }
 
-.App-link {
-  color: #61dafb;
-}
 
+/* wraps the image and text under it
+  Change this to change padding between movies, their width etc */
+#posterContent {
+  /* margin-right: 20px; */
+  margin-left: 6px;
+  min-width: 50vw;
+  width: 130px;
+}
+  /* The text under the posters in featured list */
+.posterTitle {
+  color: white;
+  font-size: 1.5vh;
+  padding: 10px;
+  text-decoration: none;
+  white-space: nowrap;
+}
 
 .form {
   font-size: calc(2px + 1.5vmin);
@@ -38,8 +103,14 @@ body {
 }
 .header {
   color: #4286f4;
-  margin: 30px 30px 0px 30px;
+  background-color: #393f4c;
+  border-radius: 5px;
+  padding: 5px 0px;
+  box-shadow: 0px 0px 0px 2px;
+
   font-size: 4vh;
+
+  font-family: 'Courier New', Courier, monospace
 }
 /* This determines the layout of the posters and their titles.
   currently set to arrange them to wrap */
@@ -50,11 +121,9 @@ body {
   justify-content: flex-start;
 }
 /* This controls the size of the posters in featured list */
-.flexChild {
+.featuredPoster {
   width: 130px;
   height: 195px;
-  /* Change back to 10 if stuff breaks */
-  padding: 0px;
 }
 /* wraps the image and text under it
   Change this to change padding between movies, their width etc 
@@ -81,8 +150,6 @@ body {
   text-align: left;
   text-decoration: none;
   font-size: 1.2em;
-
-
   margin-right: 5px;
   float: left;
   color: white;
@@ -107,35 +174,10 @@ body {
   color: white;
 }
 
-/* The text under the posters in featured list */
-.posterTitle {
-  color: white;
-  font-size: 1.5vh;
-  padding: 10px;
-  max-width: 300px;
-  text-decoration: none;
-  white-space: nowrap;
-}
 
-/* @media (max-width: 900px) {
-  .poster {
-    width: 200px;
-    height: 300px;
-  }
-} */
 
-/* wraps the image and text under it
-    Change this to change padding between movies, their width etc */
-#posterContent {
-  margin-right: 20px;
-  min-width: 130px;
-  width: 130px;
-}
-/* Whole page content, adjust this to change where it's all centered */
-#wrapper {
-  padding-left: 20%;
-  padding-right: 10%;
-}
+
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

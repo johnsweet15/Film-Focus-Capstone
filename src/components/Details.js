@@ -13,6 +13,10 @@ const socket = io(backendHost);
 
 // import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
+
+
+
+
 const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
 class Details extends Component {
@@ -109,7 +113,7 @@ class Details extends Component {
     })
     }
   }
-
+ 
   getRatings(movie) {
     // get ratings
     // CURRENTLY BREAKS IF THE MOVIE DOESN'T HAVE RT OR METACRITIC RATINGS
