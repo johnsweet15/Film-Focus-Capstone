@@ -6,10 +6,10 @@ import { ToggleButton, ToggleButtonGroup, ButtonToolbar } from 'react-bootstrap'
 import {OMDBKey, TMDBKey, YouTubeKey} from '../config.js'
 import { Link } from 'react-router-dom';
 
-import io from 'socket.io-client';
+// import io from 'socket.io-client';
  
-let backendHost = 'http://localhost:3001';
-const socket = io(backendHost);
+// let backendHost = 'http://localhost:3001';
+// const socket = io(backendHost);
 
 // import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
@@ -37,7 +37,7 @@ class Details extends Component {
       trailer: '',
       mediaType: this.props.movie.media_type,
       search: this.props.search,
-      socket: socket,
+      // socket: socket,
       movie_id: ''
     }
     this.clickCast = this.clickCast.bind(this);

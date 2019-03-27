@@ -170,37 +170,37 @@ class Movies extends Component {
         )
       });
     }
-    
+    var counter = 0
+    var featuredCarousel = this.state.featuredMovies.map((movie) => {
+      
+      counter += 1
+      if(counter > 5) {
+        return null;
+      } 
+      else {
+        return (
+          <Carousel.Item>
+            <img 
+              src={'https://image.tmdb.org/t/p/original/' + movie.backdrop_path }
+              className="carouselImage" 
+              alt="First Slide"
+            />
+            <Carousel.Caption className='carouselText'>
+              <h3>{movie.title}</h3>
+              <p>{movie.release_date}</p>
+            </Carousel.Caption>
+          </Carousel.Item>
+        )
+      }
+    })
+    // var titles = this.state.featuredMovies.map((movie) => movie.title)
+    // console.log('first movie: ' + this.state.featuredMovies[0].title)
     return (
       <div className="App">
         <h1 className="header">{this.state.title}</h1>
 
         <Carousel className='carouselFeatured'>
-          <Carousel.Item>
-          <img 
-            src='https://image.tmdb.org/t/p/original/lqROGEZ7NvUX08dAzUSJQcy8m74.jpg'
-            className="carouselImage" 
-            alt="First Slide"
-            />
-            <Carousel.Caption className='carouselText'>
-              <h3>How to Train Your Dragon</h3>
-              <p>February 22, 2019</p>
-            </Carousel.Caption>
-          </Carousel.Item>
-          <Carousel.Item>
-          <img src={'https://image.tmdb.org/t/p/original/qAzYK4YPSWDc7aa4R43LcwRIAyb.jpg'} className="carouselImage" alt="First Slide" />
-            <Carousel.Caption className='carouselText'>
-              <h3>Captain Marvel</h3>
-              <p>March 8, 2019</p>
-            </Carousel.Caption>
-          </Carousel.Item>
-          <Carousel.Item>
-          <img src={'https://image.tmdb.org/t/p/original/qwgGtdlLMKYvT2tV8hLY22syRHN.jpg'} className="carouselImage" alt="First Slide" />
-            <Carousel.Caption className='carouselText'>
-              <h3>Shazam</h3>
-              <p>April 5, 2019</p>
-            </Carousel.Caption>
-          </Carousel.Item>
+          {featuredCarousel}
         </Carousel>
 
         <br></br>
