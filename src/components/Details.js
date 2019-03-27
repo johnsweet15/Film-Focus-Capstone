@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import Slider from 'react-slick';
 import Videos from "./Videos";
-import { ToggleButton, ToggleButtonGroup, ButtonToolbar } from 'react-bootstrap'
+import { ToggleButton, ToggleButtonGroup, ButtonToolbar, Modal, Button, Alert } from 'react-bootstrap'
 import {OMDBKey, TMDBKey, YouTubeKey} from '../config.js'
 import { Link } from 'react-router-dom';
 
@@ -38,10 +38,12 @@ class Details extends Component {
       mediaType: this.props.movie.media_type,
       search: this.props.search,
       // socket: socket,
-      movie_id: ''
+      movie_id: '',
+      showDescription: false
     }
     this.clickCast = this.clickCast.bind(this);
     this.clickReviews = this.clickReviews.bind(this);
+    this.clickDescription = this.clickDescription.bind(this);
   }
 
   componentDidMount() {
@@ -181,6 +183,10 @@ class Details extends Component {
     this.setState({showReviews: true});
   }
 
+  clickDescription() {
+    this.setState({showDescription: !this.state.showDescription})
+  }
+
   render() {
     let movie = this.state.movie;
     let cast = this.state.cast;
@@ -236,7 +242,7 @@ class Details extends Component {
           <Link style={{textDecoration: 'none'}} to={'/details/person/' + actor.id + '/' + actor.name} onClick={this.props.changeToActor.bind(this, actor.id)} >
             <div style={{padding: 3}}>
               {/* force height to 15vw for null posters */}
-              <img style={{width: '10vw', height:'15vw', alignSelf: 'center'}} src={poster} alt='' />
+              <img style={{width: '8vw', height:'12vw', alignSelf: 'center'}} src={poster} alt='' />
               <p style={{color: 'white', fontSize: '1.5vh', maxWidth: '10vw'}}>{actor.name}</p>
               <p style={{color: '#d3d3d3', fontSize: '1.2vh', maxWidth: '10vw'}}>{actor.character}</p>
             </div>
@@ -352,7 +358,7 @@ class Details extends Component {
           <Link to={'/details/' + credit.media_type + '/' + credit.id + '/' + creditTitle} onClick={this.props.changeToMovie.bind(this, credit.credit_id)}>
             <div style={{padding: 3, paddingBottom: 50}}>
               {/* force height to 15vw for null posters */}
-              <img style={{width: '10vw', height:'15vw', alignSelf: 'center', maxWidth: '10vw'}} src={poster} alt='' />
+              <img style={{width: '8vw', height:'12vw', alignSelf: 'center', maxWidth: '10vw'}} src={poster} alt='' />
               { credit.media_type === 'tv' ?
                 <p style={{color: 'white', fontSize: '1.6vh', maxWidth: '10vw'}}>{creditTitle + ' (' + credit.episode_count + ' ' + episodes + ')'}</p>:
                 <p style={{color: 'white', fontSize: '1.6vh', maxWidth: '10vw'}}>{creditTitle}</p>
@@ -365,7 +371,10 @@ class Details extends Component {
       })
     }
     
-   
+    // modal close button
+    const closeBtn = <button type="button" class="close" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>;
 
     // list of videos for render
     let resultList = this.state.searchResults.map(result => {
@@ -400,14 +409,14 @@ class Details extends Component {
     };
 
     return (
-      <div style={{minHeight: '90vh', backgroundColor: '#282c34', maxWidth:'100vw'}}>
+      <div className='App'>
         <div style={{textAlign: 'center', color: '#4286f4'}}>
-          <h1 style={styles.header}>Details</h1>
+          <h1 className='header'>Details</h1>
         </div>
 
-        <div id='mainContainer' style={{display: 'flex', flexDirection: 'row'}}>
+        <div id='wrapper' style={{display: 'flex', flexDirection: 'row'}}>
 
-          <div id='detailsContainer' style={{margin: 'auto', display: 'flex'}}>
+          <div id='detailsContainer' style={{display: 'flex'}}>
 
             <div id='detailsPoster' style={{display: 'flex', flex: 0.33}}>
               {this.state.mediaType === 'person' ?
@@ -418,7 +427,7 @@ class Details extends Component {
 
             {/* DO THIS FOR MOVIES OR TV SHOWS */}
             {this.state.mediaType !== 'person' ?
-              <div style={{display: 'flex', flex: 0.67, justifyContent: 'center', padding: 40, flexDirection: 'column'}}>
+              <div className='detailsOverview'>
                 <div id='ratingsContainer' style={{display: 'flex'}}>
                   {this.state.mediaType === 'tv' &&
                     // basically check if tv show or movie since tv show uses 'name' and movie uses 'title'
@@ -446,7 +455,9 @@ class Details extends Component {
                 }
                 
                 {movie.overview.length > 300 ?
-                  <p id='description' style={{color: 'white'}}>{movie.overview.substring(0, 300) + '...'}</p> :
+                  <div>
+                    <p id='description' style={{color: 'white'}}>{movie.overview.substring(0, 300) + '... '}<Button onClick={this.clickDescription}>Read more</Button></p>
+                  </div> :
                   <p id='description' style={{color: 'white'}}>{movie.overview}</p>
                 }
                 
@@ -486,14 +497,17 @@ class Details extends Component {
                 }
               </div>:
               // DO THIS FOR PEOPLE
-              <div style={{display: 'flex', flex: 0.67, justifyContent: 'center', padding: 40, flexDirection: 'column'}}>
+              <div style={{display: 'flex', flex: 0.67, padding: 40, flexDirection: 'column'}}>
                 <div style={{display: 'flex', flexDirection: 'row'}}>
                   <p style={{color: 'white', fontSize: '3vh'}}>{actor.name}</p>
                 </div>
 
                 {/* <p style={{color: 'white', fontSize: '2vh'}}>{actor.biography}</p> */}
                 {actor.biography !== undefined && actor.biography.length > 300 ?
-                  <p id='description' style={{color: 'white'}}>{actor.biography.substring(0, 300) + '...'}</p> :
+                  <div>
+                    <p id='description' style={{color: 'white'}}>{actor.biography.substring(0, 300) + '... '}<Button onClick={this.clickDescription}>Read more</Button></p>
+                    
+                  </div> :
                   <p id='description' style={{color: 'white'}}>{actor.biography}</p>
                 }
 
@@ -507,6 +521,50 @@ class Details extends Component {
                 </div>
               </div>
             }
+            <Modal
+              {...this.props}
+              size="lg"
+              aria-labelledby="contained-modal-title-vcenter"
+              centered
+              show={this.state.showDescription}
+              onHide={this.clickDescription}
+            >
+              <Modal.Header closeButton style={{backgroundColor: '#393f4c', color: 'white'}}>
+                {this.state.mediaType === 'movie' ?
+                  <Modal.Title id="contained-modal-title-vcenter">
+                    {this.state.movie.title}
+                  </Modal.Title>
+                  :
+                  <Modal.Title id="contained-modal-title-vcenter">
+                    {this.state.movie.name}
+                  </Modal.Title>
+                }
+              </Modal.Header>
+              <Modal.Body style={{backgroundColor: '#393f4c', color: 'white'}}>
+                {this.state.mediaType === 'person' ?
+                  <div>
+                    <h4>Biography</h4>
+                    <p>{this.state.movie.biography}</p>
+                  </div>:
+                  <div>
+                    <h4>Overview</h4>
+                    <p>{this.state.movie.overview}</p>
+                  </div>
+                }
+                
+              </Modal.Body>
+              {/* <Modal.Footer>
+                <Button onClick={this.clickDescription}>Close</Button>
+              </Modal.Footer> */}
+            </Modal>
+              {/* <Alert dismissible variant="danger">
+                <Alert.Heading>Oh snap! You got an error!</Alert.Heading>
+                <p>
+                  Change this and that and try again. Duis mollis, est non commodo luctus,
+                  nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis
+                  consectetur purus sit amet fermentum.
+                </p>
+              </Alert> */}
           </div>
         </div>
       </div>

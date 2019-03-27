@@ -37,6 +37,7 @@ class Movies extends Component {
       if(path[1].substring(0, 6) === 'search') {
         this.getMovies(decodeURIComponent(path[1].substring(7, path[1].length)))
         this.setState({title: 'Search'})
+        // document.getElementById('carousel').style.display('none')
       }
       else {
         this.getFeaturedMovies()
@@ -165,11 +166,13 @@ class Movies extends Component {
                 }
                 <p className="featuredMovieReleaseDate">({movie.release_date})</p> <br /> <br />
                 <p className="featuredMovieOverview">{movie.overview}</p>
+                <p className='featuredMovieOverview'>Credits: + {axios.get('https://api.themoviedb.org/3/movie/'+movieId+'/credits?api_key=' + TMDBKey).cast}</p>
             </Link>
           </div>
         )
       });
     }
+    // dynamically generate carousel items based on featured movies list
     var counter = 0
     var featuredCarousel = this.state.featuredMovies.map((movie) => {
       
@@ -180,14 +183,16 @@ class Movies extends Component {
       else {
         return (
           <Carousel.Item>
-            <img 
-              src={'https://image.tmdb.org/t/p/original/' + movie.backdrop_path }
-              className="carouselImage" 
-              alt="First Slide"
-            />
+            <Link to={'/details/movie/' + movie.id + '/' + movie.title} style={{textDecoration: 'none'}} onClick={this.props.setMovie.bind(this, movie)}>
+              <img 
+                src={'https://image.tmdb.org/t/p/original/' + movie.backdrop_path }
+                className='carouselImage' 
+                alt='Movie Poster'
+              />
+            </Link>
             <Carousel.Caption className='carouselText'>
-              <h3>{movie.title}</h3>
-              <p>{movie.release_date}</p>
+              <p>{movie.title} <br />
+              ({movie.release_date})</p>
             </Carousel.Caption>
           </Carousel.Item>
         )
@@ -196,12 +201,15 @@ class Movies extends Component {
     // var titles = this.state.featuredMovies.map((movie) => movie.title)
     // console.log('first movie: ' + this.state.featuredMovies[0].title)
     return (
-      <div className="App">
-        <h1 className="header">{this.state.title}</h1>
+      <div className='App'>
+        <h1 className='header' id='header'>{this.state.title}</h1>
 
-        <Carousel className='carouselFeatured'>
-          {featuredCarousel}
-        </Carousel>
+        {this.state.title !== 'Search' && 
+          <Carousel className='carouselFeatured' id='carousel'>
+            {featuredCarousel}
+          </Carousel>
+        }
+        
 
         <br></br>
         <div id="wrapper">

@@ -1,19 +1,22 @@
+@import url('https://fonts.googleapis.com/css?family=VT323');
+
 body {
   /* background-color: #282c34; */
   background-color: #343A40;
 }
 
 .App {
-  text-align: center;
+  /* text-align: center; */
   /* margin-top: 75px; */
   width: 65%;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 7vh;
+  margin-top: 75px;
+  margin-bottom: 20px;
 }
 /* Whole page content, adjust this to change where it's all centered */
 #wrapper {
-  min-height: 98vh;
+  min-height: 80vh;
   background-color: #282c34;
   padding: 15px;
   box-shadow: 0px 5px 5px 10px;
@@ -21,22 +24,24 @@ body {
   border-radius: 5px;
 }
 .carouselImage {
-  width: 1000px;
+  width: 100%;
   height: auto;
 }
 .carouselFeatured {
   margin: 20px 0px;
   box-shadow: 0px 0px 5px 2px;
   background-color: #282c34;
+  text-align: center;
 }
 .carouselText {
   color: #4286f4;
   background-color: #282c34;
   border-radius: 500px;
+  font-size: 1.3vw;
   border: 2px solid #4286f4;
-  width: 300px;
+  min-width: 50%;
   padding: 0px;
-
+  text-align: center;
   font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
 }
 .featuredMovieContainer {
@@ -104,11 +109,12 @@ body {
   background-color: #393f4c;
   border-radius: 5px;
   padding: 5px 0px;
+  margin-bottom: 20px;
   box-shadow: 0px 0px 0px 2px;
-
   font-size: 4vh;
-
-  font-family: 'Courier New', Courier, monospace
+  text-align: center;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  /* font-family: 'VT323', monospace; */
 }
 /* This determines the layout of the posters and their titles.
   currently set to arrange them to wrap */
@@ -172,7 +178,46 @@ body {
   color: white;
 }
 
+.close {
+  color: white;
+}
 
+.close:hover {
+  color: grey;
+}
+
+.navbar {
+  background-color: #282c34;
+  /* border-bottom: 1px solid #282c34; */
+}
+.navbarLink {
+  color: grey;
+}
+
+.navbarLink:hover {
+  color: #4286f4;
+}
+.navbarlink:active {
+  color: #4286f4;
+  }
+#searchButton {
+  color: #4286f4;
+
+  border: 2px solid#4286f4;
+}
+
+#searchButton:hover {
+  background-color: #4286f4;
+  color: white;
+}
+
+.detailsOverview {
+  display: 'flex'; 
+  flex: 0.67;
+  padding: 40; 
+  flex-direction: 'column'; 
+  width: 500px;
+}
 
 
 
@@ -235,7 +280,8 @@ body {
 
   #detailsContainer {
     flex-direction: row;
-    width: 70%;
+    width: 100%;
+    margin: 0;
   }
   
   #ratingsContainer {
@@ -257,7 +303,7 @@ body {
   }
 
   #slider {
-    width: 45vw;
+    width: 40vw;
     height: 30vh;
   }
 
