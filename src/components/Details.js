@@ -145,6 +145,8 @@ class Details extends Component {
     //   this.setState({searchResults: foundVideos});
       
     // }
+
+     
     
 
       let title = '';
@@ -161,7 +163,10 @@ class Details extends Component {
         this.setState({searchResults: search});
       })
   
-    
+      // send list of video ids to the server
+      // MORE SOCKET STUFF, UNCOMMENT TO USE
+      // var r = [this.state.searchResults.map(result => {return result.id.videoId})];
+      // this.state.socket.emit('saveToDb', { id: id, video_id_array: r });
   }
 
   clickCast() {
@@ -372,15 +377,6 @@ class Details extends Component {
       )
     })
 
-     
-    // send list of video ids to the server
-    // MORE SOCKET STUFF, UNCOMMENT TO USE
-    
-    // var r = [this.state.searchResults.map(result => {return result.id.videoId})];
-    // this.state.socket.emit('saveToDb', { id: this.state.movie_id, video_id_array: r });
-
-
-    
 
     var resultSettings = {
       dots: true,

@@ -10,9 +10,6 @@ body {
   margin-left: auto;
   margin-right: auto;
   margin-top: 7vh;
-
-  /* background-color: #282c34; */
-  
 }
 /* Whole page content, adjust this to change where it's all centered */
 #wrapper {
@@ -71,8 +68,8 @@ body {
   font-size: 0.8em;
 }
 .featuredMovieOverview {
-text-align: left;
-color: white;
+  text-align: left;
+  color: white;
 }
 
 
