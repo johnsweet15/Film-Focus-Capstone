@@ -192,7 +192,7 @@ class Movies extends Component {
             </Link>
             <Carousel.Caption className='carouselText'>
               <p>{movie.title} <br />
-              ({movie.release_date})</p>
+              ({movie.release_date.substring(0,4)})</p>
             </Carousel.Caption>
           </Carousel.Item>
         )
