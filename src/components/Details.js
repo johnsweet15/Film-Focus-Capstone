@@ -5,6 +5,7 @@ import Videos from "./Videos";
 import { ToggleButton, ToggleButtonGroup, ButtonToolbar, Modal, Button, Carousel } from 'react-bootstrap'
 import {OMDBKey, TMDBKey, YouTubeKey} from '../config.js'
 import { Link } from 'react-router-dom';
+// import { S_IFDIR } from 'constants';
 
 // import io from 'socket.io-client';
  
@@ -274,30 +275,64 @@ class Details extends Component {
         else {
           poster = 'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + actor.profile_path;
         }
-
         return (
           <div>
-            <Link style={{textDecoration: 'none'}} to={'/details/person/' + actor.id + '/' + actor.name} onClick={this.props.changeToActor.bind(this, actor.id)} >
-              <div style={{padding: 3}}>
-                {/* force height to 15vw for null posters */}
-                <img style={{width: '8vw', height:'12vw', alignSelf: 'center'}} src={poster} alt='' />
-                <p style={{color: 'white', fontSize: '1.5vh', maxWidth: '10vw'}}>{actor.name}</p>
-                <p style={{color: '#d3d3d3', fontSize: '1.2vh', maxWidth: '10vw'}}>{actor.character}</p>
-              </div>
-            </Link>
-            {/* <Link style={{textDecoration: 'none'}} to={'/details/person/' + actor.id + '/' + actor.name} onClick={this.props.changeToActor.bind(this, actor.id)} >
-              <div style={{padding: 3}}>
-                force height to 15vw for null posters
-                <img style={{width: '8vw', height:'12vw', alignSelf: 'center'}} src={actor.profile_path} alt='' />
-                <p style={{color: 'white', fontSize: '1.5vh', maxWidth: '10vw'}}>{actor.name}</p>
-                <p style={{color: '#d3d3d3', fontSize: '1.2vh', maxWidth: '10vw'}}>{actor.character}</p>
-              </div>
-            </Link> */}
+            <div style={{display: 'flex', flexDirection: 'row'}}>
+              <Link style={{textDecoration: 'none'}} to={'/details/person/' + actor.id + '/' + actor.name} onClick={this.props.changeToActor.bind(this, actor.id)} >
+                <div style={{padding: 3}}>
+                  {/* force height to 15vw for null posters */}
+                  <img style={{width: '8vw', height:'12vw', alignSelf: 'center'}} src={poster} alt='' />
+                  <p style={{color: 'white', fontSize: '1.5vh', maxWidth: '10vw'}}>{actor.name}</p>
+                  <p style={{color: '#d3d3d3', fontSize: '1.2vh', maxWidth: '10vw'}}>{actor.character}</p>
+                </div>
+              </Link>
+            </div>
           </div>
           
         )
         
       })
+
+      // let index = 0
+      // this.state.cast.forEach((actor) => {
+      //   index += 1
+      //   if(index % 4 === 0) {
+      //     arr2.push(arr)
+      //     arr = []
+      //   }
+      //   else {
+      //     arr.push(actor)
+      //   }
+      // })
+
+      // console.log(arr)
+      // console.log(arr2)
+
+      // castList = arr2.map((a) => {
+      //   a.map((actor) => {
+      //     let poster = 'https://image.tmdb.org/t/p/w600_and_h900_bestv2';
+      //     if(actor.profile_path === null) {
+      //       poster = 'https://www.classicposters.com/images/nopicture.gif';
+      //     }
+      //     else {
+      //       poster = 'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + actor.profile_path;
+      //     }
+      //     return (
+      //       <div>
+      //         <div style={{display: 'flex', flexDirection: 'row'}}>
+      //           <Link style={{textDecoration: 'none'}} to={'/details/person/' + actor.id + '/' + actor.name} onClick={this.props.changeToActor.bind(this, actor.id)} >
+      //             <div style={{padding: 3}}>
+      //               {/* force height to 15vw for null posters */}
+      //               <img style={{width: '8vw', height:'12vw', alignSelf: 'center'}} src={poster} alt='' />
+      //               <p style={{color: 'white', fontSize: '1.5vh', maxWidth: '10vw'}}>{actor.name}</p>
+      //               <p style={{color: '#d3d3d3', fontSize: '1.2vh', maxWidth: '10vw'}}>{actor.character}</p>
+      //             </div>
+      //           </Link>
+      //         </div>
+      //       </div>
+      //     )
+      //   })
+      // })
 
       // list of ratings for render
       ratingsList = this.state.ratings.map(rating => {
@@ -418,16 +453,11 @@ class Details extends Component {
         )
       })
     }
-    
-    // modal close button
-    const closeBtn = <button type="button" class="close" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>;
 
     // list of videos for render
     let resultList = this.state.searchResults.map(result => {
       return (
-        <div style={{color: 'white'}}>
+        <div style={{color: 'white', textAlign: 'center'}}>
           <p style={{color: 'white'}}>{result.snippet.channelTitle}</p>
           <Videos id={result.id.videoId} />
         </div>
@@ -635,23 +665,6 @@ class Details extends Component {
       </div>
       
     );
-  }
-}
-
-const styles = {
-  main: {
-    color: '#4286f4'
-  },
-
-  header: {
-    backgroundColor: '#282c34',
-    fontSize: '5vh',
-    margin: 0,
-    padding: 40
-  },
-
-  castImage: {
-    width: '10%'
   }
 }
 
