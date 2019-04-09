@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter, Route, Redirect } from 'react-router-dom';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import './index.css';
@@ -12,7 +12,8 @@ import * as serviceWorker from './serviceWorker';
 ReactDOM.render(
   <BrowserRouter>
     <div>
-      <Route path="/" component={App} />
+      <Route component={App} />
+      {/* <Redirect from='' to='/home' /> */}
     </div>
   </BrowserRouter>, 
   document.getElementById('root')

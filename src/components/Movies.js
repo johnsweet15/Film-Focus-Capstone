@@ -151,6 +151,12 @@ class Movies extends Component {
         let movieId = movie.id;
         let movieTitle = movie.title;
         console.log(movie);
+        let newMovie = axios.get('https://api.themoviedb.org/3/movie/'+movieId+'/credits?api_key=' + TMDBKey)
+        // let castList = newMovie.map((person) => {
+        //   return (
+        //     <p>{person.name}</p>
+        //   )
+        // })
         return (
           // Featured movies
           <div className="featuredMovieContainer">
@@ -166,7 +172,7 @@ class Movies extends Component {
                 }
                 <p className="featuredMovieReleaseDate">({movie.release_date})</p> <br /> <br />
                 <p className="featuredMovieOverview">{movie.overview}</p>
-                <p className='featuredMovieOverview'>Credits: + {axios.get('https://api.themoviedb.org/3/movie/'+movieId+'/credits?api_key=' + TMDBKey).cast}</p>
+                {/* <p className='featuredMovieOverview'>Credits: {castList}</p> */}
             </Link>
           </div>
         )
@@ -198,8 +204,7 @@ class Movies extends Component {
         )
       }
     })
-    // var titles = this.state.featuredMovies.map((movie) => movie.title)
-    // console.log('first movie: ' + this.state.featuredMovies[0].title)
+
     return (
       <div className='App'>
         <h1 className='header' id='header'>{this.state.title}</h1>

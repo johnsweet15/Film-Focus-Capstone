@@ -96,6 +96,10 @@ body {
   white-space: nowrap;
 }
 
+.modal-content {
+  width: auto;
+}
+
 .form {
   font-size: calc(2px + 1.5vmin);
   background-color: #393f4c;
@@ -243,6 +247,7 @@ body {
   #detailsContainer {
     flex-direction: column;
     align-items: center;
+    width: 100%;
   }
 
   #ratingsContainer {
@@ -270,6 +275,12 @@ body {
 
   #searchButton {
     display: none;
+  }
+  .detailsOverview {
+    width: 100%;
+  }
+  .App {
+    width: 80%;
   }
 }
 

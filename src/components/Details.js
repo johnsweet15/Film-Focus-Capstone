@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import Slider from 'react-slick';
 import Videos from "./Videos";
-import { ToggleButton, ToggleButtonGroup, ButtonToolbar, Modal, Button, Alert } from 'react-bootstrap'
+import { ToggleButton, ToggleButtonGroup, ButtonToolbar, Modal, Button, Carousel } from 'react-bootstrap'
 import {OMDBKey, TMDBKey, YouTubeKey} from '../config.js'
 import { Link } from 'react-router-dom';
 
@@ -34,16 +34,18 @@ class Details extends Component {
       searchResults: [],
       showReviews: false,
       actor: {},
-      trailer: '',
-      mediaType: this.props.movie.media_type,
+      trailers: [],
+      mediaType: null,
       search: this.props.search,
       // socket: socket,
       movie_id: '',
-      showDescription: false
+      showDescription: false,
+      showPoster: false
     }
     this.clickCast = this.clickCast.bind(this);
     this.clickReviews = this.clickReviews.bind(this);
     this.clickDescription = this.clickDescription.bind(this);
+    this.clickPoster = this.clickPoster.bind(this);
   }
 
   componentDidMount() {
@@ -53,15 +55,15 @@ class Details extends Component {
     this.getDetailsById(url[3], url[2]);
     console.log(this.props.location)
 
-    this.getReviews(this.props.movie, url[3]);
+    // this.getReviews(this.props.movie, url[3]);
   }
 
   componentDidUpdate(prevProps) {
     // if (this.props.movie !== prevProps.movie) {
     //   this.getDetails(this.props.movie);
     // }
+    var url = this.props.location.pathname.split('/');
     if(this.props.location !== prevProps.location) {
-      var url = this.props.location.pathname.split('/');
       console.log('log: ' + url[3] + ',' + url[2])
       if(url[1] === 'home') {
         this.props.setMovie.bind(this, null)
@@ -76,10 +78,13 @@ class Details extends Component {
       }
       // this.state.movie.updated = undefined;
       // this.forceUpdate();
+
+      
     }
   }
 
   getDetailsById(id, mediaType) {
+    var url = this.props.location.pathname.split('/');
     this.setState({movie_id: id});
 
     this.setState({mediaType: mediaType})
@@ -92,7 +97,7 @@ class Details extends Component {
       // needed to check if state has been updated in render()
       result.updated = true;
 
-      this.setState({movie: result}, this.getRatings(result));
+      this.setState({movie: result}, this.getRatings(result), this.getReviews(result, url[3]));
     })
 
     // get cast
@@ -114,6 +119,12 @@ class Details extends Component {
       this.setState({cast: cast});
     })
     }
+
+    // var url = this.props.location.pathname.split('/');
+
+    // this.getReviews(this.state.movie, url[3]);
+
+    // this.getTrailers(id)
   }
  
   getRatings(movie) {
@@ -152,15 +163,17 @@ class Details extends Component {
     
 
       let title = '';
-      if(movie.media_type === 'movie') {
+      if(this.state.mediaType === 'movie') {
         title = movie.title;
       }
       else {
         title = movie.name
       }
-      axios.get('https://www.googleapis.com/youtube/v3/search?q='+ title + ' ' + movie.media_type + ' review&key=' + YouTubeKey + '&maxResults=5&part=snippet')
+      axios.get('https://www.googleapis.com/youtube/v3/search?q='+ title + ' ' + this.state.mediaType + ' review&key=' + YouTubeKey + '&maxResults=5&part=snippet')
       .then((response) => {
         let search = response.data.items;
+
+        console.log('searchResults: ' + search)
 
         this.setState({searchResults: search});
       })
@@ -169,6 +182,19 @@ class Details extends Component {
       // MORE SOCKET STUFF, UNCOMMENT TO USE
       // var r = [this.state.searchResults.map(result => {return result.id.videoId})];
       // this.state.socket.emit('saveToDb', { id: id, video_id_array: r });
+  }
+
+  getTrailers(id) {
+    axios.get('https://api.themoviedb.org/3/movie/' + id + '/videos?api_key=' + TMDBKey + '&language=en-US')
+    .then((response) => { 
+      // get trailer objects
+      let videos = response.data.results
+
+      // get just the key for youtube url
+      let keys = videos.map((video) => video.key)
+
+      this.setState({trailers: keys})
+    })
   }
 
   clickCast() {
@@ -181,17 +207,27 @@ class Details extends Component {
       console.log('getting reviews for the first time');
     }
     this.setState({showReviews: true});
+    this.forceUpdate();
   }
 
   clickDescription() {
     this.setState({showDescription: !this.state.showDescription})
   }
 
+  clickPoster() {
+    this.setState({showPoster: !this.state.showPoster})
+  }
+
   render() {
+
     let movie = this.state.movie;
     let cast = this.state.cast;
     let ratings = this.state.ratings;
     let actor = this.state.movie;
+
+    if(movie === undefined || movie === null) {
+      return null
+    }
 
     console.log(this.state.mediaType)
 
@@ -230,7 +266,7 @@ class Details extends Component {
     let creditsList = [];
     if(this.state.mediaType !== 'person') {
       // list of cast members for render
-      castList = this.state.cast.map(actor => {
+      castList = this.state.cast.map((actor) => {
         let poster = 'https://image.tmdb.org/t/p/w600_and_h900_bestv2';
         if(actor.profile_path === null) {
           poster = 'https://www.classicposters.com/images/nopicture.gif';
@@ -238,17 +274,29 @@ class Details extends Component {
         else {
           poster = 'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + actor.profile_path;
         }
+
         return (
-          <Link style={{textDecoration: 'none'}} to={'/details/person/' + actor.id + '/' + actor.name} onClick={this.props.changeToActor.bind(this, actor.id)} >
-            <div style={{padding: 3}}>
-              {/* force height to 15vw for null posters */}
-              <img style={{width: '8vw', height:'12vw', alignSelf: 'center'}} src={poster} alt='' />
-              <p style={{color: 'white', fontSize: '1.5vh', maxWidth: '10vw'}}>{actor.name}</p>
-              <p style={{color: '#d3d3d3', fontSize: '1.2vh', maxWidth: '10vw'}}>{actor.character}</p>
-            </div>
-          </Link>
+          <div>
+            <Link style={{textDecoration: 'none'}} to={'/details/person/' + actor.id + '/' + actor.name} onClick={this.props.changeToActor.bind(this, actor.id)} >
+              <div style={{padding: 3}}>
+                {/* force height to 15vw for null posters */}
+                <img style={{width: '8vw', height:'12vw', alignSelf: 'center'}} src={poster} alt='' />
+                <p style={{color: 'white', fontSize: '1.5vh', maxWidth: '10vw'}}>{actor.name}</p>
+                <p style={{color: '#d3d3d3', fontSize: '1.2vh', maxWidth: '10vw'}}>{actor.character}</p>
+              </div>
+            </Link>
+            {/* <Link style={{textDecoration: 'none'}} to={'/details/person/' + actor.id + '/' + actor.name} onClick={this.props.changeToActor.bind(this, actor.id)} >
+              <div style={{padding: 3}}>
+                force height to 15vw for null posters
+                <img style={{width: '8vw', height:'12vw', alignSelf: 'center'}} src={actor.profile_path} alt='' />
+                <p style={{color: 'white', fontSize: '1.5vh', maxWidth: '10vw'}}>{actor.name}</p>
+                <p style={{color: '#d3d3d3', fontSize: '1.2vh', maxWidth: '10vw'}}>{actor.character}</p>
+              </div>
+            </Link> */}
+          </div>
           
         )
+        
       })
 
       // list of ratings for render
@@ -420,8 +468,8 @@ class Details extends Component {
 
             <div id='detailsPoster' style={{display: 'flex', flex: 0.33}}>
               {this.state.mediaType === 'person' ?
-                <img alt='' src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + movie.profile_path} /> :
-                <img alt='' src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + movie.poster_path} />
+                <img alt='' src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + movie.profile_path}  onClick={this.clickPoster} /> :
+                <img alt='' src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + movie.poster_path} onClick={this.clickPoster} />
               }
             </div>
 
@@ -476,9 +524,12 @@ class Details extends Component {
                   
                   <div id='slider' style={{margin: 0, padding: 10}}>
                     {resultList.length > 0 &&
-                      <Slider {...resultSettings}>
+                      // <Slider {...resultSettings}>
+                      //   {resultList}
+                      // </Slider>
+                      <Carousel>
                         {resultList}
-                      </Slider>
+                      </Carousel>
                     }
                   </div>
                 </div>
@@ -488,9 +539,12 @@ class Details extends Component {
                     
                     <div id='slider' style={{margin: 0, padding: 10}}>
                       {cast.length > 0 && this.state.mediaType !== 'person' &&
-                        <Slider {...castSettings}>
+                        // <Slider {...castSettings}>
+                        //   {castList}
+                        // </Slider>
+                        <Carousel>
                           {castList}
-                        </Slider>
+                        </Carousel>
                       }
                     </div>
                   </div>
@@ -521,6 +575,7 @@ class Details extends Component {
                 </div>
               </div>
             }
+            {/* Description modal */}
             <Modal
               {...this.props}
               size="lg"
@@ -553,18 +608,28 @@ class Details extends Component {
                 }
                 
               </Modal.Body>
-              {/* <Modal.Footer>
-                <Button onClick={this.clickDescription}>Close</Button>
-              </Modal.Footer> */}
             </Modal>
-              {/* <Alert dismissible variant="danger">
-                <Alert.Heading>Oh snap! You got an error!</Alert.Heading>
-                <p>
-                  Change this and that and try again. Duis mollis, est non commodo luctus,
-                  nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis
-                  consectetur purus sit amet fermentum.
-                </p>
-              </Alert> */}
+
+            {/* Poster modal */}
+
+            <Modal
+              {...this.props}
+              size="lg"
+              aria-labelledby="contained-modal-title-vcenter"
+              centered
+              show={this.state.showPoster}
+              onHide={this.clickPoster}
+            >
+              <Modal.Header closeButton style={{backgroundColor: '#393f4c', color: 'white'}}>
+              </Modal.Header>
+              <Modal.Body style={{backgroundColor: '#393f4c', color: 'white', maxHeight: '90vh'}}>
+                {this.state.mediaType === 'person' ?
+                  <img style={{maxHeight: '80vh', margin: 'auto'}} src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + this.state.movie.profile_path} />:
+                  <img style={{maxHeight: '80vh', margin: 'auto'}} src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + this.state.movie.poster_path} />
+                }
+                
+              </Modal.Body>
+            </Modal>
           </div>
         </div>
       </div>
