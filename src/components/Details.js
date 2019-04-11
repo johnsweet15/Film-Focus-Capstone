@@ -15,9 +15,6 @@ import { Link } from 'react-router-dom';
 // import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
 
-
-
-
 const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
 class Details extends Component {
@@ -459,7 +456,9 @@ class Details extends Component {
       return (
         <div style={{color: 'white', textAlign: 'center'}}>
           <p style={{color: 'white'}}>{result.snippet.channelTitle}</p>
-          <Videos id={result.id.videoId} />
+          <div style={{maxHeight: '100px'}}>
+            <Videos id={result.id.videoId} />
+          </div>
         </div>
       )
     })
@@ -477,7 +476,7 @@ class Details extends Component {
     };
 
     var castSettings = {
-      dots: true,
+      dots: false,
       infinite: true,
       speed: 500,
       slidesToShow: 4,
@@ -554,12 +553,12 @@ class Details extends Component {
                   
                   <div id='slider' style={{margin: 0, padding: 10}}>
                     {resultList.length > 0 &&
-                      // <Slider {...resultSettings}>
-                      //   {resultList}
-                      // </Slider>
-                      <Carousel>
+                      <Slider {...resultSettings}>
                         {resultList}
-                      </Carousel>
+                      </Slider>
+                      // <Carousel>
+                      //   {resultList}
+                      // </Carousel>
                     }
                   </div>
                 </div>
@@ -569,12 +568,12 @@ class Details extends Component {
                     
                     <div id='slider' style={{margin: 0, padding: 10}}>
                       {cast.length > 0 && this.state.mediaType !== 'person' &&
-                        // <Slider {...castSettings}>
-                        //   {castList}
-                        // </Slider>
-                        <Carousel>
+                        <Slider {...castSettings}>
                           {castList}
-                        </Carousel>
+                        </Slider>
+                        // <Carousel>
+                        //   {castList}
+                        // </Carousel>
                       }
                     </div>
                   </div>

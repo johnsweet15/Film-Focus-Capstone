@@ -18,14 +18,6 @@ function Error() {
   )
 }
 
-function About() {
-  return(
-    <div className='App'>
-      <h1 className='header' id='header'>About</h1>
-    </div>
-  )
-}
-
 class App extends Component {
 
   constructor(props) {

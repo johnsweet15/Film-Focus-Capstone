@@ -5,6 +5,30 @@ body {
   background-color: #343A40;
 }
 
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  /* height: 50px;
+  width: 50px;
+  background-size: 50%, 50%; */
+  border: none;
+  background-image: none;
+}
+
+.carousel-control-next-icon:after
+{
+  content: '>';
+  font-size: 27px;
+  color: white;
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
+
+.carousel-control-prev-icon:after {
+  content: '<';
+  font-size: 27px;
+  color: white;
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
+
 .App {
   /* text-align: center; */
   /* margin-top: 75px; */
@@ -277,9 +301,11 @@ body {
   #searchButton {
     display: none;
   }
+
   .detailsOverview {
     width: 100%;
   }
+
   .App {
     width: 80%;
   }

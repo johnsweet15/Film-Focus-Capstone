@@ -14,7 +14,7 @@ class Movies extends Component {
       text: '',
       featuredMovies: [],
       search: this.props.search,
-      title: 'Featured Movies'
+      title: 'Film Focus'
     };
   }
 
