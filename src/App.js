@@ -167,10 +167,11 @@ class App extends Component {
         {/* THIS BREAKS THE ROUTER FOR SOME GOD FORSAKEN REASON */}
         {/* {this.state.showError &&
           <Error />
-        }
+        } */}
+        
         {this.state.showAbout &&
           <About />
-        } */}
+        }
 
         { (!this.state.showError && !this.state.showAbout) &&
           // if no movie is selected, then null -> shows featured or search list
