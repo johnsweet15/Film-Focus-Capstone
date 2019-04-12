@@ -4,6 +4,8 @@ import axios from 'axios';
 import Carousel from 'react-bootstrap/Carousel';
 const TMDBKey = 'c794333156e1c095f41f92e128c002df';
 
+const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
 class Movies extends Component {
 
   constructor(props) {
@@ -137,7 +139,14 @@ class Movies extends Component {
                 { name.length <=50 &&
                   <p className="searchResultTitle">{name}</p>
                 }
-                <p className="searchResultDate">{movie.release_date}</p> <br /> <br />
+                {movie.release_date !== undefined &&
+                  <div>
+                    <p className="searchResultDate">{months[parseInt(movie.release_date.substring(5,7)) - 1] + ' ' + movie.release_date.substring(8) + ', ' + movie.release_date.substring(0,4)}</p>
+                  </div>
+                }
+                <br></br>
+                <br></br>
+                {/* <p className="searchResultDate">{movie.release_date}</p> <br /> <br /> */}
                 <p className="searchResultOverview">{movie.overview}</p>
             </Link>
           </div>
@@ -170,7 +179,13 @@ class Movies extends Component {
                 { movie.title.length <=50 &&
                   <p className="featuredMovieTitle">{movie.title}</p>
                 }
-                <p className="featuredMovieReleaseDate">({movie.release_date})</p> <br /> <br />
+                {movie.release_date !== undefined &&
+                  <div>
+                    <p className="featuredMovieReleaseDate">({months[parseInt(movie.release_date.substring(5,7)) - 1] + ' ' + movie.release_date.substring(8) + ', ' + movie.release_date.substring(0,4)})</p>
+                  </div>
+                }
+                <br></br>
+                <br></br>
                 <p className="featuredMovieOverview">{movie.overview}</p>
                 {/* <p className='featuredMovieOverview'>Credits: {castList}</p> */}
             </Link>

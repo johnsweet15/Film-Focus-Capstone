@@ -5,7 +5,7 @@ import './App.css';
 import Movies from './components/Movies'
 import Details from './components/Details'
 import Navigation from './components/Navigation'
-// import About from './components/About'
+import About from './components/About'
 import { TMDBKey } from './config';
 
 // const APIKey = 'a6793cf9';
@@ -164,7 +164,15 @@ class App extends Component {
         {/* <Redirect to="/home" /> */}
         <Navigation {...this.props} setSearch={this.setSearch} />
 
-        { this.state.showError === false && this.state.showAbout === false ?
+        {/* THIS BREAKS THE ROUTER FOR SOME GOD FORSAKEN REASON */}
+        {/* {this.state.showError &&
+          <Error />
+        }
+        {this.state.showAbout &&
+          <About />
+        } */}
+
+        { (!this.state.showError && !this.state.showAbout) &&
           // if no movie is selected, then null -> shows featured or search list
           // else, then not null -> shows details for movie selected (gets movie info from app.js state which gets from setMovie which gets from movies.js lines 100 or 120)
           <Route path='/' render={(props) => (this.state.showMovies === true || this.state.showSearch === true) ?
@@ -177,8 +185,7 @@ class App extends Component {
               {/* <Navigation {...props} setSearch={this.setSearch} /> */}
               <Details {...props} movie={this.state.movie} changeToMovie={this.changeToMovie} changeToActor={this.changeToActor} setMovie={this.setMovie} search={this.state.search} showSearch={this.state.showSearch} setSearch={this.setSearch} />
             </div>
-          } />:
-          <Error />
+          } />
           // <div>
           //   <About {...this.props} setSearch={this.setSearch} search={this.state.se} />
           //   <Redirect to='/about' />

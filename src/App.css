@@ -217,6 +217,7 @@ body {
 
 .navbar {
   background-color: #282c34;
+  box-shadow: 0px 10px 5px;
   /* border-bottom: 1px solid #282c34; */
 }
 .navbarLink {

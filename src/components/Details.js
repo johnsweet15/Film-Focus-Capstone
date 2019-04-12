@@ -201,14 +201,20 @@ class Details extends Component {
 
   getTrailers(keys) {
     console.log('keys: ' + keys[0])
-    axios.get('https://www.googleapis.com/youtube/v3/videos?id=' + keys + '&key=' + YouTubeKey + '&part=snippet,statistics')
-    .then((response) => {
-      let trailers = response.data.items;
-
-      trailers.sort((a, b) => b.statistics.viewCount - a.statistics.viewCount);
-
-      this.setState({trailers: trailers})
-    })
+    if(this.state.trailers.length === 0) {
+      axios.get('https://www.googleapis.com/youtube/v3/videos?id=' + keys + '&key=' + YouTubeKey + '&part=snippet,statistics')
+      .then((response) => {
+        let trailers = response.data.items;
+  
+        // sort trailers by view count
+        trailers.sort((a, b) => b.statistics.viewCount - a.statistics.viewCount);
+  
+        // limit to 5 trailers to prevent long loading time
+        trailers = trailers.slice(0, 5)
+  
+        this.setState({trailers: trailers})
+      })
+    }
   }
 
   clickCast() {
