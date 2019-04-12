@@ -31,6 +31,7 @@ class Details extends Component {
       ratings: [],
       searchResults: [],
       showReviews: false,
+      showCast: true,
       actor: {},
       trailers: [],
       mediaType: null,
@@ -38,10 +39,12 @@ class Details extends Component {
       // socket: socket,
       movie_id: '',
       showDescription: false,
-      showPoster: false
+      showPoster: false,
+      showTrailers: false
     }
     this.clickCast = this.clickCast.bind(this);
     this.clickReviews = this.clickReviews.bind(this);
+    this.clickTrailers = this.clickTrailers.bind(this)
     this.clickDescription = this.clickDescription.bind(this);
     this.clickPoster = this.clickPoster.bind(this);
   }
@@ -122,7 +125,7 @@ class Details extends Component {
 
     // this.getReviews(this.state.movie, url[3]);
 
-    // this.getTrailers(id)
+    this.getTrailerKeys(id)
   }
  
   getRatings(movie) {
@@ -182,21 +185,36 @@ class Details extends Component {
       // this.state.socket.emit('saveToDb', { id: id, video_id_array: r });
   }
 
-  getTrailers(id) {
+  getTrailerKeys(id) {
     axios.get('https://api.themoviedb.org/3/movie/' + id + '/videos?api_key=' + TMDBKey + '&language=en-US')
     .then((response) => { 
       // get trailer objects
       let videos = response.data.results
 
-      // get just the key for youtube url
-      let keys = videos.map((video) => video.key)
+      let keys = videos
+        .filter(video => video.type === 'Trailer')
+        .map((video) => video.key)
 
-      this.setState({trailers: keys})
+      this.getTrailers(keys)
+    })
+  }
+
+  getTrailers(keys) {
+    console.log('keys: ' + keys[0])
+    axios.get('https://www.googleapis.com/youtube/v3/videos?id=' + keys + '&key=' + YouTubeKey + '&part=snippet')
+    .then((response) => {
+      let trailers = response.data.items;
+
+      this.setState({trailers: trailers})
     })
   }
 
   clickCast() {
-    this.setState({showReviews: false});
+    this.setState({
+      showCast: true,
+      showReviews: false,
+      showTrailers: false
+    });
   }
   clickReviews() {
     //if the search results are empty, call youtube api
@@ -204,8 +222,20 @@ class Details extends Component {
       //this.getReviews(this.props.movie);
       console.log('getting reviews for the first time');
     }
-    this.setState({showReviews: true});
+    this.setState({
+      showCast: false,
+      showReviews: true,
+      showTrailers: false
+    });
     this.forceUpdate();
+  }
+
+  clickTrailers() {
+    this.setState({
+      showCast: false,
+      showReviews: false,
+      showTrailers: true
+    })
   }
 
   clickDescription() {
@@ -289,47 +319,6 @@ class Details extends Component {
         )
         
       })
-
-      // let index = 0
-      // this.state.cast.forEach((actor) => {
-      //   index += 1
-      //   if(index % 4 === 0) {
-      //     arr2.push(arr)
-      //     arr = []
-      //   }
-      //   else {
-      //     arr.push(actor)
-      //   }
-      // })
-
-      // console.log(arr)
-      // console.log(arr2)
-
-      // castList = arr2.map((a) => {
-      //   a.map((actor) => {
-      //     let poster = 'https://image.tmdb.org/t/p/w600_and_h900_bestv2';
-      //     if(actor.profile_path === null) {
-      //       poster = 'https://www.classicposters.com/images/nopicture.gif';
-      //     }
-      //     else {
-      //       poster = 'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + actor.profile_path;
-      //     }
-      //     return (
-      //       <div>
-      //         <div style={{display: 'flex', flexDirection: 'row'}}>
-      //           <Link style={{textDecoration: 'none'}} to={'/details/person/' + actor.id + '/' + actor.name} onClick={this.props.changeToActor.bind(this, actor.id)} >
-      //             <div style={{padding: 3}}>
-      //               {/* force height to 15vw for null posters */}
-      //               <img style={{width: '8vw', height:'12vw', alignSelf: 'center'}} src={poster} alt='' />
-      //               <p style={{color: 'white', fontSize: '1.5vh', maxWidth: '10vw'}}>{actor.name}</p>
-      //               <p style={{color: '#d3d3d3', fontSize: '1.2vh', maxWidth: '10vw'}}>{actor.character}</p>
-      //             </div>
-      //           </Link>
-      //         </div>
-      //       </div>
-      //     )
-      //   })
-      // })
 
       // list of ratings for render
       ratingsList = this.state.ratings.map(rating => {
@@ -463,6 +452,17 @@ class Details extends Component {
       )
     })
 
+    let trailerList = this.state.trailers.map(trailer => {
+      return (
+        <div style={{color: 'white', textAlign: 'center'}}>
+          <p style={{color: 'white'}}>{trailer.snippet.channelTitle}</p>
+          <div style={{maxHeight: '100px'}}>
+            <Videos id={trailer.id} />
+          </div>
+        </div>
+      )
+    })
+
 
     var resultSettings = {
       dots: true,
@@ -545,6 +545,7 @@ class Details extends Component {
                   <ToggleButtonGroup type="radio" name="options" defaultValue={1}>
                     <ToggleButton value={1} variant="secondary" onClick={this.clickCast}>Cast</ToggleButton>
                     <ToggleButton value={2} variant="secondary" onClick={this.clickReviews}>Reviews</ToggleButton>
+                    <ToggleButton value={3} variant="secondary" onClick={this.clickTrailers}>Trailers</ToggleButton>
                   </ToggleButtonGroup>
                 </ButtonToolbar>
 
@@ -563,7 +564,7 @@ class Details extends Component {
                   </div>
                 </div>
                 }
-                {!this.state.showReviews &&
+                {this.state.showCast &&
                   <div style={{width: '100%', padding: 5}}>
                     
                     <div id='slider' style={{margin: 0, padding: 10}}>
@@ -571,9 +572,18 @@ class Details extends Component {
                         <Slider {...castSettings}>
                           {castList}
                         </Slider>
-                        // <Carousel>
-                        //   {castList}
-                        // </Carousel>
+                      }
+                    </div>
+                  </div>
+                }
+                {this.state.showTrailers &&
+                  <div style={{width: '100%', padding: 5}}>
+                    
+                    <div id='slider' style={{margin: 0, padding: 10}}>
+                      {cast.length > 0 && this.state.mediaType !== 'person' &&
+                        <Slider {...resultSettings}>
+                          {trailerList}
+                        </Slider>
                       }
                     </div>
                   </div>
@@ -604,6 +614,9 @@ class Details extends Component {
                 </div>
               </div>
             }
+            {/* <Slider {...resultSettings}>
+              {trailerList}
+            </Slider> */}
             {/* Description modal */}
             <Modal
               {...this.props}
