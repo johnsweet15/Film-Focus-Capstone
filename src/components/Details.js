@@ -192,7 +192,7 @@ class Details extends Component {
       let videos = response.data.results
 
       let keys = videos
-        .filter(video => video.type === 'Trailer')
+        .filter(video => video.type === 'Trailer' || video.type === 'Teaser')
         .map((video) => video.key)
 
       this.getTrailers(keys)
@@ -201,9 +201,11 @@ class Details extends Component {
 
   getTrailers(keys) {
     console.log('keys: ' + keys[0])
-    axios.get('https://www.googleapis.com/youtube/v3/videos?id=' + keys + '&key=' + YouTubeKey + '&part=snippet')
+    axios.get('https://www.googleapis.com/youtube/v3/videos?id=' + keys + '&key=' + YouTubeKey + '&part=snippet,statistics')
     .then((response) => {
       let trailers = response.data.items;
+
+      trailers.sort((a, b) => b.statistics.viewCount - a.statistics.viewCount);
 
       this.setState({trailers: trailers})
     })
@@ -545,7 +547,9 @@ class Details extends Component {
                   <ToggleButtonGroup type="radio" name="options" defaultValue={1}>
                     <ToggleButton value={1} variant="secondary" onClick={this.clickCast}>Cast</ToggleButton>
                     <ToggleButton value={2} variant="secondary" onClick={this.clickReviews}>Reviews</ToggleButton>
-                    <ToggleButton value={3} variant="secondary" onClick={this.clickTrailers}>Trailers</ToggleButton>
+                    {this.state.trailers.length > 0 &&
+                      <ToggleButton value={3} variant="secondary" onClick={this.clickTrailers}>Trailers</ToggleButton>
+                    }
                   </ToggleButtonGroup>
                 </ButtonToolbar>
 
@@ -584,6 +588,9 @@ class Details extends Component {
                         <Slider {...resultSettings}>
                           {trailerList}
                         </Slider>
+                        // <Carousel {...resultSettings}>
+                        //   {trailerList}
+                        // </Carousel>
                       }
                     </div>
                   </div>
