@@ -1,5 +1,10 @@
 import React from 'react';
 import { Navbar, Nav, Form, Button, FormControl } from 'react-bootstrap'
+import { Link, Route } from 'react-router-dom'
+import Movies from './Movies'
+import About from './About'
+
+
 
 class Navigation extends React.Component {
 
@@ -23,8 +28,8 @@ class Navigation extends React.Component {
       <Navbar fixed="top" className='navbar'>
         <Navbar.Brand href="/home"><div className='navbarLink' style={{color: '#4286f4'}}>Film Focus</div></Navbar.Brand>
         <Nav className="mr-auto">
-          <Nav.Link href="/home"><div className='navbarLink'>Home</div></Nav.Link>
-          <Nav.Link href="/about"><div className='navbarLink'>About</div></Nav.Link>
+          <Nav.Link href="/home"><div className='navbarLink'><Route path='/home'/>Home</div></Nav.Link>
+          <Nav.Link href="/about"><div className='navbarLink'><Route path='/about'/>About</div></Nav.Link>
         </Nav>
         <Form inline onSubmit={(event) => this.handleSubmit(event)} style={{display: 'flex', flexDirection: 'row', paddingLeft: 20}}>
           <FormControl type="text" placeholder="Search" className="mr-sm-2" onChange={(search) => this.setState({search: search.target.value})} style={{flex: '0.7'}} />

@@ -15,7 +15,7 @@ class Videos extends React.Component {
             width: '640',
             playerVars: {
                 autoplay: 0
-            }
+            },
         };
 
         return (
