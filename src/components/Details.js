@@ -573,23 +573,6 @@ class Details extends Component {
   }
 }
 
-const styles = {
-  main: {
-    color: '#4286f4'
-  },
-
-  header: {
-    backgroundColor: '#282c34',
-    fontSize: '5vh',
-    margin: 0,
-    padding: 40
-  },
-
-  castImage: {
-    width: '10%'
-  }
-}
-
 
 
 export default Details;

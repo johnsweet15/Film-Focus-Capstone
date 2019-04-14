@@ -14,7 +14,8 @@ class Movies extends Component {
       text: '',
       featuredMovies: [],
       search: this.props.search,
-      title: 'Featured Movies'
+      title: 'Featured Movies',
+      cast: ''
     };
   }
 
@@ -150,7 +151,11 @@ class Movies extends Component {
         let poster = 'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + movie.poster_path;
         let movieId = movie.id;
         let movieTitle = movie.title;
-        console.log(movie);
+        
+        // let cast = '';
+        // axios.get('https://api.themoviedb.org/3/movie/' + movieId + '/credits?api_key=' + TMDBKey)
+        // .then((response) => {cast = response.data.cast});
+        // console.log(cast);
         return (
           // Featured movies
           <div className="featuredMovieContainer">
@@ -164,9 +169,9 @@ class Movies extends Component {
                 { movie.title.length <=50 &&
                   <p className="featuredMovieTitle">{movie.title}</p>
                 }
-                <p className="featuredMovieReleaseDate">({movie.release_date})</p> <br /> <br />
-                <p className="featuredMovieOverview">{movie.overview}</p>
-                <p className='featuredMovieOverview'>Credits: + {axios.get('https://api.themoviedb.org/3/movie/'+movieId+'/credits?api_key=' + TMDBKey).cast}</p>
+                <p className="featuredMovieReleaseDate">({ movie.release_date })</p> <br /> <br />
+                <p className="featuredMovieOverview">{ movie.overview }</p>
+                <p className='featuredMovieOverview'>Credits: </p>
             </Link>
           </div>
         )
