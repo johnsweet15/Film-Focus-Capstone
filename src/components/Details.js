@@ -113,12 +113,12 @@ class Details extends Component {
     }
     else {
       axios.get('https://api.themoviedb.org/3/' + mediaType + '/' + id + '/credits?api_key=' + TMDBKey)
-    .then((response) => {
-      let cast = response.data.cast;
-      cast.id = id;
+      .then((response) => {
+        let cast = response.data.cast;
+        cast.id = id;
 
-      this.setState({cast: cast});
-    })
+        this.setState({cast: cast});
+      })
     }
 
     // var url = this.props.location.pathname.split('/');

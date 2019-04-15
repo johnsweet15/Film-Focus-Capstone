@@ -91,6 +91,16 @@ class Movies extends Component {
     });
   }
 
+  getCast(id) {
+    axios.get('https://api.themoviedb.org/3/movie/' + id + '/credits?api_key=' + TMDBKey)
+      .then((response) => {
+        let cast = response.data.cast;
+        cast.id = id;
+
+        this.setState({cast: cast});
+      })
+  }
+
   handleSubmit(event){
     // dont refresh
     event.preventDefault();
@@ -101,6 +111,15 @@ class Movies extends Component {
 
   render() {
     let moviePosters = [];
+
+    let cast = ''
+
+    if(this.state.featuredMovies.length > 0) {
+      this.state.featuredMovies.forEach((movie) => {
+        cast += movie.name + ', '
+      })
+    }
+    
 
     if(this.state.movies.length > 0) {
       moviePosters = this.state.movies.map(movie => {
@@ -148,6 +167,7 @@ class Movies extends Component {
                 <br></br>
                 {/* <p className="searchResultDate">{movie.release_date}</p> <br /> <br /> */}
                 <p className="searchResultOverview">{movie.overview}</p>
+
             </Link>
           </div>
           )
@@ -187,7 +207,7 @@ class Movies extends Component {
                 <br></br>
                 <br></br>
                 <p className="featuredMovieOverview">{movie.overview}</p>
-                {/* <p className='featuredMovieOverview'>Credits: {castList}</p> */}
+                <p className='featuredMovieOverview'>Credits: {cast}</p>
             </Link>
           </div>
         )
