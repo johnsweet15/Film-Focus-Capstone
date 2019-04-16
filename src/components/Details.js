@@ -93,7 +93,7 @@ class Details extends Component {
       // needed to check if state has been updated in render()
       result.updated = true;
 
-      this.setState({movie: result}, this.getRatings(result), this.getReviews(result, url[3]));
+      this.setState({movie: result}, this.getRatings(result), this.getReviews(result, url[3]), this.getTrailerKeys(id));
     })
 
     // get cast
@@ -120,7 +120,6 @@ class Details extends Component {
 
     // this.getReviews(this.state.movie, url[3]);
 
-    this.getTrailerKeys(id)
   }
  
   getRatings(movie) {

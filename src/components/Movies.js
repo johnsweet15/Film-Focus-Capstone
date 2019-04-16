@@ -114,6 +114,24 @@ class Movies extends Component {
   render() {
     let moviePosters = [];
 
+    
+    // if(this.state.featuredMovies.length > 0) {
+    //   let cast = ''
+    //   this.state.featuredMovies.forEach((movie) => {
+    //     this.getCast(movie.id)
+    //     let castList = this.state.cast.map(person => person.name)
+    //   })
+    // }
+    
+    // let cast = []
+    // axios.get('https://api.themoviedb.org/3/movie/'+ movieId +'/credits?api_key=' + TMDBKey).then(repsonse => {
+    //   cast = repsonse.data.cast
+    // })
+    // let castList = cast.map((person) => {
+    //   return (
+    //     <p>{person.name}</p>
+    //   )
+    // })
     let cast = ''
 
     // if(this.state.featuredMovies.length > 0) {
