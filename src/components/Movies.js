@@ -33,8 +33,6 @@ class Movies extends Component {
 
   componentDidUpdate(prevProps) {
     var path = this.props.location.pathname.split('/')
-    // console.log('props: ' + this.props.location.pathname)
-    // console.log('prevProps: ' + prevProps.location.pathname)
     if(this.props.location !== prevProps.location) {
       console.log('updating')
       if(path[1].substring(0, 6) === 'search') {

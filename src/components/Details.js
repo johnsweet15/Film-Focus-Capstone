@@ -420,7 +420,7 @@ class Details extends Component {
             {rating.Source === 'Metacritic' &&
               <a href={'https://www.metacritic.com/search/all/' + title + '/results'} target="_blank" rel="noopener noreferrer" style={{textDecoration: 'none'}}>
                 <div style={{display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems:'center'}}>
-                  <div id='ratingsIcon' style={{margin: 0, display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: color, color: 'white', flexDirection: 'column'}}>
+                  <div style={{margin: 0, display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: color, color: 'white', width:'1.5em', height: '1.5em', flexDirection: 'column'}}>
                     <p style={{padding: 0, margin: 0, display: 'flex', justifyContent: 'center'}}>{rating.Value.substring(0, rating.Value.indexOf('/'))}</p>
                   </div>
                   <p style={{color: 'white', display: 'flex', justifyContent: 'center', fontSize: '110%'}}>{rating.Source}</p>
