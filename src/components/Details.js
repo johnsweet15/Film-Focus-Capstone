@@ -34,6 +34,7 @@ class Details extends Component {
       showCast: true,
       actor: {},
       trailers: [],
+      rated: '',
       mediaType: null,
       search: this.props.search,
       socket: socket,
@@ -91,7 +92,7 @@ class Details extends Component {
       // needed to check if state has been updated in render()
       result.updated = true;
 
-      this.setState({movie: result}, this.getRatings(result), this.getReviews(result, url[3]), this.getTrailerKeys(id));
+      this.setState({movie: result}, this.getRatings(result), this.getReviews(result, url[3]), this.getTrailerKeys(id, mediaType));
     })
 
     // get cast
@@ -127,16 +128,24 @@ class Details extends Component {
       axios.get('http://www.omdbapi.com/?t=' + movie.name + '&apikey=' + OMDBKey)
       .then((response) => {
         let ratings = response.data.Ratings;
+        let rated = response.data.Rated
 
-        this.setState({ratings: ratings});
+        this.setState({
+          ratings: ratings,
+          rated: rated
+        });
       })
     }
     else {
       axios.get('http://www.omdbapi.com/?i=' + movie.imdb_id + '&apikey=' + OMDBKey)
       .then((response) => {
         let ratings = response.data.Ratings;
+        let rated = response.data.Rated
 
-        this.setState({ratings: ratings});
+        this.setState({
+          ratings: ratings,
+          rated: rated
+        });
       })
     } 
   }
@@ -197,8 +206,8 @@ class Details extends Component {
   }
 
   // get trailer keys from tmbd
-  getTrailerKeys(id) {
-    axios.get('https://api.themoviedb.org/3/' + this.state.mediaType + '/' + id + '/videos?api_key=' + TMDBKey + '&language=en-US')
+  getTrailerKeys(id, mediaType) {
+    axios.get('https://api.themoviedb.org/3/' + mediaType + '/' + id + '/videos?api_key=' + TMDBKey + '&language=en-US')
     .then((response) => { 
       // get trailer objects
       let videos = response.data.results
@@ -213,8 +222,7 @@ class Details extends Component {
 
   // get trailer from youtube
   getTrailers(keys) {
-    if(this.state.trailers.length === 0) {
-      axios.get('https://www.googleapis.com/youtube/v3/videos?id=' + keys + '&key=' + YouTubeKey + '&part=snippet,statistics')
+    axios.get('https://www.googleapis.com/youtube/v3/videos?id=' + keys + '&key=' + YouTubeKey + '&part=snippet,statistics')
       .then((response) => {
         let trailers = response.data.items;
   
@@ -226,7 +234,6 @@ class Details extends Component {
   
         this.setState({trailers: trailers})
       })
-    }
   }
 
   clickCast() {
@@ -251,7 +258,7 @@ class Details extends Component {
       showReviews: false,
       showTrailers: true
     })
-    this.forceUpdate()
+    // this.forceUpdate()
   }
 
   clickDescription() {
@@ -268,6 +275,7 @@ class Details extends Component {
     let cast = this.state.cast;
     let ratings = this.state.ratings;
     let actor = this.state.movie;
+    let trailers = this.state.trailers;
 
     if(movie === undefined || movie === null) {
       return null
@@ -536,10 +544,20 @@ class Details extends Component {
 
 
                 {this.state.mediaType === 'movie' &&
-                  <div style={{display: 'flex', flexDirection: 'row'}}>
-                    <p style={{color: '#d3d3d3', paddingRight: 20}}>{months[parseInt(movie.release_date.substring(5,7)) - 1] + ' ' + movie.release_date.substring(8) + ', ' + movie.release_date.substring(0,4)}</p>
+                  <div className='info'>
+                    <p id='rated' style={{color: '#d3d3d3', border: '1px solid #d3d3d3', borderRadius: '4px', padding: '0px 5px 0px 5px', whiteSpace: 'nowrap'}}>{this.state.rated}</p>
+                    <p id='release' style={{color: '#d3d3d3', paddingRight: 20}}>{months[parseInt(movie.release_date.substring(5,7)) - 1] + ' ' + movie.release_date.substring(8) + ', ' + movie.release_date.substring(0,4)}</p>
                     <p style={{color: '#d3d3d3', paddingRight: 20}}>{movie.runtime + ' minutes'}</p>
                     <p style={{color: '#d3d3d3', paddingRight: 20}}>{movie.tagline}</p>
+                  </div>
+                }
+
+                {this.state.mediaType === 'tv' &&
+                  <div style={{display: 'flex', flexDirection: 'row'}}>
+                    <p style={{color: '#d3d3d3', border: '1px solid #d3d3d3', borderRadius: '4px', padding: '0px 5px 0px 5px', whiteSpace: 'no-wrap'}}>{this.state.rated}</p>
+                    {/* <p style={{color: '#d3d3d3', paddingRight: 20}}>{months[parseInt(movie.release_date.substring(5,7)) - 1] + ' ' + movie.release_date.substring(8) + ', ' + movie.release_date.substring(0,4)}</p> */}
+                    <p style={{color: '#d3d3d3', paddingLeft: 20, paddingRight: 20}}>{movie.episode_run_time + ' minutes'}</p>
+                    {/* <p style={{color: '#d3d3d3', paddingRight: 20}}>{movie.tagline}</p> */}
                   </div>
                 }
                 
@@ -592,7 +610,7 @@ class Details extends Component {
                   <div style={{width: '100%', padding: 5}}>
                     
                     <div id='slider' style={{margin: 0, padding: 10}}>
-                      {cast.length > 0 && this.state.mediaType !== 'person' &&
+                      {trailers.length > 0 && this.state.mediaType !== 'person' &&
                         <Slider {...resultSettings}>
                           {trailerList}
                         </Slider>
@@ -640,6 +658,7 @@ class Details extends Component {
               centered
               show={this.state.showDescription}
               onHide={this.clickDescription}
+              id='modal'
             >
               <Modal.Header closeButton style={{backgroundColor: '#393f4c', color: 'white'}}>
                 {this.state.mediaType === 'movie' ?
@@ -676,13 +695,14 @@ class Details extends Component {
               centered
               show={this.state.showPoster}
               onHide={this.clickPoster}
+              id='posterModal'
             >
               <Modal.Header closeButton style={{backgroundColor: '#393f4c', color: 'white'}}>
               </Modal.Header>
               <Modal.Body style={{backgroundColor: '#393f4c', color: 'white', maxHeight: '90vh'}}>
                 {this.state.mediaType === 'person' ?
-                  <img style={{maxHeight: '80vh', margin: 'auto'}} src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + this.state.movie.profile_path} />:
-                  <img style={{maxHeight: '80vh', margin: 'auto'}} src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + this.state.movie.poster_path} />
+                  <img style={{maxHeight: '70vh', margin: 'auto'}} src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + this.state.movie.profile_path} />:
+                  <img style={{maxHeight: '70vh', margin: 'auto'}} src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + this.state.movie.poster_path} />
                 }
                 
               </Modal.Body>
