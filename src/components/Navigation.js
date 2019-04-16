@@ -1,8 +1,6 @@
 import React from 'react';
 import { Navbar, Nav, Form, Button, FormControl } from 'react-bootstrap'
 import { Link, Route } from 'react-router-dom'
-import Movies from './Movies'
-import About from './About'
 
 
 
