@@ -151,13 +151,15 @@ class Details extends Component {
   }
 
   saveToDb(id, search) {
-    let video_ids = [];
+
+    let vid_info = [];
+
     search.forEach(element => {
-      video_ids.push(element.id.videoId);
+      vid_info.push({video_id: element.id.videoId, channel_id: element.snippet.channelTitle});
     });
-    if (video_ids.length > 0){
-      this.state.socket.emit('saveToDb', {id: id, video_id_array: video_ids});
-      console.log("Saved record to DB");
+    if (vid_info.length > 0){
+      this.state.socket.emit('saveToDb', {id: id, video_info: vid_info});
+      console.log("Saved record to DB " + vid_info[3].video_id);
     }
   }
 
@@ -165,23 +167,16 @@ class Details extends Component {
   getReviews(movie, id) {
 
     // SOCKET STUFF HERE
-    let ids = [];
     this.state.socket.emit('requestVideos', id, (res) => {
-      res.forEach(e => {ids.push(e);})
       this.setState({searchResults: res});
-      if (res != null)
-        console.log("Found Videos " + ids);
+      if (res != null) {
+        console.log("Found Videos " + res);
+        return;
+      }
       else 
         console.log("No vids");
     });
 
-    if (ids.length > 0){
-      this.setState({searchResults: ids});
-      return;
-    }
-    else {
-      console.log("No luck " + ids + " dlkfjd");
-    }
      
     
       let title = '';
@@ -194,8 +189,12 @@ class Details extends Component {
       axios.get('https://www.googleapis.com/youtube/v3/search?q='+ title + ' ' + this.state.mediaType + ' review&key=' + YouTubeKey + '&maxResults=5&part=snippet')
       .then((response) => {
         let search = response.data.items;
+        let filteredSearch = [];
+        search.forEach(element => {
+          filteredSearch.push({video_id: element.id.videoId, channel_id: element.snippet.channelTitle});
+        });
 
-        this.setState({searchResults: search}, this.saveToDb(id, search));
+        this.setState({searchResults: filteredSearch}, this.saveToDb(id, search));
       })
 
       
@@ -464,9 +463,9 @@ class Details extends Component {
     let resultList = this.state.searchResults.map((result, i) => {
       return (
         <div key={i} style={{color: 'white', textAlign: 'center'}}>
-          <p style={{color: 'white'}}>{}</p>
+          <p style={{color: 'white'}}>{ result.channel_id }</p>
           <div style={{maxHeight: '100px'}}>
-            <Videos id={result} />
+            <Videos id={result.video_id} />
           </div>
         </div>
       )
