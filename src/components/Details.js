@@ -74,8 +74,6 @@ class Details extends Component {
       }
       // this.state.movie.updated = undefined;
       // this.forceUpdate();
-
-      
     }
   }
 
@@ -177,8 +175,9 @@ class Details extends Component {
       // this.state.socket.emit('saveToDb', { id: id, video_id_array: r });
   }
 
+  // get trailer keys from tmbd
   getTrailerKeys(id) {
-    axios.get('https://api.themoviedb.org/3/movie/' + id + '/videos?api_key=' + TMDBKey + '&language=en-US')
+    axios.get('https://api.themoviedb.org/3/' + this.state.mediaType + '/' + id + '/videos?api_key=' + TMDBKey + '&language=en-US')
     .then((response) => { 
       // get trailer objects
       let videos = response.data.results
@@ -191,6 +190,7 @@ class Details extends Component {
     })
   }
 
+  // get trailer from youtube
   getTrailers(keys) {
     if(this.state.trailers.length === 0) {
       axios.get('https://www.googleapis.com/youtube/v3/videos?id=' + keys + '&key=' + YouTubeKey + '&part=snippet,statistics')
@@ -290,7 +290,7 @@ class Details extends Component {
     let creditsList = [];
     if(this.state.mediaType !== 'person') {
       // list of cast members for render
-      castList = this.state.cast.map((actor) => {
+      castList = this.state.cast.map((actor, i) => {
         let poster = 'https://image.tmdb.org/t/p/w600_and_h900_bestv2';
         if(actor.profile_path === null) {
           poster = 'https://www.classicposters.com/images/nopicture.gif';
@@ -299,7 +299,7 @@ class Details extends Component {
           poster = 'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + actor.profile_path;
         }
         return (
-          <div>
+          <div key={i}>
             <div style={{display: 'flex', flexDirection: 'row'}}>
               <Link style={{textDecoration: 'none'}} to={'/details/person/' + actor.id + '/' + actor.name} onClick={this.props.changeToActor.bind(this, actor.id)} >
                 <div style={{padding: 3}}>
@@ -317,7 +317,7 @@ class Details extends Component {
       })
 
       // list of ratings for render
-      ratingsList = this.state.ratings.map(rating => {
+      ratingsList = this.state.ratings.map((rating, i) => {
         let rtIcon = require('../icons/rt2.png')
         let score = 0;
         let color = 'green';
@@ -356,7 +356,7 @@ class Details extends Component {
         }
         
         return (
-          <div className='ratings' style={{display: 'flex', justifyContent: 'center', paddingLeft: 20, alignContent: 'center', flexDirection: 'column'}}>
+          <div className='ratings' key={i} style={{display: 'flex', justifyContent: 'center', paddingLeft: 20, alignContent: 'center', flexDirection: 'column'}}>
             {rating.Source === 'IMDB' &&
               <div>
                 <a href={'https://www.imdb.com/title/' + movie.imdb_id} target="_blank" rel="noopener noreferrer" style={{textDecoration: 'none'}}>
@@ -436,9 +436,9 @@ class Details extends Component {
     }
 
     // list of videos for render
-    let resultList = this.state.searchResults.map(result => {
+    let resultList = this.state.searchResults.map((result, i) => {
       return (
-        <div style={{color: 'white', textAlign: 'center'}}>
+        <div key={i} style={{color: 'white', textAlign: 'center'}}>
           <p style={{color: 'white'}}>{result.snippet.channelTitle}</p>
           <div style={{maxHeight: '100px'}}>
             <Videos id={result.id.videoId} />
@@ -447,9 +447,9 @@ class Details extends Component {
       )
     })
 
-    let trailerList = this.state.trailers.map(trailer => {
+    let trailerList = this.state.trailers.map((trailer, i) => {
       return (
-        <div style={{color: 'white', textAlign: 'center'}}>
+        <div key={i} style={{color: 'white', textAlign: 'center'}}>
           <p style={{color: 'white'}}>{trailer.snippet.channelTitle}</p>
           <div style={{maxHeight: '100px'}}>
             <Videos id={trailer.id} />

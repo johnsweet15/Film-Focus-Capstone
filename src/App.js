@@ -41,6 +41,9 @@ class App extends Component {
     //     showSearch: false
     //   })
     // }
+    window.YTConfig = {
+      host: 'https://www.youtube.com' 
+    } 
     var path = this.props.location.pathname.split('/')
     console.log('path ' + path[1].substring(0,6))
     if(path[1] === '') {
