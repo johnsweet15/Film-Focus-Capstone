@@ -522,7 +522,7 @@ class Details extends Component {
       if(person.job === 'Director') {
         return (
           <Link style={{textDecoration: 'none', display: 'flex', flexDirection: 'row'}} to={'/details/person/' + person.id + '/' + person.name} onClick={this.props.changeToActor.bind(this, actor.id)} >
-            <p style={{color: 'white', display: 'flex', flexDirection: 'row'}}>{person.name}&nbsp;</p>
+            <p style={{color: '#4286f4', display: 'flex', flexDirection: 'row'}}>{person.name}&nbsp;</p>
           </Link>
         )
       }
