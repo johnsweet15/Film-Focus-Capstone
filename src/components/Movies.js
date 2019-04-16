@@ -16,7 +16,8 @@ class Movies extends Component {
       text: '',
       featuredMovies: [],
       search: this.props.search,
-      title: 'Film Focus'
+      title: 'Film Focus',
+      cast: []
     };
   }
 
@@ -95,10 +96,11 @@ class Movies extends Component {
     axios.get('https://api.themoviedb.org/3/movie/' + id + '/credits?api_key=' + TMDBKey)
       .then((response) => {
         let cast = response.data.cast;
-        cast.id = id;
-
+        // cast.id = id;
+        // return cast
         this.setState({cast: cast});
       })
+      // return cast
   }
 
   handleSubmit(event){
@@ -112,14 +114,24 @@ class Movies extends Component {
   render() {
     let moviePosters = [];
 
-    let cast = ''
-
-    if(this.state.featuredMovies.length > 0) {
-      this.state.featuredMovies.forEach((movie) => {
-        cast += movie.name + ', '
-      })
-    }
     
+    // if(this.state.featuredMovies.length > 0) {
+    //   let cast = ''
+    //   this.state.featuredMovies.forEach((movie) => {
+    //     this.getCast(movie.id)
+    //     let castList = this.state.cast.map(person => person.name)
+    //   })
+    // }
+    
+    // let cast = []
+    // axios.get('https://api.themoviedb.org/3/movie/'+ movieId +'/credits?api_key=' + TMDBKey).then(repsonse => {
+    //   cast = repsonse.data.cast
+    // })
+    // let castList = cast.map((person) => {
+    //   return (
+    //     <p>{person.name}</p>
+    //   )
+    // })
 
     if(this.state.movies.length > 0) {
       moviePosters = this.state.movies.map(movie => {
@@ -179,13 +191,7 @@ class Movies extends Component {
         let poster = 'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + movie.poster_path;
         let movieId = movie.id;
         let movieTitle = movie.title;
-        console.log(movie);
-        let newMovie = axios.get('https://api.themoviedb.org/3/movie/'+movieId+'/credits?api_key=' + TMDBKey)
-        // let castList = newMovie.map((person) => {
-        //   return (
-        //     <p>{person.name}</p>
-        //   )
-        // })
+        // console.log(movie);
         return (
           // Featured movies
           <div className="featuredMovieContainer">
@@ -207,7 +213,7 @@ class Movies extends Component {
                 <br></br>
                 <br></br>
                 <p className="featuredMovieOverview">{movie.overview}</p>
-                <p className='featuredMovieOverview'>Credits: {cast}</p>
+                <p className='featuredMovieOverview'>Credits:</p>
             </Link>
           </div>
         )
