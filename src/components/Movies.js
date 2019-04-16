@@ -53,15 +53,6 @@ class Movies extends Component {
   }
 
   getFeaturedMovies() {
-    // axios.get('https://api.themoviedb.org/3/movie/popular?api_key=' + TMDBKey)
-    //   .then((response) => {
-    //     let movies = response.data.results;
- 
-    //     this.setState({
-    //       featuredMovies: movies,
-    //       movies: []
-    //     })
-    //   })
 
     axios.get('https://api.themoviedb.org/3/trending/all/week?api_key=' + TMDBKey)
       .then((response) => {
@@ -126,33 +117,7 @@ class Movies extends Component {
   render() {
     let moviePosters = [];
 
-    
-    // if(this.state.featuredMovies.length > 0) {
-    //   let cast = ''
-    //   this.state.featuredMovies.forEach((movie) => {
-    //     this.getCast(movie.id)
-    //     let castList = this.state.cast.map(person => person.name)
-    //   })
-    // }
-    
-    // let cast = []
-    // axios.get('https://api.themoviedb.org/3/movie/'+ movieId +'/credits?api_key=' + TMDBKey).then(repsonse => {
-    //   cast = repsonse.data.cast
-    // })
-    // let castList = cast.map((person) => {
-    //   return (
-    //     <p>{person.name}</p>
-    //   )
-    // })
     let cast = ''
-
-    // if(this.state.featuredMovies.length > 0) {
-    //   this.state.featuredMovies.forEach((movie) => {
-    //     this.getCast(movie.id)
-    //     cast += this.state.cast.map(person => person.name) + ', '
-    //   })
-    //   this.state.cast.slice(0, 5)
-    // }
 
     if(this.state.movies.length > 0) {
       moviePosters = this.state.movies.map(movie => {
@@ -221,7 +186,6 @@ class Movies extends Component {
           movieTitle = movie.title;
           mediaType = 'movie'
         }
-        // console.log(movie);
         return (
           // Featured movies
           <div className="featuredMovieContainer">
@@ -243,7 +207,6 @@ class Movies extends Component {
                 <br></br>
                 <br></br>
                 <p className="featuredMovieOverview">{movie.overview}</p>
-                <p className='featuredMovieOverview'>Credits:</p>
             </Link>
           </div>
         )
