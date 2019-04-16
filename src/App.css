@@ -273,9 +273,12 @@ body {
   #mainContainer {
     width: 100%;
   }
-  #slider {
-    /* max-width: 500px;
-    height: auto; */
+  .featuredMovieContainer img {
+    width: 200px;
+    height: 310px;
+  
+    margin: 0 10px 10px 0;
+    float: none;
   }
   .carouselText {
     color: #4286f4;
