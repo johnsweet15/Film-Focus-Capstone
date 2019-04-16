@@ -243,7 +243,6 @@ class Movies extends Component {
                 <br></br>
                 <br></br>
                 <p className="featuredMovieOverview">{movie.overview}</p>
-                <p className='featuredMovieOverview'>Credits:</p>
             </Link>
           </div>
         )

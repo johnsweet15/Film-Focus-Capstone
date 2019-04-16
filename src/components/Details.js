@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 
 import io from 'socket.io-client';
  
-let backendHost = 'https://www.film-focus-backend.herokuapp.com';
+let backendHost = 'https://film-focus-backend.herokuapp.com/';
 const socket = io(backendHost);
 
 // import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
