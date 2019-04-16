@@ -53,9 +53,21 @@ class Movies extends Component {
   }
 
   getFeaturedMovies() {
-    axios.get('https://api.themoviedb.org/3/movie/popular?api_key=' + TMDBKey)
+    // axios.get('https://api.themoviedb.org/3/movie/popular?api_key=' + TMDBKey)
+    //   .then((response) => {
+    //     let movies = response.data.results;
+ 
+    //     this.setState({
+    //       featuredMovies: movies,
+    //       movies: []
+    //     })
+    //   })
+
+    axios.get('https://api.themoviedb.org/3/trending/all/week?api_key=' + TMDBKey)
       .then((response) => {
         let movies = response.data.results;
+
+        movies.sort((a, b) => b.popularity - a.popularity)
  
         this.setState({
           featuredMovies: movies,
@@ -199,20 +211,29 @@ class Movies extends Component {
         movie.media_type = 'movie';
         let poster = 'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + movie.poster_path;
         let movieId = movie.id;
-        let movieTitle = movie.title;
+        let movieTitle = ''
+        let mediaType = ''
+        if(movie.title === undefined) {
+          movieTitle = movie.name;
+          mediaType = 'tv'
+        }
+        else {
+          movieTitle = movie.title;
+          mediaType = 'movie'
+        }
         // console.log(movie);
         return (
           // Featured movies
           <div className="featuredMovieContainer">
-            <Link to={'/details/' + movie.media_type + '/' + movieId + '/' + movieTitle} style={{textDecoration: 'none'}} onClick={this.props.setMovie.bind(this, movie)}>
+            <Link to={'/details/' + mediaType + '/' + movieId + '/' + movieTitle} style={{textDecoration: 'none'}} onClick={this.props.setMovie.bind(this, movie)}>
               <img key={poster} src={poster} alt="poster" />
 
-                { movie.title.length > 50 && 
-                    <p className="searchResultTitle">{movie.title.substring(0,50)}...</p> 
+                { movieTitle.length > 50 && 
+                    <p className="searchResultTitle">{movieTitle.substring(0,50)}...</p> 
                 }
     
-                { movie.title.length <=50 &&
-                  <p className="featuredMovieTitle">{movie.title}</p>
+                { movieTitle.length <=50 &&
+                  <p className="featuredMovieTitle">{movieTitle}</p>
                 }
                 {movie.release_date !== undefined &&
                   <div>
@@ -231,7 +252,16 @@ class Movies extends Component {
     // dynamically generate carousel items based on featured movies list
     var counter = 0
     var featuredCarousel = this.state.featuredMovies.map((movie) => {
-      
+      let movieTitle = ''
+      let mediaType = ''
+      if(movie.title === undefined) {
+        movieTitle = movie.name;
+        mediaType = 'tv'
+      }
+      else {
+        movieTitle = movie.title;
+        mediaType = 'movie'
+      }
       counter += 1
       if(counter > 5) {
         return null;
@@ -239,7 +269,7 @@ class Movies extends Component {
       else {
         return (
           <Carousel.Item>
-            <Link to={'/details/movie/' + movie.id + '/' + movie.title} style={{textDecoration: 'none'}} onClick={this.props.setMovie.bind(this, movie)}>
+            <Link to={'/details/' + mediaType + '/' + movie.id + '/' + movieTitle} style={{textDecoration: 'none'}} onClick={this.props.setMovie.bind(this, movie)}>
               <img 
                 src={'https://image.tmdb.org/t/p/original/' + movie.backdrop_path }
                 className='carouselImage' 
@@ -247,8 +277,15 @@ class Movies extends Component {
               />
             </Link>
             <Carousel.Caption className='carouselText'>
-              <p>{movie.title} <br />
-              ({movie.release_date.substring(0,4)})</p>
+              {movie.release_date !== undefined ?
+                <div>
+                  <p>{movieTitle} <br />
+                  ({movie.release_date.substring(0,4)})</p>
+                </div>:
+                <div>
+                  <p>{movieTitle} </p>
+                </div>
+              }
             </Carousel.Caption>
           </Carousel.Item>
         )
