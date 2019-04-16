@@ -277,7 +277,12 @@ body {
     /* max-width: 500px;
     height: auto; */
   }
-
+  .carouselText {
+    color: #4286f4;
+    background-color: #282c34;
+    border-radius: 5px;
+    font-size: 4vw;
+  }
  
   #detailsContainer {
     flex-direction: column;
