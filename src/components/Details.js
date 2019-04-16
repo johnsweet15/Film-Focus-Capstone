@@ -52,9 +52,7 @@ class Details extends Component {
   componentDidMount() {
     // this.getDetails(this.state.movie);
     var url = this.props.location.pathname.split('/');
-    console.log('log: ' + url[3] + ',' + url[2])
     this.getDetailsById(url[3], url[2]);
-    console.log(this.props.location)
 
     // this.getReviews(this.props.movie, url[3]);
   }
@@ -65,17 +63,14 @@ class Details extends Component {
     // }
     var url = this.props.location.pathname.split('/');
     if(this.props.location !== prevProps.location) {
-      console.log('log: ' + url[3] + ',' + url[2])
       if(url[1] === 'home') {
         this.props.setMovie.bind(this, null)
-        console.log('home')
       }
       else if(url[1] === 'details') {
         this.getDetailsById(url[3], url[2]);
       }
       else if(url[1].substring(0, 6) === 'search') {
         this.props.setSearch.bind(this, decodeURIComponent(url[1].substring(7, url[1].length)))
-        console.log('do something')
       }
       // this.state.movie.updated = undefined;
       // this.forceUpdate();
@@ -174,8 +169,6 @@ class Details extends Component {
       .then((response) => {
         let search = response.data.items;
 
-        console.log('searchResults: ' + search)
-
         this.setState({searchResults: search});
       })
   
@@ -200,7 +193,6 @@ class Details extends Component {
   }
 
   getTrailers(keys) {
-    console.log('keys: ' + keys[0])
     if(this.state.trailers.length === 0) {
       axios.get('https://www.googleapis.com/youtube/v3/videos?id=' + keys + '&key=' + YouTubeKey + '&part=snippet,statistics')
       .then((response) => {
@@ -228,14 +220,13 @@ class Details extends Component {
     //if the search results are empty, call youtube api
     if(this.state.searchResults.length === 0) {
       //this.getReviews(this.props.movie);
-      console.log('getting reviews for the first time');
     }
     this.setState({
       showCast: false,
       showReviews: true,
       showTrailers: false
     });
-    this.forceUpdate();
+    // this.forceUpdate();
   }
 
   clickTrailers() {
@@ -244,6 +235,7 @@ class Details extends Component {
       showReviews: false,
       showTrailers: true
     })
+    this.forceUpdate()
   }
 
   clickDescription() {
@@ -265,11 +257,8 @@ class Details extends Component {
       return null
     }
 
-    console.log(this.state.mediaType)
-
     // check for updated movie object
     if(movie.updated === undefined) {
-      console.log('returned null');
       return null;
     }
 
@@ -430,7 +419,6 @@ class Details extends Component {
           episodes = 'episode'
         }
         
-        console.log(creditTitle)
         return (
           <Link to={'/details/' + credit.media_type + '/' + credit.id + '/' + creditTitle} onClick={this.props.changeToMovie.bind(this, credit.credit_id)}>
             <div style={{padding: 3, paddingBottom: 50}}>
@@ -553,9 +541,7 @@ class Details extends Component {
                   <ToggleButtonGroup type="radio" name="options" defaultValue={1}>
                     <ToggleButton value={1} variant="secondary" onClick={this.clickCast}>Cast</ToggleButton>
                     <ToggleButton value={2} variant="secondary" onClick={this.clickReviews}>Reviews</ToggleButton>
-                    {this.state.trailers.length > 0 &&
-                      <ToggleButton value={3} variant="secondary" onClick={this.clickTrailers}>Trailers</ToggleButton>
-                    }
+                    <ToggleButton value={3} variant="secondary" onClick={this.clickTrailers}>Trailers</ToggleButton>
                   </ToggleButtonGroup>
                 </ButtonToolbar>
 
@@ -594,7 +580,7 @@ class Details extends Component {
                         <Slider {...resultSettings}>
                           {trailerList}
                         </Slider>
-                        // <Carousel {...resultSettings}>
+                        // <Carousel>
                         //   {trailerList}
                         // </Carousel>
                       }
