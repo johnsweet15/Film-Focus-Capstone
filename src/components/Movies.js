@@ -114,26 +114,6 @@ class Movies extends Component {
   render() {
     let moviePosters = [];
 
-<<<<<<< HEAD
-    
-    // if(this.state.featuredMovies.length > 0) {
-    //   let cast = ''
-    //   this.state.featuredMovies.forEach((movie) => {
-    //     this.getCast(movie.id)
-    //     let castList = this.state.cast.map(person => person.name)
-    //   })
-    // }
-    
-    // let cast = []
-    // axios.get('https://api.themoviedb.org/3/movie/'+ movieId +'/credits?api_key=' + TMDBKey).then(repsonse => {
-    //   cast = repsonse.data.cast
-    // })
-    // let castList = cast.map((person) => {
-    //   return (
-    //     <p>{person.name}</p>
-    //   )
-    // })
-=======
     let cast = ''
 
     // if(this.state.featuredMovies.length > 0) {
@@ -143,7 +123,6 @@ class Movies extends Component {
     //   })
     //   this.state.cast.slice(0, 5)
     // }
->>>>>>> 1c61b2917c99b2b6342aa9d9a24da42c5f26667c
 
     if(this.state.movies.length > 0) {
       moviePosters = this.state.movies.map(movie => {
