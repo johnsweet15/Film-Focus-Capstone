@@ -233,11 +233,20 @@ body {
   }
 #searchButton {
   color: #4286f4;
-
   border: 2px solid#4286f4;
 }
 
 #searchButton:hover {
+  background-color: #4286f4;
+  color: white;
+}
+
+.readMoreButton {
+  color: #4286f4;
+  border: 2px solid#4286f4;
+}
+
+.readMoreButton:hover {
   background-color: #4286f4;
   color: white;
 }

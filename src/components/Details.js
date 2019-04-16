@@ -14,7 +14,6 @@ const socket = io(backendHost);
 
 // import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
-
 const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
 class Details extends Component {
@@ -269,7 +268,6 @@ class Details extends Component {
   }
 
   render() {
-
     let movie = this.state.movie;
     let cast = this.state.cast;
     let ratings = this.state.ratings;
@@ -383,10 +381,19 @@ class Details extends Component {
           <div className='ratings' key={i} style={{display: 'flex', justifyContent: 'center', paddingLeft: 20, alignContent: 'center', flexDirection: 'column'}}>
             {rating.Source === 'IMDB' &&
               <div>
-                <a href={'https://www.imdb.com/title/' + movie.imdb_id} target="_blank" rel="noopener noreferrer" style={{textDecoration: 'none'}}>
-                  <img id='ratingsIcon' alt='' style={{display: 'block', margin: '0 auto'}} src={require('../icons/imdbStar.png')} />
-                  <p style={{color: 'white', display: 'flex', justifyContent: 'center', fontSize: '110%'}}>{'IMDb: ' + rating.Value}</p>
-                </a>
+                {this.state.mediaType === 'movie' &&
+                  <a href={'https://www.imdb.com/title/' + movie.imdb_id} target="_blank" rel="noopener noreferrer" style={{textDecoration: 'none'}}>
+                    <img id='ratingsIcon' alt='' style={{display: 'block', margin: '0 auto'}} src={require('../icons/imdbStar.png')} />
+                    <p style={{color: 'white', display: 'flex', justifyContent: 'center', fontSize: '110%'}}>{'IMDb: ' + rating.Value}</p>
+                  </a>
+                }
+                {this.state.mediaType === 'tv' &&
+                  <a href={'https://www.imdb.com/find?q=' + title.replace(/\s+/g, '+') + '&s=all'} target="_blank" rel="noopener noreferrer" style={{textDecoration: 'none'}}>
+                    <img id='ratingsIcon' alt='' style={{display: 'block', margin: '0 auto'}} src={require('../icons/imdbStar.png')} />
+                    <p style={{color: 'white', display: 'flex', justifyContent: 'center', fontSize: '110%'}}>{'IMDb: ' + rating.Value}</p>
+                  </a>
+                }
+                
               </div>
             }
             {rating.Source === 'Rotten Tomatoes' &&
@@ -562,7 +569,7 @@ class Details extends Component {
                 
                 {movie.overview.length > 300 ?
                   <div>
-                    <p id='description' style={{color: 'white'}}>{movie.overview.substring(0, 300) + '... '}<Button onClick={this.clickDescription}>Read more</Button></p>
+                    <p id='description' style={{color: 'white'}}>{movie.overview.substring(0, 300) + '... '}<Button className='readMoreButton' variant="outline-info" onClick={this.clickDescription}>Read more</Button></p>
                   </div> :
                   <p id='description' style={{color: 'white'}}>{movie.overview}</p>
                 }
@@ -586,9 +593,6 @@ class Details extends Component {
                       <Slider {...resultSettings}>
                         {resultList}
                       </Slider>
-                      // <Carousel>
-                      //   {resultList}
-                      // </Carousel>
                     }
                   </div>
                 </div>
@@ -613,9 +617,6 @@ class Details extends Component {
                         <Slider {...resultSettings}>
                           {trailerList}
                         </Slider>
-                        // <Carousel>
-                        //   {trailerList}
-                        // </Carousel>
                       }
                     </div>
                   </div>
@@ -630,7 +631,7 @@ class Details extends Component {
                 {/* <p style={{color: 'white', fontSize: '2vh'}}>{actor.biography}</p> */}
                 {actor.biography !== undefined && actor.biography.length > 300 ?
                   <div>
-                    <p id='description' style={{color: 'white'}}>{actor.biography.substring(0, 300) + '... '}<Button onClick={this.clickDescription}>Read more</Button></p>
+                    <p id='description' style={{color: 'white'}}>{actor.biography.substring(0, 300) + '... '}<Button className='readMoreButton' variant="outline-info" onClick={this.clickDescription}>Read more</Button></p>
                     
                   </div> :
                   <p id='description' style={{color: 'white'}}>{actor.biography}</p>
@@ -646,9 +647,7 @@ class Details extends Component {
                 </div>
               </div>
             }
-            {/* <Slider {...resultSettings}>
-              {trailerList}
-            </Slider> */}
+
             {/* Description modal */}
             <Modal
               {...this.props}
