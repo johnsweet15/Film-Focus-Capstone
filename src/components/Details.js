@@ -440,7 +440,7 @@ class Details extends Component {
       return (
         <div key={i} style={{color: 'white', textAlign: 'center'}}>
           <p style={{color: 'white'}}>{result.snippet.channelTitle}</p>
-          <div style={{}}>
+          <div style={{maxHeight: '100px'}}>
             <Videos id={result.id.videoId} />
           </div>
         </div>
@@ -467,15 +467,7 @@ class Details extends Component {
       slidesToScroll: 1,
       adaptiveHeight: true,
       centerMode: true,
-      initialSlide: 0,
-      responsive: [
-        {
-          breakpoint: 900,
-          settings: {
-            centerMode: false,
-          }
-        }
-      ]
+      initialSlide: 0
     };
 
     var castSettings = {

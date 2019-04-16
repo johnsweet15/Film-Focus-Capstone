@@ -11,7 +11,7 @@ class Videos extends React.Component {
 
     render() {
         const opts = {
-            height: '300',
+            height: '390px',
             width: '90%',
             playerVars: {
                 autoplay: 0
