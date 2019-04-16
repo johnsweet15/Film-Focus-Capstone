@@ -7,10 +7,10 @@ import {OMDBKey, TMDBKey, YouTubeKey} from '../config.js'
 import { Link } from 'react-router-dom';
 // import { S_IFDIR } from 'constants';
 
-// import io from 'socket.io-client';
+import io from 'socket.io-client';
  
-// let backendHost = 'http://localhost:3001';
-// const socket = io(backendHost);
+let backendHost = 'https://www.film-focus-backend.herokuapp.com';
+const socket = io(backendHost);
 
 // import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
@@ -36,7 +36,7 @@ class Details extends Component {
       rated: '',
       mediaType: null,
       search: this.props.search,
-      // socket: socket,
+      socket: socket,
       movie_id: '',
       showDescription: false,
       showPoster: false,
@@ -47,6 +47,7 @@ class Details extends Component {
     this.clickTrailers = this.clickTrailers.bind(this)
     this.clickDescription = this.clickDescription.bind(this);
     this.clickPoster = this.clickPoster.bind(this);
+    this.saveToDb = this.saveToDb.bind(this);
   }
 
   componentDidMount() {
@@ -54,7 +55,6 @@ class Details extends Component {
     var url = this.props.location.pathname.split('/');
     this.getDetailsById(url[3], url[2]);
 
-    // this.getReviews(this.props.movie, url[3]);
   }
 
   componentDidUpdate(prevProps) {
@@ -149,20 +149,35 @@ class Details extends Component {
     } 
   }
 
+  saveToDb(id, search) {
+
+    let vid_info = [];
+
+    search.forEach(element => {
+      vid_info.push({video_id: element.id.videoId, channel_id: element.snippet.channelTitle});
+    });
+    if (vid_info.length > 0){
+      this.state.socket.emit('saveToDb', {id: id, video_info: vid_info});
+      console.log("Saved record to DB " + vid_info[3].video_id);
+    }
+  }
+
   //get YouTube search results
   getReviews(movie, id) {
 
-    // SOCKET STUFF HERE, UNCOMMENT TO USE
-
-    // let foundVideos = this.state.socket.emit('requestVideos', id);
-    // if (foundVideos.length > 0) {
-    //   this.setState({searchResults: foundVideos});
-      
-    // }
+    // SOCKET STUFF HERE
+    this.state.socket.emit('requestVideos', id, (res) => {
+      this.setState({searchResults: res});
+      if (res != null) {
+        console.log("Found Videos " + res);
+        return;
+      }
+      else 
+        console.log("No vids");
+    });
 
      
     
-
       let title = '';
       if(this.state.mediaType === 'movie') {
         title = movie.title;
@@ -173,10 +188,15 @@ class Details extends Component {
       axios.get('https://www.googleapis.com/youtube/v3/search?q='+ title + ' ' + this.state.mediaType + ' review&key=' + YouTubeKey + '&maxResults=5&part=snippet')
       .then((response) => {
         let search = response.data.items;
+        let filteredSearch = [];
+        search.forEach(element => {
+          filteredSearch.push({video_id: element.id.videoId, channel_id: element.snippet.channelTitle});
+        });
 
-        this.setState({searchResults: search});
+        this.setState({searchResults: filteredSearch}, this.saveToDb(id, search));
       })
-  
+
+      
       // send list of video ids to the server
       // MORE SOCKET STUFF, UNCOMMENT TO USE
       // var r = [this.state.searchResults.map(result => {return result.id.videoId})];
@@ -222,10 +242,6 @@ class Details extends Component {
     });
   }
   clickReviews() {
-    //if the search results are empty, call youtube api
-    if(this.state.searchResults.length === 0) {
-      //this.getReviews(this.props.movie);
-    }
     this.setState({
       showCast: false,
       showReviews: true,
@@ -454,9 +470,9 @@ class Details extends Component {
     let resultList = this.state.searchResults.map((result, i) => {
       return (
         <div key={i} style={{color: 'white', textAlign: 'center'}}>
-          <p style={{color: 'white'}}>{result.snippet.channelTitle}</p>
+          <p style={{color: 'white'}}>{ result.channel_id }</p>
           <div style={{maxHeight: '100px'}}>
-            <Videos id={result.id.videoId} />
+            <Videos id={result.video_id} />
           </div>
         </div>
       )
