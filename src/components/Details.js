@@ -58,9 +58,6 @@ class Details extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    // if (this.props.movie !== prevProps.movie) {
-    //   this.getDetails(this.props.movie);
-    // }
     var url = this.props.location.pathname.split('/');
     if(this.props.location !== prevProps.location) {
       if(url[1] === 'home') {
@@ -72,8 +69,6 @@ class Details extends Component {
       else if(url[1].substring(0, 6) === 'search') {
         this.props.setSearch.bind(this, decodeURIComponent(url[1].substring(7, url[1].length)))
       }
-      // this.state.movie.updated = undefined;
-      // this.forceUpdate();
     }
   }
 
@@ -148,7 +143,7 @@ class Details extends Component {
       })
     } 
   }
-
+  //saves to database
   saveToDb(id, search) {
 
     let vid_info = [];
@@ -164,6 +159,10 @@ class Details extends Component {
 
   //get YouTube search results
   getReviews(movie, id) {
+
+    //if its a person, don't get reviews
+    if (this.state.mediaType === 'person')
+     return;
 
     // SOCKET STUFF HERE
     this.state.socket.emit('requestVideos', id, (res) => {
@@ -195,12 +194,6 @@ class Details extends Component {
 
         this.setState({searchResults: filteredSearch}, this.saveToDb(id, search));
       })
-
-      
-      // send list of video ids to the server
-      // MORE SOCKET STUFF, UNCOMMENT TO USE
-      // var r = [this.state.searchResults.map(result => {return result.id.videoId})];
-      // this.state.socket.emit('saveToDb', { id: id, video_id_array: r });
   }
 
   // get trailer keys from tmbd
