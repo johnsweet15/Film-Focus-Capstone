@@ -34,6 +34,7 @@ class Details extends Component {
       showCast: true,
       actor: {},
       trailers: [],
+      rated: '',
       mediaType: null,
       search: this.props.search,
       // socket: socket,
@@ -127,16 +128,24 @@ class Details extends Component {
       axios.get('http://www.omdbapi.com/?t=' + movie.name + '&apikey=' + OMDBKey)
       .then((response) => {
         let ratings = response.data.Ratings;
+        let rated = response.data.Rated
 
-        this.setState({ratings: ratings});
+        this.setState({
+          ratings: ratings,
+          rated: rated
+        });
       })
     }
     else {
       axios.get('http://www.omdbapi.com/?i=' + movie.imdb_id + '&apikey=' + OMDBKey)
       .then((response) => {
         let ratings = response.data.Ratings;
+        let rated = response.data.Rated
 
-        this.setState({ratings: ratings});
+        this.setState({
+          ratings: ratings,
+          rated: rated
+        });
       })
     } 
   }
@@ -519,10 +528,20 @@ class Details extends Component {
 
 
                 {this.state.mediaType === 'movie' &&
-                  <div style={{display: 'flex', flexDirection: 'row'}}>
-                    <p style={{color: '#d3d3d3', paddingRight: 20}}>{months[parseInt(movie.release_date.substring(5,7)) - 1] + ' ' + movie.release_date.substring(8) + ', ' + movie.release_date.substring(0,4)}</p>
+                  <div className='info'>
+                    <p id='rated' style={{color: '#d3d3d3', border: '1px solid #d3d3d3', borderRadius: '4px', padding: '0px 5px 0px 5px', whiteSpace: 'nowrap'}}>{this.state.rated}</p>
+                    <p id='release' style={{color: '#d3d3d3', paddingRight: 20}}>{months[parseInt(movie.release_date.substring(5,7)) - 1] + ' ' + movie.release_date.substring(8) + ', ' + movie.release_date.substring(0,4)}</p>
                     <p style={{color: '#d3d3d3', paddingRight: 20}}>{movie.runtime + ' minutes'}</p>
                     <p style={{color: '#d3d3d3', paddingRight: 20}}>{movie.tagline}</p>
+                  </div>
+                }
+
+                {this.state.mediaType === 'tv' &&
+                  <div style={{display: 'flex', flexDirection: 'row'}}>
+                    <p style={{color: '#d3d3d3', border: '1px solid #d3d3d3', borderRadius: '4px', padding: '0px 5px 0px 5px', whiteSpace: 'no-wrap'}}>{this.state.rated}</p>
+                    {/* <p style={{color: '#d3d3d3', paddingRight: 20}}>{months[parseInt(movie.release_date.substring(5,7)) - 1] + ' ' + movie.release_date.substring(8) + ', ' + movie.release_date.substring(0,4)}</p> */}
+                    <p style={{color: '#d3d3d3', paddingLeft: 20, paddingRight: 20}}>{movie.episode_run_time + ' minutes'}</p>
+                    {/* <p style={{color: '#d3d3d3', paddingRight: 20}}>{movie.tagline}</p> */}
                   </div>
                 }
                 
@@ -623,6 +642,7 @@ class Details extends Component {
               centered
               show={this.state.showDescription}
               onHide={this.clickDescription}
+              id='modal'
             >
               <Modal.Header closeButton style={{backgroundColor: '#393f4c', color: 'white'}}>
                 {this.state.mediaType === 'movie' ?
@@ -659,13 +679,14 @@ class Details extends Component {
               centered
               show={this.state.showPoster}
               onHide={this.clickPoster}
+              id='posterModal'
             >
               <Modal.Header closeButton style={{backgroundColor: '#393f4c', color: 'white'}}>
               </Modal.Header>
               <Modal.Body style={{backgroundColor: '#393f4c', color: 'white', maxHeight: '90vh'}}>
                 {this.state.mediaType === 'person' ?
-                  <img style={{maxHeight: '80vh', margin: 'auto'}} src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + this.state.movie.profile_path} />:
-                  <img style={{maxHeight: '80vh', margin: 'auto'}} src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + this.state.movie.poster_path} />
+                  <img style={{maxHeight: '70vh', margin: 'auto'}} src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + this.state.movie.profile_path} />:
+                  <img style={{maxHeight: '70vh', margin: 'auto'}} src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + this.state.movie.poster_path} />
                 }
                 
               </Modal.Body>

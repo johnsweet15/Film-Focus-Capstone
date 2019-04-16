@@ -255,6 +255,14 @@ body {
   height: 500px; */
 }
 
+#modal {
+  margin-top: 0;
+}
+
+#posterModal {
+  margin: auto;
+}
+
 
 
 @keyframes App-logo-spin {
@@ -338,6 +346,22 @@ body {
   .App {
     width: 80%;
   }
+
+  .info {
+    display: inline-block;
+  }
+
+  #rated {
+    width: max-content;
+  }
+
+  #released {
+    padding-left: 0;
+  }
+
+  #posterModal {
+    max-width: 90%;
+  }
 }
 
 @media (min-width: 901px) {
@@ -376,5 +400,14 @@ body {
 
   #searchButton {
     display: flex;
+  }
+
+  .info {
+    display: flex;
+    flex-direction: row;
+  }
+
+  #release {
+    padding-left: 20px;
   }
 }
