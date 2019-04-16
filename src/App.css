@@ -250,13 +250,6 @@ body {
   width: 500px;
 }
 
-.sliderContainer {
-  /* width: 500px;
-  height: 500px; */
-}
-
-
-
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
