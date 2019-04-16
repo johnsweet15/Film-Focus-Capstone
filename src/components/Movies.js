@@ -114,7 +114,6 @@ class Movies extends Component {
   render() {
     let moviePosters = [];
 
-<<<<<<< HEAD
     
     // if(this.state.featuredMovies.length > 0) {
     //   let cast = ''
@@ -133,7 +132,6 @@ class Movies extends Component {
     //     <p>{person.name}</p>
     //   )
     // })
-=======
     let cast = ''
 
     // if(this.state.featuredMovies.length > 0) {
@@ -143,7 +141,6 @@ class Movies extends Component {
     //   })
     //   this.state.cast.slice(0, 5)
     // }
->>>>>>> 1c61b2917c99b2b6342aa9d9a24da42c5f26667c
 
     if(this.state.movies.length > 0) {
       moviePosters = this.state.movies.map(movie => {
