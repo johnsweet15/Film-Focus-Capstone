@@ -92,7 +92,7 @@ class Details extends Component {
       // needed to check if state has been updated in render()
       result.updated = true;
 
-      this.setState({movie: result}, this.getRatings(result), this.getReviews(result, url[3]), this.getTrailerKeys(id));
+      this.setState({movie: result}, this.getRatings(result), this.getReviews(result, url[3]), this.getTrailerKeys(id, mediaType));
     })
 
     // get cast
@@ -185,8 +185,8 @@ class Details extends Component {
   }
 
   // get trailer keys from tmbd
-  getTrailerKeys(id) {
-    axios.get('https://api.themoviedb.org/3/' + this.state.mediaType + '/' + id + '/videos?api_key=' + TMDBKey + '&language=en-US')
+  getTrailerKeys(id, mediaType) {
+    axios.get('https://api.themoviedb.org/3/' + mediaType + '/' + id + '/videos?api_key=' + TMDBKey + '&language=en-US')
     .then((response) => { 
       // get trailer objects
       let videos = response.data.results
@@ -201,8 +201,7 @@ class Details extends Component {
 
   // get trailer from youtube
   getTrailers(keys) {
-    if(this.state.trailers.length === 0) {
-      axios.get('https://www.googleapis.com/youtube/v3/videos?id=' + keys + '&key=' + YouTubeKey + '&part=snippet,statistics')
+    axios.get('https://www.googleapis.com/youtube/v3/videos?id=' + keys + '&key=' + YouTubeKey + '&part=snippet,statistics')
       .then((response) => {
         let trailers = response.data.items;
   
@@ -214,7 +213,6 @@ class Details extends Component {
   
         this.setState({trailers: trailers})
       })
-    }
   }
 
   clickCast() {
@@ -243,7 +241,7 @@ class Details extends Component {
       showReviews: false,
       showTrailers: true
     })
-    this.forceUpdate()
+    // this.forceUpdate()
   }
 
   clickDescription() {
@@ -260,6 +258,7 @@ class Details extends Component {
     let cast = this.state.cast;
     let ratings = this.state.ratings;
     let actor = this.state.movie;
+    let trailers = this.state.trailers;
 
     if(movie === undefined || movie === null) {
       return null
@@ -594,7 +593,7 @@ class Details extends Component {
                   <div style={{width: '100%', padding: 5}}>
                     
                     <div id='slider' style={{margin: 0, padding: 10}}>
-                      {cast.length > 0 && this.state.mediaType !== 'person' &&
+                      {trailers.length > 0 && this.state.mediaType !== 'person' &&
                         <Slider {...resultSettings}>
                           {trailerList}
                         </Slider>
