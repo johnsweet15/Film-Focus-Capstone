@@ -27,6 +27,8 @@ class Details extends Component {
       // then get that movie from app.js through props
       movie: this.props.movie,
       cast: [],
+      crew: [],
+      castAndCrew: [],
       ratings: [],
       searchResults: [],
       showReviews: false,
@@ -101,7 +103,15 @@ class Details extends Component {
         let cast = response.data.cast;
         cast.id = id;
   
-        this.setState({cast: cast});
+        let crew = response.data.crew
+
+        let castAndCrew = cast.concat(crew)
+
+        this.setState({
+          cast: cast,
+          crew: crew,
+          castAndCrew: castAndCrew
+        });
       })
     }
     else {
@@ -110,7 +120,15 @@ class Details extends Component {
         let cast = response.data.cast;
         cast.id = id;
 
-        this.setState({cast: cast});
+        let crew = response.data.crew
+
+        let castAndCrew = cast.concat(crew)
+
+        this.setState({
+          cast: cast,
+          crew: crew,
+          castAndCrew: castAndCrew
+        });
       })
     }
 
@@ -310,6 +328,8 @@ class Details extends Component {
     let castList = [];
     let ratingsList = [];
     let creditsList = [];
+    let crewCredits = [];
+    let castAndCrewList = [];
     if(this.state.mediaType !== 'person') {
       // list of cast members for render
       castList = this.state.cast.map((actor, i) => {
@@ -423,10 +443,63 @@ class Details extends Component {
 
     else {
       // sort by popularity
-      this.state.cast.sort((a, b) =>  b.popularity - a.popularity);
+      this.state.castAndCrew.sort((a, b) =>  b.popularity - a.popularity);
 
       // for tv shows sort by number of episodes
-      this.state.cast.sort((a, b) => b.episode_count - a.episode_count);
+      this.state.castAndCrew.sort((a, b) => b.episode_count - a.episode_count);
+
+      castAndCrewList = this.state.castAndCrew.map((credit, i) => {
+        var episodes = 'episodes';
+
+        let poster = 'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + credit.poster_path;
+        var creditTitle = '';
+        if(credit.media_type === 'movie') {
+          if(credit.title !== undefined) {
+            creditTitle = credit.title.replace('%', ' Percent')
+          }
+        }
+        else {
+          if(credit.name !== undefined) {
+            creditTitle = credit.name.replace('%', ' Percent')
+          }
+        }
+
+        if(credit.episode_count === 1) {
+          episodes = 'episode'
+        }
+        
+        if(credit.job === 'Director') {
+          return (
+            <Link to={'/details/' + credit.media_type + '/' + credit.id + '/' + creditTitle} onClick={this.props.changeToMovie.bind(this, credit.credit_id)}>
+              <div style={{padding: 3, paddingBottom: 50}}>
+                {/* force height to 15vw for null posters */}
+                <img style={{width: '8vw', height:'12vw', alignSelf: 'center', maxWidth: '10vw'}} src={poster} alt='' />
+                { credit.media_type === 'tv' ?
+                  <p style={{color: 'white', fontSize: '1.6vh', maxWidth: '10vw'}}>{creditTitle + ' (' + credit.episode_count + ' ' + episodes + ')'}</p>:
+                  <p style={{color: 'white', fontSize: '1.6vh', maxWidth: '10vw'}}>{creditTitle}</p>
+                }
+                <p style={{color: '#d3d3d3', fontSize: '1.3vh'}}>{credit.job}</p>
+              </div>
+            </Link>
+          )
+        }
+        else if(credit.character !== undefined) {
+          return (
+            <Link to={'/details/' + credit.media_type + '/' + credit.id + '/' + creditTitle} onClick={this.props.changeToMovie.bind(this, credit.credit_id)}>
+              <div style={{padding: 3, paddingBottom: 50}}>
+                {/* force height to 15vw for null posters */}
+                <img style={{width: '8vw', height:'12vw', alignSelf: 'center', maxWidth: '10vw'}} src={poster} alt='' />
+                { credit.media_type === 'tv' ?
+                  <p style={{color: 'white', fontSize: '1.6vh', maxWidth: '10vw'}}>{creditTitle + ' (' + credit.episode_count + ' ' + episodes + ')'}</p>:
+                  <p style={{color: 'white', fontSize: '1.6vh', maxWidth: '10vw'}}>{creditTitle}</p>
+                }
+                <p style={{color: '#d3d3d3', fontSize: '1.3vh'}}>{credit.character}</p>
+              </div>
+            </Link>
+          )
+        }
+        
+      })
 
 
       creditsList = this.state.cast.map((credit) => {
@@ -464,6 +537,45 @@ class Details extends Component {
           
         )
       })
+
+      crewCredits = this.state.crew.map((credit) => {
+        var episodes = 'episodes';
+
+        let poster = 'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + credit.poster_path;
+        var creditTitle = '';
+        if(credit.media_type === 'movie') {
+          if(credit.title !== undefined) {
+            creditTitle = credit.title.replace('%', ' Percent')
+          }
+        }
+        else {
+          if(credit.name !== undefined) {
+            creditTitle = credit.name.replace('%', ' Percent')
+          }
+        }
+
+        if(credit.episode_count === 1) {
+          episodes = 'episode'
+        }
+        
+        if(credit.job === 'Director') {
+          return (
+            <Link to={'/details/' + credit.media_type + '/' + credit.id + '/' + creditTitle} onClick={this.props.changeToMovie.bind(this, credit.credit_id)}>
+              <div style={{padding: 3, paddingBottom: 50}}>
+                {/* force height to 15vw for null posters */}
+                <img style={{width: '8vw', height:'12vw', alignSelf: 'center', maxWidth: '10vw'}} src={poster} alt='' />
+                { credit.media_type === 'tv' ?
+                  <p style={{color: 'white', fontSize: '1.6vh', maxWidth: '10vw'}}>{creditTitle + ' (' + credit.episode_count + ' ' + episodes + ')'}</p>:
+                  <p style={{color: 'white', fontSize: '1.6vh', maxWidth: '10vw'}}>{creditTitle}</p>
+                }
+                <p style={{color: '#d3d3d3', fontSize: '1.3vh'}}>{credit.job}</p>
+              </div>
+            </Link>
+            
+          )
+        }
+        
+      })
     }
 
     // list of videos for render
@@ -487,6 +599,16 @@ class Details extends Component {
           </div>
         </div>
       )
+    })
+
+    let crewList = this.state.crew.map((person, i) => {
+      if(person.job === 'Director') {
+        return (
+          <Link style={{textDecoration: 'none', display: 'flex', flexDirection: 'row'}} to={'/details/person/' + person.id + '/' + person.name} onClick={this.props.changeToActor.bind(this, actor.id)} >
+            <p style={{color: 'white', display: 'flex', flexDirection: 'row'}}>{person.name}&nbsp;</p>
+          </Link>
+        )
+      }
     })
 
 
@@ -550,12 +672,18 @@ class Details extends Component {
 
 
                 {this.state.mediaType === 'movie' &&
-                  <div className='info'>
-                    <p id='rated' style={{color: '#d3d3d3', border: '1px solid #d3d3d3', borderRadius: '4px', padding: '0px 5px 0px 5px', whiteSpace: 'nowrap'}}>{this.state.rated}</p>
-                    <p id='release' style={{color: '#d3d3d3', paddingRight: 20}}>{months[parseInt(movie.release_date.substring(5,7)) - 1] + ' ' + movie.release_date.substring(8) + ', ' + movie.release_date.substring(0,4)}</p>
-                    <p style={{color: '#d3d3d3', paddingRight: 20}}>{movie.runtime + ' minutes'}</p>
-                    <p style={{color: '#d3d3d3', paddingRight: 20}}>{movie.tagline}</p>
+                  <div>
+                    <div className='info'>
+                      <p id='rated' style={{color: '#d3d3d3', border: '1px solid #d3d3d3', borderRadius: '4px', padding: '0px 5px 0px 5px', whiteSpace: 'nowrap'}}>{this.state.rated}</p>
+                      <p id='release' style={{color: '#d3d3d3', paddingRight: 20}}>{months[parseInt(movie.release_date.substring(5,7)) - 1] + ' ' + movie.release_date.substring(8) + ', ' + movie.release_date.substring(0,4)}</p>
+                      <p style={{color: '#d3d3d3', paddingRight: 20}}>{movie.runtime + ' minutes'}</p>
+                      <p style={{color: '#d3d3d3', paddingRight: 20}}>{movie.tagline}</p>
+                    </div>
+                    <div style={{display: 'flex', flexDirection: 'row'}}>
+                      <p style={{color: 'white', display: 'flex', flexDirection: 'row'}}>Directed by:&nbsp; {crewList}</p>
+                    </div>
                   </div>
+                  
                 }
 
                 {this.state.mediaType === 'tv' &&
@@ -640,9 +768,11 @@ class Details extends Component {
                 <div style={{width: '100%', padding: 5}}>
                   <p style={{color: 'white', fontSize: '3vh'}}>Known For</p>
                   <div id='slider' style={{margin: 0, padding: 0}}>
-                      <Slider {...castSettings} id='slider'>
-                        {creditsList}
-                      </Slider>
+                    <Slider {...castSettings}>
+                      {castAndCrewList}
+                    </Slider>
+                    
+                    
                   </div>
                 </div>
               </div>
